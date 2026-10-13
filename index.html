@@ -197,8 +197,8 @@
     <sc-if value="{{ fsdCapped }}" hint-placeholder-val="{{ false }}">
       <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run {{ fsdMaxWeeks }} weeks past the last official figure and needs a new baseline.</p>
     </sc-if>
-    <p style="font-size:.82rem; color:#a89c88; max-width:680px; margin:1rem auto 0; line-height:1.65;"><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume the {{ fsdGrowthText }} week-over-week growth Tesla described on its Q2 2026 earnings call continues: miles = base × (1 + growth)<sup>weeks since base</sup>. For comparison, Tesla's two stated totals (380,000 miles on July 22 and 1,000,000 on Sept 3, 2026) work out to about 17–18% a week over those six weeks, so real growth may be faster or slower. Treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
-    <p style="font-size:.75rem; color:#8a806f; margin:.8rem 0 0;">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · "more than 10% a week" growth in miles driven, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
+    <p style="font-size:.82rem; color:#a89c88; max-width:680px; margin:1rem auto 0; line-height:1.65;"><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume growth of {{ fsdGrowthText }} a week continues: miles = base × (1 + growth)<sup>weeks since base</sup>. That rate is our own calculation, not a figure Tesla stated. It's the average weekly growth between Tesla's two announced totals: 380,000 miles on July 22 and 1,000,000 on Sept 3, 2026. (On its Q2 call Tesla described weekly mileage growth of "more than 10% a week.") Real growth may be faster or slower, so treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
+    <p style="font-size:.75rem; color:#8a806f; margin:.8rem 0 0;">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total and "more than 10% a week" remark, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
   </div>
 
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; margin-top:3rem; text-align:center;">
@@ -565,8 +565,8 @@
 const FSD_COUNTER = {
   BASE_MILES: 1000000,                      // Ashok Elluswamy, Tesla Cybercab event, Austin
   BASE_DATE: '2026-09-03T19:00:00-05:00',   // Sept 3, 2026 (evening event; exact time approximate)
-  WEEKLY_GROWTH: 0.10,                      // "more than 10% a week", Q2 2026 call (July 22, 2026)
-  MAX_WEEKS: 16
+  WEEKLY_GROWTH: 0.175,                     // derived: 380k (Jul 22) -> 1M (Sep 3, 2026) = (1e6/380e3)^(1/6) - 1 ≈ 17.5%/wk; not an official Tesla rate
+  MAX_WEEKS: 12                             // freezes ~Nov 26, 2026; re-baseline when Tesla states a new total
 };
 // ===========================================================================
 function fsdProjection(now) {
@@ -765,7 +765,7 @@ class Component extends DCLogic {
           fsdMaxWeeks: FSD_COUNTER.MAX_WEEKS,
           fsdBaseText: nf.format(FSD_COUNTER.BASE_MILES),
           fsdBaseDateText: new Date(FSD_COUNTER.BASE_DATE).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' }),
-          fsdGrowthText: Math.round(FSD_COUNTER.WEEKLY_GROWTH * 100) + '%'
+          fsdGrowthText: (Math.round(FSD_COUNTER.WEEKLY_GROWTH * 1000) / 10) + '%'
         };
       })(),
       // TODO (Joseph): no business emails yet. When you have them, add them in the Contact section
