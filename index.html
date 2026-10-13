@@ -67,6 +67,13 @@
   [data-nav-desktop] a { white-space: nowrap; }
   @media (max-width: 1280px) { [data-nav-desktop] { gap: 1.4rem !important; } }
   [data-mobile-overlay] { display: none; }
+  /* Mobile menu: opaque right-hand drawer under the header, dimmed backdrop behind it */
+  [data-mobile-overlay] { position:fixed; left:0; right:0; bottom:0; top:var(--hh,4.8rem); z-index:99; background:rgba(0,0,0,.62); }
+  [data-menu-panel] { position:absolute; top:0; right:0; bottom:0; width:min(86vw,340px); background:#0f0c08; border-left:.5px solid rgba(255,255,255,.1); overflow-y:auto; overscroll-behavior:contain; padding:1rem 1.5rem 2rem; display:flex; flex-direction:column; box-shadow:-20px 0 40px rgba(0,0,0,.5); }
+  [data-menu-panel] a { display:block; color:#e8e4dc; text-decoration:none; font-family:'Syne',sans-serif; font-weight:600; font-size:1.1rem; padding:.95rem 0; border-bottom:.5px solid rgba(255,255,255,.08); text-align:left; }
+  [data-menu-panel] a:hover, [data-menu-panel] a:focus-visible { color:#e8b74e; }
+  [data-menu-panel] a[data-menu-cta] { margin-top:1.4rem; border:0; text-align:center; background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; border-radius:2rem; padding:.85rem 1.5rem; font-family:'DM Sans',sans-serif; font-weight:700; }
+  html.menu-open, html.menu-open body { overflow:hidden; }
   [data-safety-mobile] { display: none; }
   [data-hero-photo-fallback] { display: none; }
   /* Desktop: text left, portrait video right */
@@ -85,13 +92,22 @@
   @media (max-width: 1180px) {
     [data-nav-desktop] { display: none !important; }
     [data-nav-mobile] { display: flex !important; }
-    [data-mobile-overlay].is-open { display: flex !important; }
+    [data-mobile-overlay].is-open { display: block !important; }
   }
   @media (max-width: 900px) {
     [data-safety-chart] { display: none !important; }
     [data-safety-mobile] { display: flex !important; }
     [data-contact-grid] { grid-template-columns: 1fr !important; }
   }
+  /* Mobile: one consistent left alignment for section content (hero and waitlist CTA stay centered) */
+  @media (max-width: 760px) {
+    [data-trust-cards], [data-contact-intro], [data-contact-note] { text-align:left !important; }
+    [data-trust-cards] > div > div:first-child { margin-left:0 !important; }
+    [data-contact-intro] { margin-left:0 !important; }
+  }
+  @media (max-width: 640px) { [data-hero] h1 br { display:none; } }
+  html, body { overflow-x: clip; }
+  h1, h2, h3 { overflow-wrap: break-word; }
 </style>
 </helmet>
 
@@ -116,25 +132,24 @@
     <li><a href="#contact" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">Contact</a></li>
     <li><a href="#signup" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.55rem 1.4rem; border-radius:2rem; font-weight:600; font-size:.85rem; text-decoration:none;">Join Waitlist</a></li>
   </ul></nav>
-  <button data-nav-mobile="" onclick="{{ toggleMobileMenu }}" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="{{ mobileMenuOpen }}" style="background:none; border:1px solid rgba(255,255,255,.15); border-radius:.5rem; width:2.6rem; height:2.6rem; align-items:center; justify-content:center; cursor:pointer;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+  <button data-nav-mobile="" onclick="{{ toggleMobileMenu }}" aria-label="{{ menuButtonLabel }}" aria-controls="mobile-menu" aria-expanded="{{ mobileMenuOpen }}" style="position:relative; z-index:101; background:none; border:1px solid rgba(255,255,255,.15); border-radius:.5rem; width:2.6rem; height:2.6rem; align-items:center; justify-content:center; cursor:pointer;">
+    <sc-if value="{{ !mobileMenuOpen }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></sc-if><sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if>
   </button>
 </header>
 
-<div id="mobile-menu" role="dialog" aria-label="Menu" data-mobile-overlay="" class="{{ mobileOverlayClass }}" style="position:fixed; inset:0; z-index:99; background:rgba(10,8,6,0.98); flex-direction:column; align-items:center; justify-content:center; gap:2rem;">
-    <a href="#how" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Riders</a>
-    <a href="businesses.html" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Businesses</a>
-    <a href="service-area.html" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Service Area</a>
-    <a href="safety.html" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Safety</a>
-    <a href="about.html" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">About</a>
-    <a href="#why-nwa" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Why NWA</a>
-    <a href="#updates" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">News</a>
-    <a href="#faq" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">FAQ</a>
-    <a href="#contact" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Contact</a>
-    <a href="#signup" onclick="{{ closeMobileMenu }}" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.8rem 2rem; border-radius:2rem; font-weight:700; font-size:1.1rem; text-decoration:none; margin-top:.5rem;">Join Waitlist</a>
-    <button onclick="{{ closeMobileMenu }}" aria-label="Close menu" style="position:absolute; top:1.3rem; right:clamp(1.25rem,4vw,3.5rem); background:none; border:none; cursor:pointer;">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
-    </button>
+<div id="mobile-menu" data-mobile-overlay="" class="{{ mobileOverlayClass }}" onclick="{{ onMenuBackdrop }}">
+    <nav data-menu-panel="" role="dialog" aria-modal="true" aria-label="Menu">
+      <a href="#how" onclick="{{ closeMobileMenu }}">Riders</a>
+      <a href="businesses.html" onclick="{{ closeMobileMenu }}">Businesses</a>
+      <a href="service-area.html" onclick="{{ closeMobileMenu }}">Service Area</a>
+      <a href="safety.html" onclick="{{ closeMobileMenu }}">Safety</a>
+      <a href="about.html" onclick="{{ closeMobileMenu }}">About</a>
+      <a href="#why-nwa" onclick="{{ closeMobileMenu }}">Why NWA</a>
+      <a href="#updates" onclick="{{ closeMobileMenu }}">News</a>
+      <a href="#faq" onclick="{{ closeMobileMenu }}">FAQ</a>
+      <a href="#contact" onclick="{{ closeMobileMenu }}">Contact</a>
+      <a href="#signup" onclick="{{ closeMobileMenu }}" data-menu-cta="">Join Waitlist</a>
+    </nav>
 </div>
 
 <main id="main">
@@ -148,7 +163,7 @@
     Coming Soon to Northwest Arkansas
   </div>
 
-  <h1 style="position:relative; font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.6rem,7vw,6rem); line-height:1.0; letter-spacing:-0.03em; color:#fff; margin:0 0 1.5rem; animation:fadeUp .8s .1s ease both;">The Future of<br>Getting Around<br><em style="font-style:normal; color:#e8b74e;">NWA.</em><span class="sr-only"> RoboRide: autonomous Cybercab rides and delivery in Northwest Arkansas</span></h1>
+  <h1 style="position:relative; font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.1rem,9vw,6rem); line-height:1.0; overflow-wrap:break-word; letter-spacing:-0.03em; color:#fff; margin:0 0 1.5rem; animation:fadeUp .8s .1s ease both;">The Future of <br>Getting Around <br><em style="font-style:normal; color:#e8b74e;">NWA.</em><span class="sr-only"> RoboRide: autonomous Cybercab rides and delivery in Northwest Arkansas</span></h1>
 
   <p style="position:relative; font-size:clamp(1rem,2vw,1.2rem); color:#a89c88; max-width:540px; margin:0 auto 2.5rem; font-weight:300; animation:fadeUp .8s .2s ease both;">RoboRide LLC is getting ready to run a fleet of autonomous Tesla Cybercabs across Bentonville, Rogers, Springdale, Fayetteville, and beyond, moving both people and packages. No driver, no hassle.</p>
 
@@ -198,7 +213,7 @@
 </div>
 
 <!-- STATS -->
-<div style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); border-bottom:0.5px solid rgba(255,255,255,.08); padding:2rem clamp(1.25rem,4vw,3.5rem); display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:2rem; text-align:center;">
+<div style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); border-bottom:0.5px solid rgba(255,255,255,.08); padding:2rem clamp(1.25rem,4vw,3.5rem); display:grid; grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr)); gap:2rem; text-align:center;">
   <div><div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:700; color:#e8b74e; line-height:1.1;">7</div><div style="font-size:.8rem; color:#a89c88; letter-spacing:.05em; text-transform:uppercase; margin-top:.25rem;">NWA Cities Planned</div></div>
   <div><div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:700; color:#e8b74e; line-height:1.1;">2</div><div style="font-size:.8rem; color:#a89c88; letter-spacing:.05em; text-transform:uppercase; margin-top:.25rem;">Services: Rides + Delivery</div></div>
   <div><div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:700; color:#e8b74e; line-height:1.1;">0</div><div style="font-size:.8rem; color:#a89c88; letter-spacing:.05em; text-transform:uppercase; margin-top:.25rem;">Drivers Needed</div></div>
@@ -240,7 +255,7 @@
     <p style="font-size:.75rem; color:#8a806f; margin:.8rem 0 0;">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total and "more than 10% a week" remark, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; margin-top:3rem; text-align:center;">
+  <div data-trust-cards="" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:1.5rem; margin-top:3rem; text-align:center;">
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem 1.5rem;">
       <div style="width:52px; height:52px; background:rgba(232,183,78,.1); border:0.5px solid rgba(255,255,255,.08); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8b74e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
       <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:.95rem; color:#fff; margin:0 0 .5rem;">Tesla FSD Safety</h3>
@@ -266,7 +281,7 @@
 
 <!-- HOW IT WORKS -->
 <section id="how" data-screen-label="How it works" style="padding:6rem clamp(1.25rem,4vw,3.5rem); max-width:1200px; margin:0 auto;">
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:3rem; align-items:center;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr)); gap:3rem; align-items:center;">
     <div>
       <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">How It Works</div>
       <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">How it will<br><em style="font-style:normal; color:#e8b74e;">work.</em></h2>
@@ -311,7 +326,7 @@
   <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Services</div>
   <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">Built for every<br><em style="font-style:normal; color:#e8b74e;">NWA journey.</em></h2>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; margin-top:3rem;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr)); gap:1.5rem; margin-top:3rem;">
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;">
       <div style="width:48px; height:48px; background:rgba(232,183,78,.1); border:0.5px solid rgba(255,255,255,.08); border-radius:.75rem; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e8b74e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg></div>
       <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0 0 .6rem;">Everyday Rides</h3>
@@ -350,7 +365,7 @@
   <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Goods Delivery</div>
   <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">Moving packages,<br><em style="font-style:normal; color:#e8b74e;">not just people.</em></h2>
   <p style="color:#a89c88; font-size:1.05rem; max-width:640px; line-height:1.75; margin:0;">The same autonomous fleet that gives rides will also carry goods. RoboRide plans to offer local, same-region delivery for NWA businesses: point-to-point, without a courier.</p>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; margin-top:2.5rem;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr)); gap:1.5rem; margin-top:2.5rem;">
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;"><h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0 0 .6rem;">Local Retail</h3><p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0;">Get orders from shops in Bentonville, Rogers, Springdale, and Fayetteville to customers' doors across the region.</p></div>
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;"><h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0 0 .6rem;">Restaurants &amp; Food</h3><p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0;">Takeout and catering runs between kitchens and customers, with no driver to schedule.</p></div>
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;"><h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0 0 .6rem;">Business-to-Business</h3><p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0;">Documents, parts, and supplies moved between offices, warehouses, and job sites around NWA.</p></div>
@@ -366,7 +381,7 @@
   <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Why Northwest Arkansas</div>
   <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">A region that's<br><em style="font-style:normal; color:#e8b74e;">on the move.</em></h2>
   <p style="color:#a89c88; font-size:1.05rem; max-width:620px; line-height:1.75; margin:0;">NWA is growing fast, flying more, and home to the state's flagship university. That means more trips between home, work, campus, and the airport, and more goods moving across the region.</p>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; margin-top:2.5rem;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr)); gap:1.5rem; margin-top:2.5rem;">
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;">
       <div style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:700; color:#e8b74e; line-height:1.1;">622,177</div>
       <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1rem; color:#fff; margin:.5rem 0 .5rem;">Metro residents (July 1, 2025)</h3>
@@ -390,13 +405,13 @@
 
 <!-- NWA COVERAGE MAP -->
 <div id="coverage" data-screen-label="Coverage map" style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); border-bottom:0.5px solid rgba(255,255,255,.08); padding:6rem 0;">
-  <div style="max-width:1200px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3.5rem); display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:3.5rem; align-items:center;">
+  <div style="max-width:1200px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3.5rem); display:grid; grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr)); gap:3.5rem; align-items:center;">
     <div>
       <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Coverage Area</div>
       <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">Rooted in the<br><em style="font-style:normal; color:#e8b74e;">Ozarks.</em></h2>
       <p style="color:#a89c88; font-size:1.05rem; max-width:560px; line-height:1.75; margin:0;">RoboRide is built for Northwest Arkansas — from the trails of Bentonville to the University of Arkansas campus in Fayetteville. We're planning to launch city by city across the region.</p>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.75rem; margin-top:2rem;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr)); gap:.75rem; margin-top:2rem;">
         <sc-for list="{{ cities }}" as="city" hint-placeholder-count="7">
           <div style="display:flex; align-items:center; gap:.5rem; background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.5rem; padding:.6rem .9rem; font-size:.85rem; color:#e8e4dc;">
             <div style="width:5px; height:5px; border-radius:50%; background:#e8b74e; flex-shrink:0;"></div>{{ city.name }}{{ city.suffix }}
@@ -454,7 +469,7 @@
   <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Pricing</div>
   <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">Simple, <em style="font-style:normal; color:#e8b74e;">honest</em> pricing.</h2>
   <p style="color:#a89c88; font-size:1.05rem; max-width:560px; line-height:1.75; margin:0 0 .5rem;">Our goal is simple, transparent pricing with no tips. Final rates will be announced before launch.</p>
-  <p style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; font-weight:500; margin:1rem 0 0;">Pricing to be announced</p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:3rem;">
+  <p style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; font-weight:500; margin:1rem 0 0;">Pricing to be announced</p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); gap:1.5rem; margin-top:3rem;">
     <sc-for list="{{ pricingTiers }}" as="tier" hint-placeholder-count="3">
       <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem; position:relative;">
         <sc-if value="{{ tier.featured }}" hint-placeholder-val="{{ false }}">
@@ -562,7 +577,7 @@
 
 <!-- CONTACT -->
 <section id="contact" data-screen-label="Contact" style="padding:6rem clamp(1.25rem,4vw,3.5rem); max-width:1200px; margin:0 auto;">
-  <div style="text-align:center; max-width:640px; margin:0 auto 3.5rem;">
+  <div data-contact-intro="" style="text-align:center; max-width:640px; margin:0 auto 3.5rem;">
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2rem,5vw,3.2rem); line-height:1.1; letter-spacing:-0.03em; color:#fff; margin:0 0 1rem;">Get in Touch</h2>
     <p style="font-size:1.05rem; color:#a89c88; margin:0;">Questions about a ride, or interested in partnering with us? Use the waitlist form above to tell us what you're interested in, and we'll be in touch.</p>
   </div>
@@ -573,7 +588,6 @@
       <p style="color:#a89c88; font-size:.925rem; margin:0 0 1.5rem;">Waitlist questions, accessibility needs, or anything else.</p>
       <a href="#signup" style="display:inline-block; background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.75rem 1.8rem; border-radius:2rem; font-weight:600; font-size:.9rem; text-decoration:none;">Join the Waitlist</a>
       <!-- TODO (Joseph): add the rider/customer email here once a business address exists, e.g. <a href="mailto:you@yourdomain">... -->
-      <p style="margin:1.2rem 0 0; font-size:.8rem; color:#a89c88;">A direct email address is coming soon.</p>
     </div>
 
     <div style="background:rgba(232,183,78,0.05); border:0.5px solid rgba(255,255,255,.1); border-radius:14px; padding:2.5rem;">
@@ -585,7 +599,7 @@
     </div>
   </div>
 
-  <p style="text-align:center; color:#a89c88; font-size:.85rem; margin:2rem 0 0;">Planned service area: Bentonville, Rogers, Springdale, Fayetteville, and surrounding Northwest Arkansas.</p>
+  <p data-contact-note="" style="text-align:center; color:#a89c88; font-size:.85rem; margin:2rem 0 0;">Planned service area: Bentonville, Rogers, Springdale, Fayetteville, and surrounding Northwest Arkansas.</p>
 </section>
 
 </main>
@@ -593,7 +607,7 @@
 <!-- FOOTER -->
 <!-- TODO (Joseph): social links. Add real profile URLs and remove the "hidden" attribute on the <ul data-social> in the footer. -->
 <footer style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); padding:3rem clamp(1.25rem,4vw,3.5rem) 2rem;">
-  <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:3rem; margin-bottom:3rem;">
+  <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr)); gap:3rem; margin-bottom:3rem;">
     <div>
       <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:#fff; letter-spacing:-0.02em;"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span style="color:#e8b74e;">Ride</span></div>
       <p style="color:#a89c88; font-size:.875rem; line-height:1.7; margin-top:.75rem; max-width:260px;">RoboRide LLC is an autonomous vehicle operations company preparing to offer Tesla Cybercab rides and goods delivery across Northwest Arkansas. Not affiliated with Tesla, Inc.</p>
@@ -624,14 +638,12 @@
         <li><a href="#updates" style="color:#a89c88; text-decoration:none; font-size:.875rem;">News</a></li>
         <li><a href="#signup" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Join the Waitlist</a></li>
         <li><a href="privacy.html" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Privacy Policy</a></li>
-        <li><span style="color:#a89c88; font-size:.875rem;">Terms*</span></li>
       </ul>
     </div>
   </div>
   <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.5rem; padding-top:1.5rem; border-top:0.5px solid rgba(255,255,255,.08); font-size:.8rem; color:#a89c88;">
     <span>© 2026 RoboRide LLC. All rights reserved. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span>
     <span>Northwest Arkansas <span aria-hidden="true">🌲</span></span>
-    <span>*Coming soon.</span>
     <ul data-social="" hidden="" aria-label="RoboRide on social media" style="list-style:none; display:flex; gap:1rem; margin:0; padding:0;"><li><a href="#" rel="me noopener">X</a></li><li><a href="#" rel="me noopener">Instagram</a></li><li><a href="#" rel="me noopener">Facebook</a></li></ul>
   </div>
   <div style="max-width:1200px; margin:.75rem auto 0; font-size:.7rem; color:#8a806f;">
@@ -731,16 +743,21 @@ class Component extends DCLogic {
   // Mobile menu: lock page scroll while open, move focus into the menu, and return it to the menu button on close.
   toggleMobileMenu = () => {
     const open = !this.state.mobileMenuOpen;
+    const h = document.querySelector('header');
+    if (h) document.documentElement.style.setProperty('--hh', h.offsetHeight + 'px');
     this.setState({ mobileMenuOpen: open });
-    document.body.style.overflow = open ? 'hidden' : '';
+    document.documentElement.classList.toggle('menu-open', open);
     if (open) setTimeout(() => { const a = document.querySelector('#mobile-menu a'); if (a) a.focus(); }, 50);
   };
   closeMobileMenu = () => {
     if (!this.state.mobileMenuOpen) return;
     this.setState({ mobileMenuOpen: false });
-    document.body.style.overflow = '';
+    document.documentElement.classList.remove('menu-open');
     setTimeout(() => { const b = document.querySelector('[data-nav-mobile]'); if (b) b.focus(); }, 50);
   };
+
+  // Tap on the dimmed area outside the drawer closes the menu
+  onMenuBackdrop = (e) => { if (e && e.target && e.target.id === 'mobile-menu') this.closeMobileMenu(); };
 
   toggleHeroVideo = () => {
     const v = document.querySelector('[data-hero-video]');
@@ -859,6 +876,8 @@ class Component extends DCLogic {
       mobileMenuOpen: this.state.mobileMenuOpen,
       mobileOverlayClass: this.state.mobileMenuOpen ? 'is-open' : '',
       toggleMobileMenu: this.toggleMobileMenu,
+      onMenuBackdrop: this.onMenuBackdrop,
+      menuButtonLabel: this.state.mobileMenuOpen ? 'Close menu' : 'Open menu',
       closeMobileMenu: this.closeMobileMenu,
       cities,
       ...(() => {

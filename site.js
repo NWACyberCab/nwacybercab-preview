@@ -1,20 +1,33 @@
 /* Shared behaviour for RoboRide sub-pages. */
 (function () {
   document.documentElement.classList.add('js');
-  // Mobile menu
-  var btn = document.querySelector('.menu-btn'), nav = document.getElementById('site-nav');
-  function setOpen(open) {
+  // Mobile menu: drawer under the header + backdrop; closes on link tap, backdrop tap, Esc
+  var btn = document.querySelector('.menu-btn'), nav = document.getElementById('site-nav'), header = document.querySelector('.site-header'), backdrop = null;
+  var HAMB = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+  var CLOSE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8e4dc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  function setHH() { if (header) document.documentElement.style.setProperty('--hh', header.offsetHeight + 'px'); }
+  function setOpen(open, keepFocus) {
     if (!btn || !nav) return;
+    setHH();
     nav.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (open) { var a = nav.querySelector('a'); if (a) a.focus(); } else btn.focus();
+    btn.innerHTML = open ? CLOSE : HAMB;
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) {
+      if (!backdrop) { backdrop = document.createElement('div'); backdrop.className = 'nav-backdrop'; backdrop.addEventListener('click', function () { setOpen(false); }); }
+      document.body.appendChild(backdrop);
+      var a = nav.querySelector('a'); if (a) a.focus();
+    } else {
+      if (backdrop && backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+      if (!keepFocus) btn.focus();
+    }
   }
   if (btn && nav) {
     btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a') && nav.classList.contains('open')) setOpen(false); });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a') && nav.classList.contains('open')) setOpen(false, true); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+    window.addEventListener('resize', function () { setHH(); if (window.innerWidth > 1100 && nav.classList.contains('open')) setOpen(false, true); });
   }
   // Reveal on scroll
   var els = document.querySelectorAll('.reveal');

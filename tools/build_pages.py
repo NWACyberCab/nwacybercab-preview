@@ -104,7 +104,7 @@ page("businesses", "Delivery & Business", "Autonomous goods delivery and employe
   <div class="eyebrow">Use cases we're designing for</div>
   <h2>What could a driverless <em class="hl">Cybercab carry?</em></h2>
   <p class="lead" style="margin-bottom:2rem">These are planned use cases, not services available today. Capacity, item limits and pricing haven't been set.</p>
-  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">{use_cards}</div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))">{use_cards}</div>
 </div></section>
 
 <section class="section"><div class="wrap">
@@ -256,7 +256,7 @@ page("safety", "Safety & Regulation", "How autonomous vehicles are regulated in 
     <div class="card reveal"><h3>No shortcuts on approval</h3><p>Driverless service in Arkansas requires an approved autonomous vehicle program, and we won't carry riders or goods without one. Where we are in that process will be shown on our <a href="about.html#roadmap">roadmap</a>.</p></div>
     <div class="card reveal"><h3>Supervised before driverless</h3><p>State rules require a human operator on board for the first six months of an approved program. We see that period as a feature, not a hurdle.</p></div>
     <div class="card reveal"><h3>The technology</h3><p>The Cybercab runs Tesla's autonomous driving software. Tesla publishes its own safety data for FSD (Supervised); we link to it rather than repeat its claims. {ext(FSD, "Tesla FSD safety data")}</p></div>
-    <div class="card reveal"><h3>Transparency</h3><p>We'll publish what we can about our operations as they begin. <span class="todo">[TODO: Joseph to decide what operating/safety info RoboRide will publish.]</span></p></div>
+    <div class="card reveal"><h3>Transparency</h3><p>As service begins, we'll post updates on this site about how RoboRide operates</p></div>
   </div>
 </div></section>
 ''')
