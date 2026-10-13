@@ -24,16 +24,18 @@
 <meta name="twitter:image" content="https://www.nwaroboride.org/image/og-cybercab.jpg">
 <link rel="icon" type="image/jpeg" href="image/favicon.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"RoboRide LLC","url":"https://www.nwaroboride.org/","logo":"https://www.nwaroboride.org/image/favicon.jpg","description":"Autonomous vehicle operations company preparing to offer driverless rides and goods delivery in Northwest Arkansas.","areaServed":["Bentonville, AR","Rogers, AR","Springdale, AR","Fayetteville, AR","Farmington, AR","Siloam Springs, AR","Eureka Springs, AR"]}</script>
-<script src="./support.js"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is RoboRide operating yet?", "acceptedAnswer": {"@type": "Answer", "text": "Not yet. RoboRide LLC is preparing to launch and no cities are live today. Join the waitlist to hear when service starts in your area."}}, {"@type": "Question", "name": "Where will RoboRide operate?", "acceptedAnswer": {"@type": "Answer", "text": "Northwest Arkansas. The planned service area includes Bentonville, Rogers, Springdale, Fayetteville, Farmington, Siloam Springs, and Eureka Springs. We plan to launch city by city."}}, {"@type": "Question", "name": "What services will you offer?", "acceptedAnswer": {"@type": "Answer", "text": "Two things: driverless rides for people, and local delivery of goods for businesses and customers, both using autonomous Tesla Cybercabs."}}, {"@type": "Question", "name": "How much will it cost?", "acceptedAnswer": {"@type": "Answer", "text": "Pricing hasn't been set yet. Rates will be announced before launch, and waitlist members will hear first."}}, {"@type": "Question", "name": "Is RoboRide part of Tesla?", "acceptedAnswer": {"@type": "Answer", "text": "No. RoboRide LLC is an independent Northwest Arkansas company that plans to operate Tesla Cybercab vehicles. We are not affiliated with or endorsed by Tesla, Inc."}}, {"@type": "Question", "name": "I run a business. Can we work together?", "acceptedAnswer": {"@type": "Answer", "text": "We'd like to hear from you. Choose “Business partnership” on the waitlist form and we'll follow up about delivery, employee rides, or venue pickup zones."}}, {"@type": "Question", "name": "What happens to my email if I join the waitlist?", "acceptedAnswer": {"@type": "Answer", "text": "We use it only to contact you about RoboRide, and we will never sell it. See our Privacy Policy for details."}}]}</script>
+<script src="./support.js" defer></script>
 </head>
 <body>
 <x-dc>
 <helmet data-dc-atomics="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap" rel="stylesheet"></noscript>
 <x-import component-from-global-scope="image-slot" from="./image-slot.js" hint-size="0,0"></x-import>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #0a0806; color: #e8e4dc; font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; }
@@ -44,6 +46,8 @@
   .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   .skip-link { position:absolute; left:-9999px; top:0; z-index:200; background:#e8b74e; color:#1a1206; padding:.6rem 1rem; border-radius:0 0 .5rem 0; font-weight:600; }
   .skip-link:focus { left:0; }
+  details[open] summary { color:#e8b74e; }
+  summary::marker { color:#e8b74e; }
   section[id], div[id] { scroll-margin-top: 4.5rem; }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   @media (max-width: 480px) { [data-waitlist-form] input, [data-waitlist-form] select, [data-waitlist-form] button { width: 100% !important; } }
@@ -85,6 +89,7 @@
     <li><a href="#services" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">Services</a></li>
     <li><a href="#coverage" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">Coverage</a></li>
     <li><a href="#pricing" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">Pricing</a></li>
+    <li><a href="#faq" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">FAQ</a></li>
     <li><a href="#contact" style="color:#a89c88; text-decoration:none; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;">Contact</a></li>
     <li><a href="#signup" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.55rem 1.4rem; border-radius:2rem; font-weight:600; font-size:.85rem; text-decoration:none;">Join Waitlist</a></li>
   </ul></nav>
@@ -100,6 +105,7 @@
     <a href="#services" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Services</a>
     <a href="#coverage" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Coverage</a>
     <a href="#pricing" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Pricing</a>
+    <a href="#faq" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">FAQ</a>
     <a href="#contact" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Contact</a>
     <a href="#signup" onclick="{{ closeMobileMenu }}" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.8rem 2rem; border-radius:2rem; font-weight:700; font-size:1.1rem; text-decoration:none; margin-top:.5rem;">Join Waitlist</a>
     <button onclick="{{ closeMobileMenu }}" aria-label="Close menu" style="position:absolute; top:1.3rem; right:clamp(1.25rem,4vw,3.5rem); background:none; border:none; cursor:pointer;">
@@ -169,7 +175,7 @@
 
   <div data-safety-chart="" style="display:flex; flex-direction:column; align-items:center; padding:clamp(1.5rem,4vw,2.5rem); background:#121009; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; margin:2rem 0; width:100%; max-width:100%; box-sizing:border-box;">
     <div style="width:100%; max-width:900px; min-width:0; background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.75rem; padding:clamp(1rem,3vw,1.75rem); box-sizing:border-box;">
-      <img src="image/safety-chart.png" alt="Tesla FSD safety chart: miles driven before a major or minor collision, comparing Teslas driven with FSD supervised vs. manually" loading="lazy" decoding="async" width="2037" height="514" style="width:100%; height:auto; max-width:100%; display:block; border-radius:.4rem; filter:invert(1) hue-rotate(180deg) contrast(1.15) brightness(1.05) saturate(1.1);">
+      <picture><source type="image/webp" srcset="image/safety-chart.webp"><img src="image/safety-chart.png" alt="Tesla FSD safety chart: miles driven before a major or minor collision, comparing Teslas driven with FSD supervised vs. manually" loading="lazy" decoding="async" width="2037" height="514" style="width:100%; height:auto; max-width:100%; display:block; border-radius:.4rem; filter:invert(1) hue-rotate(180deg) contrast(1.15) brightness(1.05) saturate(1.1);"></picture>
     </div>
     <p style="font-size:.75rem; color:#a89c88; letter-spacing:.03em; margin:1.25rem 0 0;">Source: <a href="https://www.tesla.com/fsd/safety" target="_blank" rel="noopener">Tesla FSD safety data</a>, miles driven per collision, FSD (Supervised) vs. manual driving.</p>
   </div>
@@ -342,14 +348,15 @@
         <text x="131" y="52" font-size="7" fill="rgba(232,183,78,.6)" font-family="DM Sans, sans-serif">I-49</text>
         <text x="60" y="158" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-412</text>
         <text x="208" y="98" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-62</text>
-        <sc-for list="{{ cities }}" as="city" hint-placeholder-count="7">
-          <g>
-            <line x1="{{ city.x }}" y1="{{ city.y }}" x2="{{ city.labelX }}" y2="{{ city.labelY }}" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line>
-            <circle cx="{{ city.x }}" cy="{{ city.y }}" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle>
-            <circle cx="{{ city.x }}" cy="{{ city.y }}" r="5" fill="{{ city.dotColor }}" filter="{{ city.dotFilter }}"></circle>
-            <circle cx="{{ city.x }}" cy="{{ city.y }}" r="2" fill="#15120c"></circle>
-          </g>
-        </sc-for>
+        <!-- City dots (static SVG so the browser never sees template placeholders in numeric attributes).
+             Keep in sync with rawCities in the script. To mark a city live: set its dot fill to #4ade80 and add filter="url(#glow)". -->
+        <g data-city="Bentonville"><line x1="131" y1="99" x2="121" y2="92" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="131" cy="99" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="131" cy="99" r="5" fill="#e8b74e"></circle><circle cx="131" cy="99" r="2" fill="#15120c"></circle></g>
+        <g data-city="Rogers"><line x1="156" y1="112" x2="168" y2="114" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="156" cy="112" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="156" cy="112" r="5" fill="#e8b74e"></circle><circle cx="156" cy="112" r="2" fill="#15120c"></circle></g>
+        <g data-city="Springdale"><line x1="153" y1="162" x2="165" y2="172" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="153" cy="162" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="153" cy="162" r="5" fill="#e8b74e"></circle><circle cx="153" cy="162" r="2" fill="#15120c"></circle></g>
+        <g data-city="Fayetteville"><line x1="147" y1="204" x2="159" y2="206" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="147" cy="204" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="147" cy="204" r="5" fill="#e8b74e"></circle><circle cx="147" cy="204" r="2" fill="#15120c"></circle></g>
+        <g data-city="Farmington"><line x1="120" y1="211" x2="112" y2="224" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="120" cy="211" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="120" cy="211" r="5" fill="#e8b74e"></circle><circle cx="120" cy="211" r="2" fill="#15120c"></circle></g>
+        <g data-city="Siloam Springs"><line x1="40" y1="161" x2="34" y2="145" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="40" cy="161" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="40" cy="161" r="5" fill="#e8b74e"></circle><circle cx="40" cy="161" r="2" fill="#15120c"></circle></g>
+        <g data-city="Eureka Springs"><line x1="260" y1="89" x2="266" y2="73" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="260" cy="89" r="10" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><circle cx="260" cy="89" r="5" fill="#e8b74e"></circle><circle cx="260" cy="89" r="2" fill="#15120c"></circle></g>
       </svg>
       <div style="position:absolute; inset:0; z-index:3; pointer-events:none;">
         <sc-for list="{{ cities }}" as="city" hint-placeholder-count="7">
@@ -389,6 +396,42 @@
   
 </section>
 
+<!-- FAQ -->
+<section id="faq" data-screen-label="FAQ" style="padding:6rem clamp(1.25rem,4vw,3.5rem); max-width:900px; margin:0 auto;">
+  <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">FAQ</div>
+  <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 2rem;">Common <em style="font-style:normal; color:#e8b74e;">questions.</em></h2>
+  <div style="display:flex; flex-direction:column; gap:.75rem;">
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">Is RoboRide operating yet?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">Not yet. RoboRide LLC is preparing to launch and no cities are live today. Join the waitlist to hear when service starts in your area.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">Where will RoboRide operate?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">Northwest Arkansas. The planned service area includes Bentonville, Rogers, Springdale, Fayetteville, Farmington, Siloam Springs, and Eureka Springs. We plan to launch city by city.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">What services will you offer?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">Two things: driverless rides for people, and local delivery of goods for businesses and customers, both using autonomous Tesla Cybercabs.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">How much will it cost?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">Pricing hasn't been set yet. Rates will be announced before launch, and waitlist members will hear first.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">Is RoboRide part of Tesla?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">No. RoboRide LLC is an independent Northwest Arkansas company that plans to operate Tesla Cybercab vehicles. We are not affiliated with or endorsed by Tesla, Inc.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">I run a business. Can we work together?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">We'd like to hear from you. Choose “Business partnership” on the waitlist form and we'll follow up about delivery, employee rides, or venue pickup zones.</p>
+    </details>
+    <details style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:.9rem; padding:1.1rem 1.4rem;">
+      <summary style="cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; color:#fff; font-size:1rem; list-style-position:outside;">What happens to my email if I join the waitlist?</summary>
+      <p style="color:#a89c88; font-size:.92rem; line-height:1.7; margin:.75rem 0 0;">We use it only to contact you about RoboRide, and we will never sell it. See our <a href="privacy.html">Privacy Policy</a> for details.</p>
+    </details>
+  </div>
+</section>
+
 <!-- SIGNUP / WAITLIST -->
 <div id="signup" data-screen-label="Waitlist signup" style="background:linear-gradient(135deg,#121009 0%,#171310 100%); border-top:0.5px solid rgba(255,255,255,.08); border-bottom:0.5px solid rgba(255,255,255,.08); text-align:center; padding:6rem clamp(1.25rem,4vw,3.5rem); position:relative; overflow:hidden;">
   <div style="position:absolute; bottom:-100px; left:50%; transform:translateX(-50%); width:600px; height:300px; background:radial-gradient(ellipse, rgba(232,183,78,.09) 0%, transparent 70%); pointer-events:none;"></div>
@@ -420,7 +463,7 @@
       <a href="#" onclick="{{ resetWaitlist }}" style="font-size:.82rem; color:#e8b74e; text-decoration:underline;">Use a different email</a>
     </div>
   </sc-if>
-  <p style="position:relative; font-size:.78rem; color:#a89c88; margin-top:1rem;">No spam. Unsubscribe anytime. We'll only email you when it matters.</p>
+  <p style="position:relative; font-size:.78rem; color:#a89c88; margin-top:1rem;">No spam. We'll only email you when it matters. See our <a href="privacy.html">Privacy Policy</a>.</p>
 </div>
 
 <!-- CONTACT -->
@@ -481,7 +524,8 @@
       <ul style="list-style:none; display:flex; flex-direction:column; gap:.6rem; margin:0; padding:0;">
         <li><a href="#contact" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Contact</a></li>
         <li><a href="#signup" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Join the Waitlist</a></li>
-        <li><span style="color:#a89c88; font-size:.875rem; opacity:.7;">Privacy Policy &amp; Terms*</span></li>
+        <li><a href="privacy.html" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Privacy Policy</a></li>
+        <li><span style="color:#a89c88; font-size:.875rem;">Terms*</span></li>
       </ul>
     </div>
   </div>
@@ -516,6 +560,8 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this._loadTweet();
+    this._onKey = (e) => { if (e.key === 'Escape' && this.state.mobileMenuOpen) this.closeMobileMenu(); };
+    document.addEventListener('keydown', this._onKey);
 
   }
 
@@ -527,6 +573,12 @@ class Component extends DCLogic {
 
   _loadTweet() {
     if ((this.props.heroMediaType ?? 'photo') !== 'tweet') return;
+    // Load X/Twitter's widget script only when the tweet hero is actually used (avoids third-party cookies otherwise).
+    if (!document.getElementById('twitter-wjs')) {
+      const sc = document.createElement('script');
+      sc.id = 'twitter-wjs'; sc.async = true; sc.src = 'https://platform.twitter.com/widgets.js';
+      document.head.appendChild(sc);
+    }
     const tryLoad = () => {
       if (window.twttr && window.twttr.widgets) window.twttr.widgets.load();
       else setTimeout(tryLoad, 400);
@@ -535,10 +587,23 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    document.removeEventListener('keydown', this._onKey);
+    document.body.style.overflow = '';
   }
 
-  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
-  closeMobileMenu = () => this.setState({ mobileMenuOpen: false });
+  // Mobile menu: lock page scroll while open, move focus into the menu, and return it to the menu button on close.
+  toggleMobileMenu = () => {
+    const open = !this.state.mobileMenuOpen;
+    this.setState({ mobileMenuOpen: open });
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) setTimeout(() => { const a = document.querySelector('#mobile-menu a'); if (a) a.focus(); }, 50);
+  };
+  closeMobileMenu = () => {
+    if (!this.state.mobileMenuOpen) return;
+    this.setState({ mobileMenuOpen: false });
+    document.body.style.overflow = '';
+    setTimeout(() => { const b = document.querySelector('[data-nav-mobile]'); if (b) b.focus(); }, 50);
+  };
 
   handleInterestChange = (e) => this.setState({ waitlistInterest: e.target.value });
   handleEmailChange = (e) => this.setState({ waitlistEmail: e.target.value, waitlistError: '' });
@@ -585,7 +650,7 @@ class Component extends DCLogic {
   renderVals() {
     // Approximate positions derived from real lat/long of each city, projected into the 300x300 viewBox
     // Positions projected from real lat/long (equirectangular, cos(lat) corrected) into the 300x300 viewBox,
-    // keeping true relative distances. Set active: true when a city goes live to make its dot glow green.
+    // keeping true relative distances. Set active: true when a city goes live (also update its dot in the map SVG above).
     const rawCities = [
       { name: 'Bentonville', x: 131, y: 99, labelX: 121, labelY: 92, align: 'right', active: false },
       { name: 'Rogers', x: 156, y: 112, labelX: 168, labelY: 114, align: 'left', active: false },
