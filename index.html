@@ -13,11 +13,14 @@
 <meta property="og:title" content="RoboRide | Autonomous Cybercab Rides &amp; Delivery in NWA">
 <meta property="og:description" content="Driverless rides and goods delivery for Bentonville, Rogers, Springdale, Fayetteville and the rest of Northwest Arkansas. Join the waitlist.">
 <meta property="og:url" content="https://www.nwaroboride.org/">
-<meta property="og:image" content="https://www.nwaroboride.org/image/safety.jpg">
+<meta property="og:image" content="https://www.nwaroboride.org/image/og-cybercab.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Front view of a Tesla Cybercab with its doors open">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="RoboRide | Autonomous Cybercab Rides &amp; Delivery in NWA">
 <meta name="twitter:description" content="Driverless rides and goods delivery across Northwest Arkansas. Join the waitlist.">
-<meta name="twitter:image" content="https://www.nwaroboride.org/image/safety.jpg">
+<meta name="twitter:image" content="https://www.nwaroboride.org/image/og-cybercab.jpg">
 <link rel="icon" type="image/jpeg" href="image/favicon.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"RoboRide LLC","url":"https://www.nwaroboride.org/","logo":"https://www.nwaroboride.org/image/favicon.jpg","description":"Autonomous vehicle operations company preparing to offer driverless rides and goods delivery in Northwest Arkansas.","areaServed":["Bentonville, AR","Rogers, AR","Springdale, AR","Fayetteville, AR","Farmington, AR","Siloam Springs, AR","Eureka Springs, AR"]}</script>
 <script src="./support.js"></script>
@@ -42,7 +45,7 @@
   .skip-link:focus { left:0; }
   section[id], div[id] { scroll-margin-top: 4.5rem; }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
-  @media (max-width: 480px) { [data-waitlist-form] input, [data-waitlist-form] button { width: 100% !important; } }
+  @media (max-width: 480px) { [data-waitlist-form] input, [data-waitlist-form] select, [data-waitlist-form] button { width: 100% !important; } }
   @keyframes pulseDot { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -142,7 +145,7 @@
   </sc-if>
   <sc-if value="{{ isHeroVideoFile }}" hint-placeholder-val="{{ false }}">
     <div style="position:relative; width:100%; max-width:720px; aspect-ratio:16/9; animation:fadeUp .8s .4s ease both; border-radius:18px; overflow:hidden; border:0.5px solid rgba(255,255,255,.12); background:#000;">
-      <video ref="{{ videoRef }}" src="image/robotaxi-hero.mp4" autoplay="" muted="" loop="" playsinline="" preload="metadata" aria-label="Video of an autonomous robotaxi driving" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
+      <video ref="{{ videoRef }}" src="image/robotaxi-hero-720.mp4" poster="image/robotaxi-hero-poster.jpg" autoplay="" muted="" loop="" playsinline="" preload="metadata" aria-label="Video of an autonomous robotaxi driving" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
       <div style="position:absolute; bottom:14px; right:14px; z-index:2; display:flex; gap:.6rem;">
         <button onclick="{{ toggleVideoPlay }}" aria-label="Play or pause video" style="width:2.6rem; height:2.6rem; border-radius:50%; background:rgba(10,8,6,.6); backdrop-filter:blur(6px); border:0.5px solid rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; cursor:pointer;">
           <sc-if value="{{ videoPlaying }}" hint-placeholder-val="{{ true }}">
@@ -314,7 +317,7 @@
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;"><h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0 0 .6rem;">Business-to-Business</h3><p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0;">Documents, parts, and supplies moved between offices, warehouses, and job sites around NWA.</p></div>
   </div>
   <div style="margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
-    <a href="mailto:{{ partnersEmail }}?subject=Delivery%20Partnership%20Inquiry" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.85rem 2.2rem; border-radius:2rem; font-weight:600; font-size:.95rem; text-decoration:none; display:inline-block;">Talk to Us About Delivery</a>
+    <a href="#signup" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.85rem 2.2rem; border-radius:2rem; font-weight:600; font-size:.95rem; text-decoration:none; display:inline-block;">Get Delivery Updates</a>
     <a href="#signup" style="background:transparent; color:#e8e4dc; border:0.5px solid rgba(255,255,255,.2); padding:.85rem 2.2rem; border-radius:2rem; font-size:.95rem; text-decoration:none; display:inline-block;">Join the Waitlist</a>
   </div>
 </section>
@@ -415,6 +418,10 @@
 
   <sc-if value="{{ !waitlistSubmitted }}" hint-placeholder-val="{{ true }}">
     <form data-waitlist-form="" onsubmit="{{ handleWaitlistSubmit }}" style="position:relative; display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap;">
+      <label for="waitlist-interest" class="sr-only">I'm interested in</label>
+      <select id="waitlist-interest" name="interest" onchange="{{ handleInterestChange }}" style="background:#15120c; border:0.5px solid rgba(255,255,255,.15); border-radius:2rem; padding:.8rem 1.2rem; color:#e8e4dc; font-family:'DM Sans',sans-serif; font-size:.95rem; width:220px;">
+        <option value="Rides">Rides</option><option value="Goods delivery">Goods delivery</option><option value="Business partnership">Business partnership</option><option value="Press">Press</option>
+      </select>
       <label for="waitlist-email" class="sr-only">Email address</label>
       <input id="waitlist-email" name="email" type="email" autocomplete="email" required="" placeholder="your@email.com" value="{{ waitlistEmail }}" oninput="{{ handleEmailChange }}" style="background:rgba(255,255,255,.04); border:0.5px solid rgba(255,255,255,.15); border-radius:2rem; padding:.8rem 1.5rem; color:#fff; font-family:'DM Sans',sans-serif; font-size:.95rem; width:260px; outline:none;">
       <button type="submit" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; border:none; padding:.85rem 2.2rem; border-radius:2rem; font-weight:600; font-size:.95rem; cursor:pointer; font-family:'DM Sans',sans-serif;">Join Waitlist</button>
@@ -438,22 +445,24 @@
 <section id="contact" data-screen-label="Contact" style="padding:6rem clamp(1.25rem,4vw,3.5rem); max-width:1200px; margin:0 auto;">
   <div style="text-align:center; max-width:640px; margin:0 auto 3.5rem;">
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2rem,5vw,3.2rem); line-height:1.1; letter-spacing:-0.03em; color:#fff; margin:0 0 1rem;">Get in Touch</h2>
-    <p style="font-size:1.05rem; color:#a89c88; margin:0;">Questions about a ride, or interested in partnering with us? Reach out and we'll get back to you.</p>
+    <p style="font-size:1.05rem; color:#a89c88; margin:0;">Questions about a ride, or interested in partnering with us? Use the waitlist form above to tell us what you're interested in, and we'll be in touch.</p>
   </div>
 
   <div data-contact-grid="" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
     <div style="background:rgba(232,183,78,0.05); border:0.5px solid rgba(255,255,255,.1); border-radius:14px; padding:2.5rem;">
       <h3 style="font-family:'Syne',sans-serif; font-weight:700; font-size:1.15rem; color:#fff; margin:0 0 .6rem;">Riders &amp; Customers</h3>
       <p style="color:#a89c88; font-size:.925rem; margin:0 0 1.5rem;">Waitlist questions, accessibility needs, or anything else.</p>
-      <a href="mailto:{{ contactEmail }}?subject=Customer%20Inquiry" style="display:inline-block; background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.75rem 1.8rem; border-radius:2rem; font-weight:600; font-size:.9rem; text-decoration:none;">Email Us</a>
-      <p style="margin:1.2rem 0 0; font-size:.875rem;"><a href="mailto:{{ contactEmail }}" style="color:#e8b74e; text-decoration:none;">{{ contactEmail }}</a></p>
+      <a href="#signup" style="display:inline-block; background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.75rem 1.8rem; border-radius:2rem; font-weight:600; font-size:.9rem; text-decoration:none;">Join the Waitlist</a>
+      <!-- TODO (Joseph): add the rider/customer email here once a business address exists, e.g. <a href="mailto:you@yourdomain">... -->
+      <p style="margin:1.2rem 0 0; font-size:.8rem; color:#a89c88;">A direct email address is coming soon.</p>
     </div>
 
     <div style="background:rgba(232,183,78,0.05); border:0.5px solid rgba(255,255,255,.1); border-radius:14px; padding:2.5rem;">
       <h3 style="font-family:'Syne',sans-serif; font-weight:700; font-size:1.15rem; color:#fff; margin:0 0 .6rem;">Business &amp; Partners</h3>
       <p style="color:#a89c88; font-size:.925rem; margin:0 0 1.5rem;">Goods delivery, business accounts, venue pickup zones, and press.</p>
-      <a href="mailto:{{ partnersEmail }}?subject=Partnership%20Inquiry" style="display:inline-block; background:transparent; color:#e8e4dc; border:0.5px solid rgba(255,255,255,.2); padding:.75rem 1.8rem; border-radius:2rem; font-weight:500; font-size:.9rem; text-decoration:none;">Contact Partnerships</a>
-      <p style="margin:1.2rem 0 0; font-size:.875rem;"><a href="mailto:{{ partnersEmail }}" style="color:#e8b74e; text-decoration:none;">{{ partnersEmail }}</a></p>
+      <a href="#signup" style="display:inline-block; background:transparent; color:#e8e4dc; border:0.5px solid rgba(255,255,255,.2); padding:.75rem 1.8rem; border-radius:2rem; font-weight:500; font-size:.9rem; text-decoration:none;">Register Business Interest</a>
+      <!-- TODO (Joseph): add the business/partnerships email here once it exists. -->
+      <p style="margin:1.2rem 0 0; font-size:.8rem; color:#a89c88;">Choose “Business partnership” on the waitlist form.</p>
     </div>
   </div>
 
@@ -482,7 +491,7 @@
       <h2 style="font-family:'Syne',sans-serif; font-weight:600; font-size:.8rem; color:#fff; letter-spacing:.08em; text-transform:uppercase; margin:0 0 1rem;">Company</h2>
       <ul style="list-style:none; display:flex; flex-direction:column; gap:.6rem; margin:0; padding:0;">
                 <li><a href="#trust" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Safety</a></li>
-        <li><a href="mailto:{{ partnersEmail }}?subject=Press%20Inquiry" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Press</a></li>
+        <li><a href="#contact" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Press</a></li>
       </ul>
     </div>
     <div>
@@ -499,6 +508,9 @@
     <span>Northwest Arkansas <span aria-hidden="true">🌲</span></span>
     <span>*Coming soon.</span>
   </div>
+  <div style="max-width:1200px; margin:.75rem auto 0; font-size:.7rem; color:#8a806f;">
+    Share image: “<a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener" style="color:#a89c88;">Front of the Tesla Cybercab</a>” by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener" style="color:#a89c88;">CC BY 2.0</a>, cropped and resized.
+  </div>
 </footer>
 
 </x-dc>
@@ -511,6 +523,7 @@ class Component extends DCLogic {
   state = {
     mobileMenuOpen: false,
     waitlistEmail: '',
+    waitlistInterest: 'Rides',
     waitlistSubmitted: false,
     waitlistError: '',
     videoPlaying: true,
@@ -562,6 +575,7 @@ class Component extends DCLogic {
   toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
   closeMobileMenu = () => this.setState({ mobileMenuOpen: false });
 
+  handleInterestChange = (e) => this.setState({ waitlistInterest: e.target.value });
   handleEmailChange = (e) => this.setState({ waitlistEmail: e.target.value, waitlistError: '' });
 
   handleWaitlistSubmit = (e) => {
@@ -575,15 +589,15 @@ class Component extends DCLogic {
     try {
       const key = 'roboride_waitlist_emails';
       const existing = JSON.parse(localStorage.getItem(key) || '[]');
-      if (!existing.includes(email)) {
-        existing.push(email);
+      if (!existing.some(x => (x.email || x) === email)) {
+        existing.push({ email, interest: this.state.waitlistInterest });
         localStorage.setItem(key, JSON.stringify(existing));
       }
     } catch (err) {}
     // PLACEHOLDER (Joseph): set WAITLIST_ENDPOINT to a form service URL (e.g. Formspree) so signups actually reach you.
     const WAITLIST_ENDPOINT = '';
     if (WAITLIST_ENDPOINT) {
-      fetch(WAITLIST_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ email }) })
+      fetch(WAITLIST_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ email, interest: this.state.waitlistInterest }) })
         .then(r => { if (!r.ok) throw new Error(); this.setState({ waitlistSubmitted: true, waitlistError: '' }); })
         .catch(() => this.setState({ waitlistError: 'Something went wrong. Please try again or email us.' }));
       return;
@@ -670,15 +684,15 @@ class Component extends DCLogic {
       toggleMobileMenu: this.toggleMobileMenu,
       closeMobileMenu: this.closeMobileMenu,
       cities,
-      // PLACEHOLDER (Joseph): real contact addresses needed.
-      contactEmail: 'hello@nwaroboride.org',
-      partnersEmail: 'partners@nwaroboride.org',
+      // TODO (Joseph): no business emails yet. When you have them, add them in the Contact section
+      // (see the TODO comments there) and in the footer "Press" link.
       steps,
       pricingTiers,
       waitlistEmail: this.state.waitlistEmail,
       waitlistSubmitted: this.state.waitlistSubmitted,
       waitlistError: this.state.waitlistError,
       handleEmailChange: this.handleEmailChange,
+      handleInterestChange: this.handleInterestChange,
       handleWaitlistSubmit: this.handleWaitlistSubmit,
       resetWaitlist: this.resetWaitlist
     };
