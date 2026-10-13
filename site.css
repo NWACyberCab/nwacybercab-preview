@@ -100,3 +100,6 @@ details.q[open] summary{color:var(--gold)} details.q p{color:var(--muted);margin
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 [hidden]{display:none!important}
+
+.rr-planned{opacity:.62;transition:opacity .2s}.rr-live{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
+.map .pin:hover .rr-planned,.map .pin:focus-visible .rr-planned,.map .pin[aria-pressed="true"] .rr-planned{opacity:1}
