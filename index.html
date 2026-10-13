@@ -188,6 +188,19 @@
     </a>
   </div>
 
+  <!-- PROJECTED UNSUPERVISED MILES COUNTER (projection; config lives in the script: FSD_COUNTER) -->
+  <div id="fsd-counter" style="margin:2rem 0 0; padding:clamp(1.5rem,4vw,2.5rem); background:#121009; border:0.5px solid rgba(232,183,78,.25); border-radius:1rem; text-align:center;">
+    <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; font-weight:500;">Tesla Robotaxi fleet · projected unsupervised miles</div>
+    <div aria-hidden="true" data-fsd-miles="" style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.2rem,7vw,4.2rem); color:#fff; letter-spacing:-0.02em; line-height:1.1; margin:.6rem 0 .3rem; font-variant-numeric:tabular-nums;">{{ fsdMilesText }}</div>
+    <p class="sr-only">Projected total: about {{ fsdMilesRounded }} unsupervised miles.</p>
+    <div style="display:inline-block; background:rgba(232,138,78,.12); border:0.5px solid rgba(232,138,78,.4); color:#f2b48a; border-radius:2rem; padding:.25rem .9rem; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600;">Projection, not official Tesla data</div>
+    <sc-if value="{{ fsdCapped }}" hint-placeholder-val="{{ false }}">
+      <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run {{ fsdMaxWeeks }} weeks past the last official figure and needs a new baseline.</p>
+    </sc-if>
+    <p style="font-size:.82rem; color:#a89c88; max-width:680px; margin:1rem auto 0; line-height:1.65;"><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume the {{ fsdGrowthText }} week-over-week growth Tesla described on its Q2 2026 earnings call continues: miles = base × (1 + growth)<sup>weeks since base</sup>. For comparison, Tesla's two stated totals (380,000 miles on July 22 and 1,000,000 on Sept 3, 2026) work out to about 17–18% a week over those six weeks, so real growth may be faster or slower. Treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
+    <p style="font-size:.75rem; color:#8a806f; margin:.8rem 0 0;">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · "more than 10% a week" growth in miles driven, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
+  </div>
+
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; margin-top:3rem; text-align:center;">
     <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem 1.5rem;">
       <div style="width:52px; height:52px; background:rgba(232,183,78,.1); border:0.5px solid rgba(255,255,255,.08); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8b74e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div>
@@ -545,6 +558,24 @@
   &quot;heroTweetUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://x.com/robotaxi/status/2075766457242415386?s=20&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero media&quot;},
   &quot;heroYouTubeId&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;OtjEkdi6p_s&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero media&quot;}
 }">
+// ===== FSD miles counter config (edit these three lines to re-baseline) =====
+// BASE_MILES / BASE_DATE: last official cumulative unsupervised-miles figure Tesla stated, and when.
+// WEEKLY_GROWTH: assumed week-over-week growth (0.10 = 10%). MAX_WEEKS: stop projecting after this many
+// weeks past BASE_DATE (the number compounds fast); the counter then freezes and asks for a new baseline.
+const FSD_COUNTER = {
+  BASE_MILES: 1000000,                      // Ashok Elluswamy, Tesla Cybercab event, Austin
+  BASE_DATE: '2026-09-03T19:00:00-05:00',   // Sept 3, 2026 (evening event; exact time approximate)
+  WEEKLY_GROWTH: 0.10,                      // "more than 10% a week", Q2 2026 call (July 22, 2026)
+  MAX_WEEKS: 16
+};
+// ===========================================================================
+function fsdProjection(now) {
+  const c = FSD_COUNTER, WEEK = 7 * 24 * 3600 * 1000;
+  const raw = Math.max(0, (now - Date.parse(c.BASE_DATE)) / WEEK);
+  const weeks = Math.min(raw, c.MAX_WEEKS);
+  return { miles: c.BASE_MILES * Math.pow(1 + c.WEEKLY_GROWTH, weeks), capped: raw > c.MAX_WEEKS };
+}
+
 class Component extends DCLogic {
   state = {
     mobileMenuOpen: false,
@@ -560,6 +591,15 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this._loadTweet();
+    // Tick the projected-miles counter smoothly (direct DOM write ~10x/second; no re-render needed).
+    const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const tick = () => {
+      const el = document.querySelector('[data-fsd-miles]');
+      if (el) el.textContent = fmt.format(fsdProjection(Date.now()).miles);
+    };
+    tick();
+    this._fsdTimer = setInterval(tick, reduce ? 5000 : 100);
     this._onKey = (e) => { if (e.key === 'Escape' && this.state.mobileMenuOpen) this.closeMobileMenu(); };
     document.addEventListener('keydown', this._onKey);
 
@@ -588,6 +628,7 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._onKey);
+    clearInterval(this._fsdTimer);
     document.body.style.overflow = '';
   }
 
@@ -648,7 +689,6 @@ class Component extends DCLogic {
   };
 
   renderVals() {
-    // Approximate positions derived from real lat/long of each city, projected into the 300x300 viewBox
     // Positions projected from real lat/long (equirectangular, cos(lat) corrected) into the 300x300 viewBox,
     // keeping true relative distances. Set active: true when a city goes live (also update its dot in the map SVG above).
     const rawCities = [
@@ -715,6 +755,19 @@ class Component extends DCLogic {
       toggleMobileMenu: this.toggleMobileMenu,
       closeMobileMenu: this.closeMobileMenu,
       cities,
+      ...(() => {
+        const pr = fsdProjection(Date.now());
+        const nf = new Intl.NumberFormat('en-US');
+        return {
+          fsdMilesText: new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(pr.miles),
+          fsdMilesRounded: nf.format(Math.round(pr.miles / 1000) * 1000),
+          fsdCapped: pr.capped,
+          fsdMaxWeeks: FSD_COUNTER.MAX_WEEKS,
+          fsdBaseText: nf.format(FSD_COUNTER.BASE_MILES),
+          fsdBaseDateText: new Date(FSD_COUNTER.BASE_DATE).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' }),
+          fsdGrowthText: Math.round(FSD_COUNTER.WEEKLY_GROWTH * 100) + '%'
+        };
+      })(),
       // TODO (Joseph): no business emails yet. When you have them, add them in the Contact section
       // (see the TODO comments there).
       steps,
