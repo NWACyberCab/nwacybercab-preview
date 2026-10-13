@@ -58,14 +58,30 @@
   @keyframes scrollLine { 0% { opacity: 0; transform: scaleY(0); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; } }
   /* Responsive nav: CSS-driven so it keys off the real rendered width, not JS */
   [data-nav-mobile] { display: none; }
+  [data-nav-desktop] a { white-space: nowrap; }
+  @media (max-width: 1280px) { [data-nav-desktop] { gap: 1.4rem !important; } }
   [data-mobile-overlay] { display: none; }
   [data-safety-mobile] { display: none; }
   [data-hero-photo-fallback] { display: none; }
+  /* Desktop: text left, portrait video right */
+  @media (min-width: 1024px) {
+    [data-hero] { display:grid !important; grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); grid-auto-rows:auto; align-content:center; align-items:center; column-gap:clamp(2rem,5vw,5rem); text-align:left !important; padding-left:max(3rem, calc((100vw - 1240px) / 2)) !important; padding-right:max(3rem, calc((100vw - 1240px) / 2)) !important; }
+    [data-hero] > * { grid-column:1; }
+    [data-hero] > [data-hero-video-wrap], [data-hero] > [data-hero-photo-fallback] { grid-column:2; grid-row:1 / span 4; justify-self:center; }
+    [data-hero] > [data-hero-photo-fallback] { width:100% !important; }
+    [data-hero] h1 { font-size:clamp(2.8rem,4.3vw,4.6rem) !important; }
+    [data-hero] > p { margin-left:0 !important; }
+    [data-hero] > div:not([data-hero-video-wrap]):not([data-hero-photo-fallback]):not([data-hero-scroll]):not([data-hero-ctas]) { justify-self:start; }
+    [data-hero-ctas] { justify-content:flex-start !important; margin-bottom:0 !important; }
+    [data-hero-scroll] { display:none !important; }
+  }
   @media (prefers-reduced-motion: reduce) { [data-hero-video-wrap] { display: none !important; } [data-hero-photo-fallback] { display: block !important; } }
-  @media (max-width: 900px) {
+  @media (max-width: 1180px) {
     [data-nav-desktop] { display: none !important; }
     [data-nav-mobile] { display: flex !important; }
     [data-mobile-overlay].is-open { display: flex !important; }
+  }
+  @media (max-width: 900px) {
     [data-safety-chart] { display: none !important; }
     [data-safety-mobile] { display: flex !important; }
     [data-contact-grid] { grid-template-columns: 1fr !important; }
@@ -107,6 +123,8 @@
     <a href="#services" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Services</a>
     <a href="#coverage" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Coverage</a>
     <a href="#pricing" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Pricing</a>
+    <a href="#why-nwa" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Why NWA</a>
+    <a href="#updates" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">News</a>
     <a href="#faq" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">FAQ</a>
     <a href="#contact" onclick="{{ closeMobileMenu }}" style="color:#e8e4dc; text-decoration:none; font-size:1.3rem; font-family:'Syne',sans-serif; font-weight:600;">Contact</a>
     <a href="#signup" onclick="{{ closeMobileMenu }}" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; padding:.8rem 2rem; border-radius:2rem; font-weight:700; font-size:1.1rem; text-decoration:none; margin-top:.5rem;">Join Waitlist</a>
@@ -117,7 +135,7 @@
 
 <main id="main">
 <!-- HERO -->
-<div style="min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(6rem,14vw,9rem) clamp(1.25rem,5vw,2rem) 2.5rem; position:relative; overflow:hidden;">
+<div data-hero="" style="min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(6rem,14vw,9rem) clamp(1.25rem,5vw,2rem) 2.5rem; position:relative; overflow:hidden;">
   <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(232,183,78,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(232,183,78,0.035) 1px, transparent 1px); background-size:60px 60px; mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);"></div>
   <div style="position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, rgba(232,183,78,0.09) 0%, transparent 70%); top:38%; left:50%; transform:translate(-50%,-50%); pointer-events:none;"></div>
 
@@ -130,7 +148,7 @@
 
   <p style="position:relative; font-size:clamp(1rem,2vw,1.2rem); color:#a89c88; max-width:540px; margin:0 auto 2.5rem; font-weight:300; animation:fadeUp .8s .2s ease both;">RoboRide LLC is getting ready to run a fleet of autonomous Tesla Cybercabs across Bentonville, Rogers, Springdale, Fayetteville, and beyond, moving both people and packages. No driver, no hassle.</p>
 
-  <div style="position:relative; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s .3s ease both; margin-bottom:3rem;">
+  <div data-hero-ctas="" style="position:relative; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s .3s ease both; margin-bottom:3rem;">
     <a href="#signup" style="background:linear-gradient(135deg,#e8b74e,#c98f2b); color:#1a1206; border:none; padding:.85rem 2.2rem; border-radius:2rem; font-weight:600; font-size:.95rem; text-decoration:none; display:inline-block;">Join the Waitlist</a>
     <a href="#delivery" style="background:transparent; color:#e8e4dc; border:0.5px solid rgba(255,255,255,.2); padding:.85rem 2.2rem; border-radius:2rem; font-weight:400; font-size:.95rem; text-decoration:none; display:inline-block;">Delivery for Businesses</a>
   </div>
@@ -174,7 +192,7 @@
     </div>
   </sc-if>
 
-  <div aria-hidden="true" style="position:relative; display:flex; flex-direction:column; align-items:center; gap:.5rem; color:#a89c88; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; margin-top:2.5rem; animation:fadeUp 1s .8s ease both;">
+  <div data-hero-scroll="" aria-hidden="true" style="position:relative; display:flex; flex-direction:column; align-items:center; gap:.5rem; color:#a89c88; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; margin-top:2.5rem; animation:fadeUp 1s .8s ease both;">
     <div style="width:1px; height:40px; background:linear-gradient(to bottom, rgba(232,183,78,.7), transparent); animation:scrollLine 1.5s ease-in-out infinite;"></div>
     Scroll
   </div>
@@ -250,8 +268,8 @@
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:3rem; align-items:center;">
     <div>
       <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">How It Works</div>
-      <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">Ride in three<br><em style="font-style:normal; color:#e8b74e;">simple steps.</em></h2>
-      <p style="color:#a89c88; font-size:1.05rem; max-width:560px; line-height:1.75; margin:0;">RoboRide aims to make getting around NWA effortless: request a Cybercab, hop in, and go. No driver means no small talk and no tip.</p>
+      <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">How it will<br><em style="font-style:normal; color:#e8b74e;">work.</em></h2>
+      <p style="color:#a89c88; font-size:1.05rem; max-width:560px; line-height:1.75; margin:0;">RoboRide aims to make getting around NWA effortless: request a Cybercab, hop in, and go. No driver means no small talk and no tip. Booking details will be shared before launch.</p>
 
       <div style="display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem;">
         <sc-for list="{{ steps }}" as="step" hint-placeholder-count="3">
@@ -342,6 +360,33 @@
   </div>
 </section>
 
+<!-- WHY NWA -->
+<section id="why-nwa" data-screen-label="Why NWA" style="padding:6rem clamp(1.25rem,4vw,3.5rem); max-width:1200px; margin:0 auto;">
+  <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Why Northwest Arkansas</div>
+  <h2 style="font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 1.25rem;">A region that's<br><em style="font-style:normal; color:#e8b74e;">on the move.</em></h2>
+  <p style="color:#a89c88; font-size:1.05rem; max-width:620px; line-height:1.75; margin:0;">NWA is growing fast, flying more, and home to the state's flagship university. That means more trips between home, work, campus, and the airport, and more goods moving across the region.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; margin-top:2.5rem;">
+    <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:700; color:#e8b74e; line-height:1.1;">622,177</div>
+      <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1rem; color:#fff; margin:.5rem 0 .5rem;">Metro residents (July 1, 2025)</h3>
+      <p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0 0 .9rem;">The Fayetteville-Springdale-Rogers metro grew 2.4% in a year, the 9th-fastest growth rate of any U.S. metro, per U.S. Census Bureau estimates.</p>
+      <p style="font-size:.72rem; color:#8a806f; margin:0;">Source: <a href="https://talkbusiness.net/2026/04/northwest-arkansas-ranks-9th-fastest-growing-u-s-metro-first-time-in-top-10-since-at-least-2020/" target="_blank" rel="noopener" style="color:#a89c88;">Talk Business &amp; Politics</a> · <a href="https://fred.stlouisfed.org/series/FASPOP" target="_blank" rel="noopener" style="color:#a89c88;">FRED / U.S. Census Bureau</a></p>
+    </div>
+    <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:700; color:#e8b74e; line-height:1.1;">1.26M</div>
+      <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1rem; color:#fff; margin:.5rem 0 .5rem;">XNA passengers boarded in 2025</h3>
+      <p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0 0 .9rem;">Northwest Arkansas National Airport set a record with 1,263,634 enplanements in 2025, up 10.4% from 2024.</p>
+      <p style="font-size:.72rem; color:#8a806f; margin:0;">Source: <a href="https://www.flyxna.com/airport-traffic-stats" target="_blank" rel="noopener" style="color:#a89c88;">XNA traffic stats</a> · <a href="https://talkbusiness.net/2026/01/xna-surpasses-clinton-national-in-enplanements-years-sooner-than-expected/" target="_blank" rel="noopener" style="color:#a89c88;">Talk Business &amp; Politics</a></p>
+    </div>
+    <div style="background:#15120c; border:0.5px solid rgba(255,255,255,.08); border-radius:1rem; padding:2rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:700; color:#e8b74e; line-height:1.1;">~34,000</div>
+      <h3 style="font-family:'Syne',sans-serif; font-weight:600; font-size:1rem; color:#fff; margin:.5rem 0 .5rem;">University of Arkansas students</h3>
+      <p style="font-size:.875rem; color:#a89c88; line-height:1.65; margin:0 0 .9rem;">Preliminary fall 2026 enrollment at the U of A in Fayetteville is about 34,000, with a record incoming class of more than 7,100.</p>
+      <p style="font-size:.72rem; color:#8a806f; margin:0;">Source: <a href="https://news.uark.edu/articles/82837/incoming-class-sets-records-for-size-and-grade-point-average" target="_blank" rel="noopener" style="color:#a89c88;">University of Arkansas News</a> · <a href="https://fayettevilleflyer.com/2026/09/11/university-of-arkansas-records-highest-freshman-class-in-history/" target="_blank" rel="noopener" style="color:#a89c88;">Fayetteville Flyer</a></p>
+    </div>
+  </div>
+</section>
+
 <!-- NWA COVERAGE MAP -->
 <div id="coverage" data-screen-label="Coverage map" style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); border-bottom:0.5px solid rgba(255,255,255,.08); padding:6rem 0;">
   <div style="max-width:1200px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3.5rem); display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:3.5rem; align-items:center;">
@@ -427,6 +472,19 @@
   </div>
 
   
+</section>
+
+<!-- LATEST UPDATES (industry news; update manually) -->
+<section id="updates" data-screen-label="Updates" style="padding:0 clamp(1.25rem,4vw,3.5rem) 6rem; max-width:900px; margin:0 auto;">
+  <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Latest updates</div>
+  <h2 style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 .75rem;">Cybercab &amp; Robotaxi <em style="font-style:normal; color:#e8b74e;">news.</em></h2>
+  <p style="color:#a89c88; font-size:.9rem; margin:0 0 1.5rem;">Industry news from independent reporting, as of October 13, 2026. These are Tesla developments, not RoboRide announcements; RoboRide is not affiliated with Tesla.</p>
+  <ul style="list-style:none; margin:0; padding:0; border-bottom:0.5px solid rgba(255,255,255,.08);">
+      <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Oct 10, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">Tesla says 300+ Cybercabs are serving Austin, and its AI lead says Dallas is next (“Dallas soon,” no date given). <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a> · <a href="https://dallas.culturemap.com/news/innovation/tesla-driverless-cybercabs-dallas/" target="_blank" rel="noopener">CultureMap Dallas</a>)</span></span></li>
+      <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Oct 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">NHTSA is reviewing how Tesla certified the Cybercab to federal safety standards; Tesla's sworn answers are due Oct 30. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a> · <a href="https://teslanorth.com/2026/10/09/texas-cybercab-registry/" target="_blank" rel="noopener">TeslaNorth</a>)</span></span></li>
+      <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Sept 3–4, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">At its Austin Cybercab event Tesla announced 1 million unsupervised Robotaxi miles; public Cybercab rides in Austin opened the next day. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a> · <a href="https://www.allthings-elon.com/articles/tesla-robotaxi-1-million-unsupervised-miles-2026-09-04" target="_blank" rel="noopener">All Things Elon</a>)</span></span></li>
+      <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">July 22, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">On its Q2 call Tesla reported 380,000+ unsupervised Robotaxi miles across six cities in Texas and Florida. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>)</span></span></li>
+  </ul>
 </section>
 
 <!-- FAQ -->
@@ -530,6 +588,7 @@
 </main>
 
 <!-- FOOTER -->
+<!-- TODO (Joseph): social links. Add real profile URLs and remove the "hidden" attribute on the <ul data-social> in the footer. -->
 <footer style="background:#121009; border-top:0.5px solid rgba(255,255,255,.08); padding:3rem clamp(1.25rem,4vw,3.5rem) 2rem;">
   <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:3rem; margin-bottom:3rem;">
     <div>
@@ -556,6 +615,7 @@
       <h2 style="font-family:'Syne',sans-serif; font-weight:600; font-size:.8rem; color:#fff; letter-spacing:.08em; text-transform:uppercase; margin:0 0 1rem;">Support</h2>
       <ul style="list-style:none; display:flex; flex-direction:column; gap:.6rem; margin:0; padding:0;">
         <li><a href="#contact" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Contact</a></li>
+        <li><a href="#updates" style="color:#a89c88; text-decoration:none; font-size:.875rem;">News</a></li>
         <li><a href="#signup" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Join the Waitlist</a></li>
         <li><a href="privacy.html" style="color:#a89c88; text-decoration:none; font-size:.875rem;">Privacy Policy</a></li>
         <li><span style="color:#a89c88; font-size:.875rem;">Terms*</span></li>
@@ -566,6 +626,7 @@
     <span>© 2026 RoboRide LLC. All rights reserved. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span>
     <span>Northwest Arkansas <span aria-hidden="true">🌲</span></span>
     <span>*Coming soon.</span>
+    <ul data-social="" hidden="" aria-label="RoboRide on social media" style="list-style:none; display:flex; gap:1rem; margin:0; padding:0;"><li><a href="#" rel="me noopener">X</a></li><li><a href="#" rel="me noopener">Instagram</a></li><li><a href="#" rel="me noopener">Facebook</a></li></ul>
   </div>
   <div style="max-width:1200px; margin:.75rem auto 0; font-size:.7rem; color:#8a806f;">
     Cybercab photo (hero &amp; share image): “<a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener" style="color:#a89c88;">Front of the Tesla Cybercab</a>” by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener" style="color:#a89c88;">CC BY 2.0</a>, cropped and resized. Used for illustration; RoboRide is not affiliated with Tesla, Inc.
