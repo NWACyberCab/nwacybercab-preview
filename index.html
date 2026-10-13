@@ -592,11 +592,11 @@ class Component extends DCLogic {
   componentDidMount() {
     this._loadTweet();
     // Tick the projected-miles counter smoothly (direct DOM write ~10x/second; no re-render needed).
-    const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const tick = () => {
       const el = document.querySelector('[data-fsd-miles]');
-      if (el) el.textContent = fmt.format(fsdProjection(Date.now()).miles);
+      if (el) el.textContent = fmt.format(Math.floor(fsdProjection(Date.now()).miles));
     };
     tick();
     this._fsdTimer = setInterval(tick, reduce ? 5000 : 100);
@@ -759,7 +759,7 @@ class Component extends DCLogic {
         const pr = fsdProjection(Date.now());
         const nf = new Intl.NumberFormat('en-US');
         return {
-          fsdMilesText: new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(pr.miles),
+          fsdMilesText: new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.floor(pr.miles)),
           fsdMilesRounded: nf.format(Math.round(pr.miles / 1000) * 1000),
           fsdCapped: pr.capped,
           fsdMaxWeeks: FSD_COUNTER.MAX_WEEKS,
