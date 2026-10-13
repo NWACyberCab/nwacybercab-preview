@@ -30,7 +30,12 @@ def page(slug, title, desc, body, extra_head=""):
 <meta property="og:url" content="{SITE}{slug}.html">
 <meta property="og:image" content="{SITE}image/og-cybercab.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/jpeg" href="image/favicon.jpg">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0a0806">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="{FONTS}">
@@ -41,7 +46,7 @@ def page(slug, title, desc, body, extra_head=""):
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <a class="logo" href="index.html" aria-label="RoboRide home">Robo<span>Ride</span></a>
+  <a class="logo" href="index.html" aria-label="RoboRide home"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></a>
   <nav id="site-nav" class="nav" aria-label="Primary">
     <ul>
 {nav}
@@ -59,7 +64,7 @@ def page(slug, title, desc, body, extra_head=""):
   <div class="wrap">
     <div class="cols">
       <div>
-        <a class="logo" href="index.html">Robo<span>Ride</span></a>
+        <a class="logo" href="index.html"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></a>
         <p class="muted small" style="max-width:280px">RoboRide LLC is preparing to offer autonomous Tesla Cybercab rides and goods delivery across Northwest Arkansas. Not affiliated with Tesla, Inc.</p>
       </div>
       <div><h2>Riders</h2><ul><li><a href="index.html#how">How it will work</a></li><li><a href="service-area.html">Service area</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#signup">Join the waitlist</a></li></ul></div>
@@ -261,7 +266,7 @@ page("about", "About & Mission", "RoboRide LLC is a Northwest Arkansas company p
 <section class="page-hero"><div class="wrap">
   <div class="eyebrow">About RoboRide</div>
   <h1>Built in NWA,<br><em class="hl">for NWA.</em></h1>
-  <p class="lead">RoboRide LLC is an independent Northwest Arkansas company preparing to operate a fleet of autonomous Tesla Cybercabs for rides and goods delivery. We aren't operating yet; this page explains what we're building and how we plan to get there.</p>
+  <p class="lead">RoboRide LLC is an independent Northwest Arkansas company preparing to operate a fleet of autonomous Tesla Cybercabs for rides and goods delivery. We aren't operating yet; this page explains what we're building and how we plan to get there. Founded June 8, 2026.</p>
 </div></section>
 
 <section class="section alt"><div class="wrap">
@@ -324,7 +329,7 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
     <li><strong>Services (planned):</strong> autonomous rides; goods and package delivery</li>
     <li><strong>Planned service area:</strong> Bentonville, Rogers, Springdale, Fayetteville, Farmington, Siloam Springs, Eureka Springs</li>
     <li><strong>Status:</strong> pre-launch; waitlist open</li>
-    <li><strong>Founded:</strong> <span class="todo">[TODO: year/date]</span></li>
+    <li><strong>Founded:</strong> June 8, 2026</li>
   </ul>
 </div></section>
 
@@ -332,9 +337,11 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
   <div class="eyebrow">Assets</div>
   <h2>Logos &amp; <em class="hl">images.</em></h2>
   <div class="grid" style="margin-top:1.5rem">
-    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:2rem;text-align:center;margin-bottom:1rem"><span class="logo" style="font-size:2rem">Robo<span>Ride</span></span></div><h3>Wordmark</h3><p>Set in Syne ExtraBold; "Robo" in white, "Ride" in gold #E8B74E on dark #0A0806. <span class="todo">[TODO: provide an official logo file (SVG/PNG).]</span></p></div>
+    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-logo-white.svg" width="96" height="96" alt="RoboRide logo, white" loading="lazy"></div><h3>Logo (white)</h3><p>For dark backgrounds. <a href="image/brand/roboride-logo-white.svg" download>SVG</a> · <a href="image/brand/roboride-logo-white-1024.png" download>PNG 1024</a></p></div>
+    <div class="card"><div style="background:#f4efe6;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-logo-dark.svg" width="96" height="96" alt="RoboRide logo, dark" loading="lazy"></div><h3>Logo (dark)</h3><p>For light backgrounds. <a href="image/brand/roboride-logo-dark.svg" download>SVG</a> · <a href="image/brand/roboride-logo-dark-1024.png" download>PNG 1024</a></p></div>
+    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-icon.svg" width="96" height="96" alt="RoboRide app icon" loading="lazy" style="border-radius:.6rem"></div><h3>App icon</h3><p>Square, on dark. <a href="image/brand/roboride-icon.svg" download>SVG</a> · <a href="image/brand/roboride-icon-1024.png" download>PNG 1024</a></p></div>
+    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><span class="logo" style="font-size:2rem"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></span></div><h3>Wordmark</h3><p>Set in Syne ExtraBold; "Robo" in white, "Ride" in gold #E8B74E on dark #0A0806, with the logo to the left.</p></div>
     <div class="card"><picture><source type="image/webp" srcset="image/founder-joseph-400.webp"><img src="image/founder-joseph-400.jpg" alt="Joseph Bowers, founder of RoboRide LLC" width="400" height="500" loading="lazy" decoding="async" style="width:120px;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem"></picture><h3>Founder headshot</h3><p>Joseph Bowers. <a href="image/founder-joseph-800.jpg" download>Download JPG (800×1000)</a></p></div>
-    <div class="card"><img src="image/favicon.jpg" alt="RoboRide icon" width="96" height="96" style="border-radius:.6rem;display:block;margin-bottom:1rem" loading="lazy"><h3>App icon</h3><p><a href="image/favicon.jpg" download>Download JPG</a></p></div>
     <div class="card"><img src="image/hero-cybercab-960.jpg" alt="Front view of a Tesla Cybercab with doors raised" width="960" height="540" style="width:100%;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem" loading="lazy"><h3>Cybercab photo</h3><p>"Front of the Tesla Cybercab" by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>; credit required. <a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener">Original</a></p></div>
   </div>
   <p class="tiny" style="margin-top:1.25rem">Brand colors: gold #E8B74E · deep gold #C98F2B · background #0A0806 · text #E8E4DC. Tesla and Cybercab are trademarks of Tesla, Inc.</p>
