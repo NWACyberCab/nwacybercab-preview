@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RoboRide LLC | Autonomous Cybercab Rides &amp; Delivery in Northwest Arkansas</title>
+<meta name="robots" content="noindex, nofollow">
 <meta name="description" content="RoboRide LLC is preparing to operate autonomous Tesla Cybercabs for rides and goods delivery across Northwest Arkansas: Bentonville, Rogers, Springdale, Fayetteville and beyond. Join the waitlist.">
 <meta name="theme-color" content="#0a0806">
 <link rel="canonical" href="https://www.nwaroboride.org/">
@@ -777,7 +777,16 @@ class Component extends DCLogic {
     if (hv) {
       hv.addEventListener('play', () => this.setState({ heroVideoPlaying: true }));
       hv.addEventListener('pause', () => this.setState({ heroVideoPlaying: false }));
-      if (!reducedMotion) { hv.muted = true; const p = hv.play(); if (p && p.catch) p.catch(() => {}); }
+      // Set as properties: React-style rendering can drop the boolean attributes, and iOS Safari needs them as properties.
+      hv.loop = true; hv.muted = true; hv.defaultMuted = true; hv.playsInline = true; hv.autoplay = !reducedMotion;
+      hv.setAttribute('playsinline', ''); hv.setAttribute('webkit-playsinline', '');
+      this._heroUserPaused = false;
+      // Fallback for browsers that ignore loop: restart at the end unless the visitor paused it.
+      hv.addEventListener('ended', () => {
+        if (this._heroUserPaused || reducedMotion) return;
+        hv.currentTime = 0; const p = hv.play(); if (p && p.catch) p.catch(() => {});
+      });
+      if (!reducedMotion) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); }
     }
     // Tick the projected-miles counter smoothly (direct DOM write ~10x/second; no re-render needed).
     const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -896,7 +905,7 @@ class Component extends DCLogic {
   toggleHeroVideo = () => {
     const v = document.querySelector('[data-hero-video]');
     if (!v) return;
-    if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+    if (v.paused || v.ended) { this._heroUserPaused = false; v.loop = true; if (v.ended) v.currentTime = 0; const p = v.play(); if (p && p.catch) p.catch(() => {}); } else { this._heroUserPaused = true; v.pause(); }
   };
 
   handleInterestChange = (e) => this.setState({ waitlistInterest: e.target.value });
