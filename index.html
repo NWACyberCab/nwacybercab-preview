@@ -69,6 +69,28 @@
   @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   @keyframes spinRev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
   @keyframes scrollLine { 0% { opacity: 0; transform: scaleY(0); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; } }
+  /* FSD counter (ported from the redesign) */
+  [data-fsd-card] { position:relative; margin:2.5rem 0 0; padding:clamp(1.5rem,5vw,3rem); border-radius:1.5rem; border:0.5px solid rgba(232,183,78,.3); background:radial-gradient(ellipse at 0% 0%, rgba(232,183,78,.14), transparent 55%), linear-gradient(160deg,#121009,#0a0806); overflow:hidden; text-align:left; }
+  [data-fsd-lbl] { font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; color:#e8b74e; font-weight:600; }
+  [data-fsd-miles] { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.1rem,10vw,6.2rem); letter-spacing:-.04em; line-height:1; color:#fff; margin:.8rem 0 .7rem; font-variant-numeric:tabular-nums; text-shadow:0 0 50px rgba(232,183,78,.35); white-space:nowrap; }
+  [data-fsd-proj] { display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:#f2b48a; border:0.5px solid rgba(232,138,78,.5); background:rgba(232,138,78,.08); padding:.3rem .8rem; border-radius:999px; }
+  [data-fsd-details] { margin-top:1.4rem; border-top:0.5px solid rgba(255,255,255,.08); padding-top:.4rem; }
+  [data-fsd-details] summary { cursor:pointer; color:#e8e4dc; font-weight:500; min-height:44px; display:flex; align-items:center; gap:.5rem; list-style:none; }
+  [data-fsd-details] summary::-webkit-details-marker { display:none; }
+  [data-fsd-details] summary::before { content:"+"; display:inline-flex; width:1.5rem; height:1.5rem; align-items:center; justify-content:center; border-radius:50%; border:0.5px solid rgba(232,183,78,.5); color:#e8b74e; font-weight:700; }
+  [data-fsd-details][open] summary::before { content:"–"; }
+  [data-fsd-details] summary:focus-visible { outline:2px solid #e8b74e; outline-offset:3px; border-radius:.4rem; }
+  [data-fsd-details] p { font-size:.85rem; color:#a89c88; line-height:1.65; margin:.6rem 0 0; max-width:760px; }
+  [data-fsd-details] p[data-fsd-src] { font-size:.78rem; color:#8a806f; }
+  /* Hero video: 3D tilting frame (ported from the redesign). Flat frame on touch/small screens; reduced motion shows the photo. */
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  [data-hero-video-wrap] { padding:7px; background:linear-gradient(150deg, rgba(246,213,140,.8), rgba(232,183,78,.12) 40%, rgba(232,183,78,.4)) !important; border:0 !important; border-radius:22px !important; box-shadow:0 30px 70px -25px rgba(0,0,0,.85), 0 0 90px -30px rgba(232,183,78,.5); overflow:visible !important; }
+  [data-hero-video-wrap] > video { inset:7px !important; width:calc(100% - 14px) !important; height:calc(100% - 14px) !important; border-radius:16px; background:#111; }
+  [data-hero-video-wrap]::after { content:""; position:absolute; inset:7px; border-radius:16px; background:linear-gradient(120deg, rgba(255,255,255,.16), transparent 32%); pointer-events:none; z-index:1; }
+  [data-hero-video-wrap] > button { z-index:2; bottom:19px !important; right:19px !important; }
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    [data-hero-video-wrap] { animation-name:fadeIn !important; transform:perspective(1200px) rotateY(var(--tilt-y,-12deg)) rotateX(var(--tilt-x,5deg)); transition:transform .25s ease-out; will-change:transform; }
+  }
   /* Responsive nav: CSS-driven so it keys off the real rendered width, not JS */
   [data-nav-mobile] { display: none; }
   [data-nav-desktop] a { white-space: nowrap; }
@@ -252,16 +274,19 @@
   <p style="margin:1.5rem 0 0;"><a href="safety.html" style="font-weight:500;">How autonomous vehicles are regulated in Arkansas →</a></p>
 
   <!-- PROJECTED UNSUPERVISED MILES COUNTER (projection; config lives in the script: FSD_COUNTER) -->
-  <div id="fsd-counter" style="margin:2rem 0 0; padding:clamp(1.5rem,4vw,2.5rem); background:#121009; border:0.5px solid rgba(232,183,78,.25); border-radius:1rem; text-align:center;">
-    <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; font-weight:500;">Tesla Robotaxi fleet · projected unsupervised miles</div>
-    <div aria-hidden="true" data-fsd-miles="" style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.2rem,7vw,4.2rem); color:#fff; letter-spacing:-0.02em; line-height:1.1; margin:.6rem 0 .3rem; font-variant-numeric:tabular-nums;">{{ fsdMilesText }}</div>
+  <div id="fsd-counter" data-fsd-card="">
+    <div data-fsd-lbl="">Tesla Robotaxi fleet · projected unsupervised miles</div>
+    <div aria-hidden="true" data-fsd-miles="">{{ fsdMilesText }}</div>
     <p class="sr-only">Projected total: about {{ fsdMilesRounded }} unsupervised miles.</p>
-    <div style="display:inline-block; background:rgba(232,138,78,.12); border:0.5px solid rgba(232,138,78,.4); color:#f2b48a; border-radius:2rem; padding:.25rem .9rem; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600;">Projection, not official Tesla data</div>
+    <span data-fsd-proj="">Projection, not official Tesla data</span>
     <sc-if value="{{ fsdCapped }}" hint-placeholder-val="{{ false }}">
       <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run {{ fsdMaxWeeks }} weeks past the last official figure and needs a new baseline.</p>
     </sc-if>
-    <p style="font-size:.82rem; color:#a89c88; max-width:680px; margin:1rem auto 0; line-height:1.65;"><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume growth of {{ fsdGrowthText }} a week continues: miles = base × (1 + growth)<sup>weeks since base</sup>. That rate is our own calculation, not a figure Tesla stated. It's the average weekly growth between Tesla's two announced totals: 380,000 miles on July 22 and 1,000,000 on Sept 3, 2026. (On its Q2 call Tesla described weekly mileage growth of "more than 10% a week.") Real growth may be faster or slower, so treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
-    <p style="font-size:.75rem; color:#8a806f; margin:.8rem 0 0;">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total and "more than 10% a week" remark, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
+    <details data-fsd-details="">
+      <summary>How this number is calculated</summary>
+      <p><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume growth of {{ fsdGrowthText }} a week continues: miles = base × (1 + growth)<sup>weeks since base</sup>. That rate is our own calculation, not a figure Tesla stated. It's the average weekly growth between Tesla's two announced totals: 380,000 miles on July 22 and 1,000,000 on Sept 3, 2026. (On its Q2 call Tesla described weekly mileage growth of "more than 10% a week.") Real growth may be faster or slower, so treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
+      <p data-fsd-src="">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total and "more than 10% a week" remark, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
+    </details>
   </div>
 
   <div data-trust-cards="" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:1.5rem; margin-top:3rem; text-align:center;">
@@ -428,7 +453,7 @@
         </sc-for>
       </div>
       <p style="font-size:.75rem; color:#a89c88; margin-top:.75rem;">* Coming soon. No cities are live yet.</p>
-      <p style="margin-top:1.25rem;"><a href="service-area.html" style="font-weight:500;">Explore the service area →</a></p>
+      <p style="margin-top:1.25rem;"><a href="service-area.html" style="font-weight:500;">Explore the service area →</a> <span aria-hidden="true" style="color:#5a5246">·</span> <a href="service-area.html#route" style="font-weight:500;">Try the route visualizer →</a></p>
     </div>
 
     <div role="img" aria-label="Map of the planned RoboRide service area in Northwest Arkansas: Siloam Springs in the west, Eureka Springs in the east, and Bentonville, Rogers, Springdale, Fayetteville and Farmington along the I-49 corridor" style="position:relative; aspect-ratio:1; background:#15120c; border-radius:1rem; border:0.5px solid rgba(255,255,255,.08); overflow:hidden; display:flex; align-items:center; justify-content:center;">
@@ -730,12 +755,32 @@ class Component extends DCLogic {
     // Tick the projected-miles counter smoothly (direct DOM write ~10x/second; no re-render needed).
     const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const tick = () => {
-      const el = document.querySelector('[data-fsd-miles]');
-      if (el) el.textContent = fmt.format(Math.floor(fsdProjection(Date.now()).miles));
-    };
-    tick();
-    this._fsdTimer = setInterval(tick, reduce ? 5000 : 100);
+    // Count up from the base figure when the counter scrolls into view, then tick live.
+    // this._fsdText is what renderVals shows, so a re-render never fights the animation.
+    const setMiles = (n) => { this._fsdText = fmt.format(Math.floor(n)); const el = document.querySelector('[data-fsd-miles]'); if (el) el.textContent = this._fsdText; };
+    const tick = () => setMiles(fsdProjection(Date.now()).miles);
+    const startLive = () => { tick(); this._fsdTimer = setInterval(tick, reduce ? 5000 : 100); };
+    const card = document.querySelector('[data-fsd-miles]');
+    if (reduce || !card || !('IntersectionObserver' in window)) startLive();
+    else {
+      setMiles(FSD_COUNTER.BASE_MILES);
+      this._fsdIO = new IntersectionObserver((es) => {
+        if (!es[0].isIntersecting) return; this._fsdIO.disconnect();
+        const from = FSD_COUNTER.BASE_MILES, t0 = performance.now(), D = 1600;
+        const step = (t) => { const k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3);
+          setMiles(from + (fsdProjection(Date.now()).miles - from) * e);
+          if (k < 1) requestAnimationFrame(step); else startLive(); };
+        requestAnimationFrame(step);
+      }, { threshold: 0.4 });
+      this._fsdIO.observe(card);
+    }
+    // 3D tilt on the hero video frame: pointer devices only, never with reduced motion.
+    const hw = document.querySelector('[data-hero-video-wrap]'), heroEl = document.querySelector('[data-hero]');
+    if (hw && heroEl && !reduce && window.matchMedia('(min-width: 1024px)').matches) {
+      heroEl.addEventListener('pointermove', (e) => { const r = hw.getBoundingClientRect(); const x = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / r.width)), y = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / r.height));
+        hw.style.setProperty('--tilt-y', (-12 + x * 14).toFixed(2) + 'deg'); hw.style.setProperty('--tilt-x', (5 - y * 10).toFixed(2) + 'deg'); });
+      heroEl.addEventListener('pointerleave', () => { hw.style.removeProperty('--tilt-y'); hw.style.removeProperty('--tilt-x'); });
+    }
     this._onKey = (e) => { if (e.key === 'Escape' && this.state.mobileMenuOpen) this.closeMobileMenu(); };
     document.addEventListener('keydown', this._onKey);
 
@@ -764,7 +809,7 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._onKey);
-    clearInterval(this._fsdTimer);
+    clearInterval(this._fsdTimer); if (this._fsdIO) this._fsdIO.disconnect();
     document.body.style.overflow = '';
   }
 
@@ -912,7 +957,7 @@ class Component extends DCLogic {
         const pr = fsdProjection(Date.now());
         const nf = new Intl.NumberFormat('en-US');
         return {
-          fsdMilesText: new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.floor(pr.miles)),
+          fsdMilesText: this._fsdText || new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.floor(pr.miles)),
           fsdMilesRounded: nf.format(Math.round(pr.miles / 1000) * 1000),
           fsdCapped: pr.capped,
           fsdMaxWeeks: FSD_COUNTER.MAX_WEEKS,

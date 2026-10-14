@@ -156,3 +156,23 @@ input.valid{border-color:rgba(74,222,128,.45)!important}
   .card,li{break-inside:avoid}
   .site-footer{border-top:1px solid #000;color:#000!important}
 }
+
+/* route visualizer */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:center;margin-top:1.5rem}
+@media (max-width:900px){.sim{grid-template-columns:1fr}}
+.sim-ctrl{display:grid;gap:1rem;min-width:0}
+.sim-ctrl .row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:.6rem;align-items:end}
+.sim-ctrl label{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.35rem}
+.sim-ctrl select{width:100%;min-height:48px}
+.swap{width:46px;height:48px;border-radius:.75rem;border:.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.swap:hover{border-color:var(--gold)}
+.mode{display:inline-flex;gap:.25rem;padding:.25rem;border:.5px solid var(--line);border-radius:2rem;width:max-content;max-width:100%}
+.mode button{background:none;border:0;color:var(--muted);font:inherit;font-weight:600;padding:.55rem 1.2rem;border-radius:2rem;cursor:pointer;min-height:44px}
+.mode button[aria-pressed="true"]{background:linear-gradient(135deg,#e8b74e,#c98f2b);color:#1a1206}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.readout div{background:var(--card);border:.5px solid var(--line);border-radius:.9rem;padding:1rem}
+.readout b{display:block;font-family:'Syne',sans-serif;font-size:clamp(1.2rem,4.5vw,1.6rem);color:#fff;line-height:1.2;overflow-wrap:anywhere}
+.readout span{font-size:.75rem;color:var(--muted)}
+.sim-map [data-simcity] .rr-planned{transition:opacity .2s}
+.sim-map [data-simcity].on .rr-planned{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
+.sim-ctrl select{background:#110f0b;color:#fff;border:.5px solid rgba(255,255,255,.16);border-radius:.75rem;padding:.6rem .8rem;font:inherit;font-size:.95rem}
