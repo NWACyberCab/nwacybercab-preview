@@ -97,7 +97,7 @@
   if (tt) {
     tt.hidden = false;
     var onS = function () { tt.classList.toggle('show', window.scrollY > window.innerHeight * 1.2); };
-    window.addEventListener('scroll', onS, { passive: true }); onS();
+    window.addEventListener('scroll', onS, { passive: true }); window.addEventListener('load', function () { setTimeout(onS, 0); });
     tt.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' }); var m = document.getElementById('main'); if (m) { m.setAttribute('tabindex', '-1'); m.focus({ preventScroll: true }); } });
   }
 })();
