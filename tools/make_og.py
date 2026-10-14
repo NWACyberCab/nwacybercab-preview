@@ -14,6 +14,7 @@ PAGES = {
   "businesses":   ("FOR BUSINESSES", ["Autonomous delivery", "for NWA businesses."], "Register interest in driverless goods delivery."),
   "service-area": ("PLANNED SERVICE AREA", ["Seven cities,", "one region."], "Bentonville · Rogers · Springdale · Fayetteville and more"),
   "safety":       ("SAFETY & REGULATION", ["Safety first,", "and by the rules."], "How driverless vehicles are regulated in Arkansas."),
+  "privacy":      ("PRIVACY POLICY", ["Your data,", "kept simple."], "What RoboRide collects through this website, and why."),
   "about":        ("ABOUT ROBORIDE", ["Built in NWA,", "for NWA."], "An independent Northwest Arkansas company, founded 2026."),
   "press":        ("PRESS KIT", ["Writing about", "RoboRide?"], "Boilerplate, fast facts and brand assets."),
 }

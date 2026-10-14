@@ -6,7 +6,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.nwaroboride.org/"
 FORM = "https://formspree.io/f/mljgwkpr"
 NAV = [("index.html#how", "Riders", None), ("businesses.html", "Businesses", "businesses"), ("service-area.html", "Service Area", "service-area"),
-       ("safety.html", "Safety", "safety"), ("about.html", "About", "about"), ("index.html#faq", "FAQ", None)]
+       ("safety.html", "Safety", "safety"), ("about.html", "About", "about"), ("index.html#faq", "FAQ", None), ("index.html#contact", "Contact", None)]
 
 def ext(url, text):
     return f'<a href="{url}" target="_blank" rel="noopener">{text}</a>'
@@ -39,7 +39,6 @@ def page(slug, title, desc, body, extra_head=""):
 <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#0a0806">
 <link rel="preload" href="fonts/syne-normal-latin-2.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/dmsans-normal-latin-1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css">
@@ -169,7 +168,7 @@ cities = [  # name, x, y, pop (Census V2025, July 1 2025), county note
   ("Siloam Springs", 40, 161, 21298, "Benton County"),
   ("Eureka Springs", 260, 89, 2258, "a Carroll County seat"),
 ]
-pins = "\n".join(f'''        <g class="pin" data-city="{n}" role="button" tabindex="0" aria-pressed="false" aria-label="{n}"><line x1="{x}" y1="{y}" x2="{LBL[n][0]}" y2="{LBL[n][1]}" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"/><circle class="ring" cx="{x}" cy="{y}" r="5" fill="rgba(232,183,78,.08)" stroke="#e8b74e" stroke-width="1" opacity=".5"/><use href="#rr-pin" class="rr-pin rr-planned" x="{x-7:.1f}" y="{y-18.1:.1f}" width="14" height="18.1"/><text x="{LBL[n][0]}" y="{LBL[n][1]}" dominant-baseline="middle" text-anchor="{LBL[n][2]}" font-size="8.5" fill="#f2dba0" font-family="DM Sans, sans-serif" font-weight="600" pointer-events="none" style="paint-order:stroke" stroke="#15120c" stroke-width="2.5">{n}</text></g>''' for n, x, y, *_ in cities)
+pins = "\n".join(f'''        <g class="pin" data-city="{n}" role="button" tabindex="0" aria-pressed="false" aria-label="{n}"><circle class="hit" cx="{x}" cy="{y-7}" r="15" fill="transparent"/><line x1="{x}" y1="{y}" x2="{LBL[n][0]}" y2="{LBL[n][1]}" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"/><circle class="ring" cx="{x}" cy="{y}" r="5" fill="rgba(232,183,78,.08)" stroke="#e8b74e" stroke-width="1" opacity=".5"/><use href="#rr-pin" class="rr-pin rr-planned" x="{x-7:.1f}" y="{y-18.1:.1f}" width="14" height="18.1"/><text x="{LBL[n][0]}" y="{LBL[n][1]}" dominant-baseline="middle" text-anchor="{LBL[n][2]}" font-size="8.5" fill="#f2dba0" font-family="DM Sans, sans-serif" font-weight="600" pointer-events="none" style="paint-order:stroke" stroke="#15120c" stroke-width="2.5">{n}</text></g>''' for n, x, y, *_ in cities)
 btns = "".join(f'<li><button type="button" data-city="{n}" aria-pressed="false">{n}</button></li>' for n, *_ in cities)
 data_js = ",".join(f'"{n}":{{pop:{p},county:"{c}"}}' for n, _, _, p, c in cities)
 _rd = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_roads.svg")).read()
@@ -402,3 +401,16 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
 </div></section>
 ''')
 print("built: businesses, service-area, safety, about, press")
+
+# ---------------- PRIVACY (content kept in privacy.html between markers) ----------------
+_pv = open(os.path.join(ROOT, "privacy.html")).read()
+if "<!-- PRIVACY:BEGIN -->" in _pv:
+    _pc = _pv.split("<!-- PRIVACY:BEGIN -->")[1].split("<!-- PRIVACY:END -->")[0]
+else:
+    _pc = _pv.split("<main>")[1].split("</main>")[0]
+    _pc = _pc.replace('<p style="color:#a89c88;margin:0">Effective date', '<p class="muted" style="margin:0">Effective date')
+page("privacy", "Privacy Policy (Draft)", "How RoboRide LLC handles the information you share when you join the waitlist or register business interest.", f'''
+<section class="section prose-wrap"><div class="wrap prose">
+<!-- PRIVACY:BEGIN -->{_pc}<!-- PRIVACY:END -->
+</div></section>
+''', extra_head='<meta name="robots" content="noindex">\n')
