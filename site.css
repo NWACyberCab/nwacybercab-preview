@@ -173,6 +173,7 @@ input.valid{border-color:rgba(74,222,128,.45)!important}
 .readout div{background:var(--card);border:.5px solid var(--line);border-radius:.9rem;padding:1rem}
 .readout b{display:block;font-family:'Syne',sans-serif;font-size:clamp(1.2rem,4.5vw,1.6rem);color:#fff;line-height:1.2;overflow-wrap:anywhere}
 .readout span{font-size:.75rem;color:var(--muted)}
+.readout b[data-sim-road]{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;overflow-wrap:normal;hyphens:none}
 .sim-map [data-simcity] .rr-planned{transition:opacity .2s}
 .sim-map [data-simcity].on .rr-planned{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
 .sim-ctrl select{background:#110f0b;color:#fff;border:.5px solid rgba(255,255,255,.16);border-radius:.75rem;padding:.6rem .8rem;font:inherit;font-size:.95rem}
