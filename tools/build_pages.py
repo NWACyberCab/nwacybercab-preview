@@ -173,12 +173,11 @@ pins = "\n".join(f'''        <g class="pin" data-city="{n}" role="button" tabind
 btns = "".join(f'<li><button type="button" data-city="{n}" aria-pressed="false">{n}</button></li>' for n, *_ in cities)
 data_js = ",".join(f'"{n}":{{pop:{p},county:"{c}"}}' for n, _, _, p, c in cities)
 _rd = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_roads.svg")).read()
-_names = ["I-49", "US-412", "US-62", "Local roads", "US-62", "Local roads"]  # by path order in map_roads.svg
 _edges = []
-for _k, _d in enumerate(re.findall(r'<path d="([^"]+)"', _rd)):
+for _nm, _d in re.findall(r'<path data-road="([^"]+)" d="([^"]+)"', _rd):
     _pts = re.findall(r'(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)', _d)
     for (_a, _b2), (_c, _e) in zip(_pts, _pts[1:]):
-        _edges.append(f'[{_a},{_b2},{_c},{_e},"{_names[_k]}"]')
+        _edges.append(f'[{_a},{_b2},{_c},{_e},"{_nm}"]')
 roadjs = "[" + ",".join(_edges) + "]"
 simjs = "{" + ",".join(f'"{n}":{{"x":{x},"y":{y},"lat":{LATLON[n][0]},"lon":{LATLON[n][1]}}}' for n, x, y, *_ in cities) + "}"
 page("service-area", "Service Area", "RoboRide's planned Northwest Arkansas service area: Bentonville, Rogers, Springdale, Fayetteville, Farmington, Siloam Springs and Eureka Springs.", f'''
