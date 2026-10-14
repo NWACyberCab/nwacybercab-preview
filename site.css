@@ -197,3 +197,14 @@ input.valid{border-color:rgba(74,222,128,.45)!important}
 .prose .draft{background:rgba(232,183,78,.1);border:.5px solid rgba(232,183,78,.45);border-radius:.9rem;padding:1rem 1.25rem;color:#f2dba0;margin:1.5rem 0 2rem}
 .prose-wrap{padding-top:clamp(7.5rem,18vw,9rem)!important}
 @media print{.prose-wrap{padding-top:0!important}}
+/* route bar: From/To prompt directly under the map */
+.map .pin,.city-list button,.route-bar button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.route-bar{display:grid;gap:.6rem;margin:0 0 1rem;padding:.85rem;border:.5px solid var(--line);border-radius:1rem;background:var(--card)}
+.rb-ends{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.rb-end{min-width:0;padding:.5rem .7rem;border-radius:.7rem;border:1px dashed rgba(232,183,78,.35)}
+.rb-end span{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.rb-end b{display:block;color:#fff;font-weight:500;overflow-wrap:anywhere}
+.rb-end.is-next{border-style:solid;border-color:var(--gold);box-shadow:0 0 0 2px rgba(232,183,78,.18)}
+.rb-end.is-set{border-style:solid;border-color:rgba(232,183,78,.55)}
+.rb-prompt{margin:0;font-size:.9rem;color:var(--text)}
+.rb-actions{display:flex;flex-wrap:wrap;gap:.5rem}.rb-actions button{min-height:44px}

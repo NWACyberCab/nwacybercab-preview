@@ -82,6 +82,7 @@
       </svg>
     </div>
     <div>
+      <div class="route-bar" id="route-bar"><div class="rb-ends"><div class="rb-end" id="rb-from"><span>From</span><b>–</b></div><div class="rb-end" id="rb-to"><span>To</span><b>–</b></div></div><p class="rb-prompt" id="route-prompt" aria-live="polite"><b>Step 1:</b> tap a city on the map or below to set <b>From</b>.</p><div class="rb-actions"><button type="button" class="btn-ghost" id="trip-swap" disabled>Swap</button><button type="button" class="btn-ghost" id="trip-clear" disabled>Clear route</button></div></div>
       <ul class="city-list" aria-label="Choose a city"><li><button type="button" data-city="Bentonville" aria-pressed="false">Bentonville</button></li><li><button type="button" data-city="Rogers" aria-pressed="false">Rogers</button></li><li><button type="button" data-city="Springdale" aria-pressed="false">Springdale</button></li><li><button type="button" data-city="Fayetteville" aria-pressed="false">Fayetteville</button></li><li><button type="button" data-city="Farmington" aria-pressed="false">Farmington</button></li><li><button type="button" data-city="Siloam Springs" aria-pressed="false">Siloam Springs</button></li><li><button type="button" data-city="Eureka Springs" aria-pressed="false">Eureka Springs</button></li></ul>
       <div class="panel" id="city-panel" aria-live="polite">
         <span class="badge warn">Planned · not yet served</span>
@@ -89,14 +90,12 @@
         <p class="muted" id="city-blurb" style="margin:0">Select a city on the map or from the list.</p>
         <dl id="city-facts" hidden><dt>Population</dt><dd id="city-pop"></dd><dt>County</dt><dd id="city-county"></dd><dt>RoboRide status</dt><dd>Planned; no service yet</dd></dl>
         <p class="cite" style="margin-top:1rem">Population: U.S. Census Bureau, Vintage 2025 estimates (July 1, 2025): <a href="https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/cities/totals/sub-est2025_5.csv" target="_blank" rel="noopener">dataset</a> · <a href="https://www.census.gov/quickfacts/" target="_blank" rel="noopener">QuickFacts</a></p>
-        <div class="trip-set" id="trip-set" hidden><button type="button" class="btn-ghost" data-set="start">Set as start</button><button type="button" class="btn-ghost" data-set="end">Set as destination</button></div>
         <div class="trip" id="trip" aria-labelledby="trip-h">
           <h3 id="trip-h">Picture a trip</h3>
-          <p class="muted trip-hint" id="trip-hint">Pick a city, then choose <b>Set as start</b> or <b>Set as destination</b>.</p>
+          <p class="muted trip-hint" id="trip-hint">Tap one city for <b>From</b>, then another for <b>To</b>. The route draws on the map.</p>
           <div class="trip-ends"><div><span>From</span><b id="trip-from">–</b></div><div><span>To</span><b id="trip-to">–</b></div></div>
           <div class="mode" role="group" aria-label="Trip type"><button type="button" data-mode="ride" aria-pressed="true">Ride</button><button type="button" data-mode="delivery" aria-pressed="false">Delivery</button></div>
           <div class="readout" aria-live="polite"><div><b data-sim-dist>–</b><span>Straight-line miles (approx.)</span></div><div><b data-sim-road>–</b><span>Main highway</span></div></div>
-          <div class="trip-foot"><button type="button" class="btn-ghost" id="trip-clear" disabled>Clear route</button></div>
           <p class="tiny" style="margin:0">An illustration, not a booking tool: RoboRide isn't operating yet. Miles are straight-line between city centers; road trips are longer. Prices and trip times haven't been set.</p>
         </div>
         <div class="actions" style="margin-top:1.25rem"><a class="btn" href="index.html#signup">Join the waitlist</a></div>
@@ -118,7 +117,9 @@ function path(s,t){var d={},pv={},pn={},seen={};d[s]=0;for(;;){var u=null;for(va
 var pts=[t],names=[];for(var c=t;c!==s;c=pv[c]){if(pn[c]&&names.indexOf(pn[c])<0)names.unshift(pn[c]);pts.unshift(pv[c]);}return {pts:pts,names:names};}
 function mi(a,b){var R=3958.8,r=Math.PI/180,dA=(b.lat-a.lat)*r,dO=(b.lon-a.lon)*r,h=Math.sin(dA/2)*Math.sin(dA/2)+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dO/2)*Math.sin(dO/2);return 2*R*Math.asin(Math.sqrt(h))}
 function mark(){document.querySelectorAll('.map [data-city]').forEach(function(el){var n=el.getAttribute('data-city');el.classList.toggle('is-start',n===A);el.classList.toggle('is-end',n===B);});}
-function draw(){cancelAnimationFrame(anim);$('trip-from').textContent=A||'–';$('trip-to').textContent=B||'–';$('trip-clear').disabled=!(A||B);mark();
+function draw(){cancelAnimationFrame(anim);$('trip-from').textContent=A||'–';$('trip-to').textContent=B||'–';$('trip-clear').disabled=!(A||B);$('trip-swap').disabled=!(A&&B);
+$('rb-from').querySelector('b').textContent=A||'–';$('rb-to').querySelector('b').textContent=B||'–';$('rb-from').classList.toggle('is-set',!!A);$('rb-to').classList.toggle('is-set',!!B);$('rb-from').classList.toggle('is-next',!A);$('rb-to').classList.toggle('is-next',!!A&&!B);
+$('route-prompt').innerHTML=!A?'<b>Step 1:</b> tap a city on the map or below to set <b>From</b>.':!B?'<b>Step 2:</b> tap another city to set <b>To</b>.':'Route shown: <b>'+A+'</b> to <b>'+B+'</b>. Tap any city to start a new trip.';mark();
 var dist=document.querySelector('[data-sim-dist]'),road=document.querySelector('[data-sim-road]');
 if(!A||!B){route.setAttribute('d','');car.setAttribute('opacity',0);dist.textContent='–';road.textContent='–';$('trip-hint').hidden=false;return}
 $('trip-hint').hidden=true;var r=path(key(C[A].x,C[A].y),key(C[B].x,C[B].y));
@@ -131,12 +132,13 @@ car.setAttribute('transform','translate('+pt.x.toFixed(2)+' '+pt.y.toFixed(2)+')
 function pick(n){var d=D[n];if(!d)return;cur=n;$('city-name').textContent=n;
 $('city-blurb').textContent=n+' is part of RoboRide’s planned Northwest Arkansas service area.';
 $('city-pop').textContent=nf.format(d.pop)+' (July 1, 2025 estimate)';$('city-county').textContent=d.county.charAt(0).toUpperCase()+d.county.slice(1);
-$('city-facts').hidden=false;$('trip-set').hidden=false;
-document.querySelectorAll('[data-set]').forEach(function(btn){var s=btn.getAttribute('data-set')==='start';btn.textContent=s?'Set '+n+' as start':'Set '+n+' as destination';btn.disabled=(s?B:A)===n||(s?A:B)===n;});
+$('city-facts').hidden=false;
 document.querySelectorAll('[data-city]').forEach(function(el){el.setAttribute('aria-pressed',el.getAttribute('data-city')===n?'true':'false');});}
-document.querySelectorAll('[data-city]').forEach(function(el){el.addEventListener('click',function(){pick(el.getAttribute('data-city'));});
-el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(el.getAttribute('data-city'));}});});
-document.querySelectorAll('[data-set]').forEach(function(btn){btn.addEventListener('click',function(){if(!cur)return;if(btn.getAttribute('data-set')==='start')A=cur;else B=cur;draw();pick(cur);});});
+/* a tap sets From, the next tap sets To; a tap after a full route starts a new trip */
+function choose(n){if(!D[n])return;if(!A||(A&&B)){A=n;B=null;}else if(n===A){A=null;}else B=n;pick(n);draw();}
+document.querySelectorAll('[data-city]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();choose(el.getAttribute('data-city'));});
+el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(el.getAttribute('data-city'));}});});
+$('trip-swap').addEventListener('click',function(){if(!(A&&B))return;var t=A;A=B;B=t;draw();});
 document.querySelectorAll('[data-mode]').forEach(function(btn){btn.addEventListener('click',function(){mode=btn.getAttribute('data-mode');document.querySelectorAll('[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',x===btn?'true':'false')});draw();});});
 $('trip-clear').addEventListener('click',function(){A=B=null;draw();if(cur)pick(cur);});
 var h=decodeURIComponent(location.hash.slice(1)).replace(/-/g,' ');Object.keys(D).forEach(function(k){if(k.toLowerCase()===h.toLowerCase())pick(k);});draw();})();
