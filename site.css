@@ -176,3 +176,15 @@ input.valid{border-color:rgba(74,222,128,.45)!important}
 .sim-map [data-simcity] .rr-planned{transition:opacity .2s}
 .sim-map [data-simcity].on .rr-planned{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
 .sim-ctrl select{background:#110f0b;color:#fff;border:.5px solid rgba(255,255,255,.16);border-radius:.75rem;padding:.6rem .8rem;font:inherit;font-size:.95rem}
+
+/* unified map: trip planner in the city panel */
+.trip-set{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.btn-ghost{background:rgba(255,255,255,.04);border:.5px solid rgba(232,183,78,.45);color:var(--gold-lt);font:inherit;font-weight:600;font-size:.9rem;padding:.6rem 1rem;border-radius:2rem;cursor:pointer;min-height:44px}
+.btn-ghost:hover:not(:disabled){border-color:var(--gold);color:#fff}.btn-ghost:disabled{opacity:.45;cursor:default}
+.btn-ghost:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.trip{display:grid;gap:.85rem;margin-top:1.4rem;padding-top:1.2rem;border-top:.5px solid var(--line)}
+.trip h3{margin:0;font-size:1.05rem}.trip-hint{margin:0;font-size:.88rem}
+.trip-ends{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.trip-ends span{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600}.trip-ends b{color:#fff;font-weight:500;overflow-wrap:anywhere}
+.trip-foot{display:flex}
+.map [data-city].is-start .ring,.map [data-city].is-end .ring{opacity:1;stroke:#fff;stroke-width:1.6}
+.map [data-city].is-start .rr-planned,.map [data-city].is-end .rr-planned{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
