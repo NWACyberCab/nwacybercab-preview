@@ -107,6 +107,8 @@
   }
   @media (max-width: 640px) { [data-hero] h1 br { display:none; } }
   html, body { overflow-x: clip; }
+  [id] { scroll-margin-top: calc(var(--hh, 78px) + 12px); }
+  html:not(.menu-open) { scroll-behavior: auto; }
   h1, h2, h3 { overflow-wrap: break-word; }
 </style>
 </helmet>
@@ -453,8 +455,8 @@
         <g data-city="Springdale"><line x1="153" y1="162" x2="165" y2="172" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="153" cy="162" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="146.0" y="143.9" width="14" height="18.1"></use></g>
         <g data-city="Fayetteville"><line x1="147" y1="204" x2="159" y2="206" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="147" cy="204" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="140.0" y="185.9" width="14" height="18.1"></use></g>
         <g data-city="Farmington"><line x1="120" y1="211" x2="112" y2="224" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="120" cy="211" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="113.0" y="192.9" width="14" height="18.1"></use></g>
-        <g data-city="Siloam Springs"><line x1="40" y1="161" x2="34" y2="145" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="40" cy="161" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="33.0" y="142.9" width="14" height="18.1"></use></g>
-        <g data-city="Eureka Springs"><line x1="260" y1="89" x2="266" y2="73" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="260" cy="89" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="253.0" y="70.9" width="14" height="18.1"></use></g>
+        <g data-city="Siloam Springs"><line x1="40" y1="161" x2="34" y2="135" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="40" cy="161" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="33.0" y="142.9" width="14" height="18.1"></use></g>
+        <g data-city="Eureka Springs"><line x1="260" y1="89" x2="266" y2="63" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="260" cy="89" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="253.0" y="70.9" width="14" height="18.1"></use></g>
       </svg>
       <div style="position:absolute; inset:0; z-index:3; pointer-events:none;">
         <sc-for list="{{ cities }}" as="city" hint-placeholder-count="7">
@@ -693,6 +695,21 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this._loadTweet();
+    // Deep links (e.g. index.html#faq from a sub-page): the sections are rendered by JS after the
+    // browser's own hash jump, so scroll to the target once rendered, and again after late layout shifts.
+    const goHash = () => {
+      const id = decodeURIComponent((location.hash || '').slice(1));
+      const el = id && document.getElementById(id);
+      if (el) el.scrollIntoView({ block: 'start' });
+    };
+    if (location.hash) {
+      let userScrolled = false;
+      const stop = () => { userScrolled = true; };
+      ['wheel', 'touchstart', 'keydown'].forEach(t => window.addEventListener(t, stop, { once: true, passive: true }));
+      requestAnimationFrame(() => requestAnimationFrame(goHash));
+      [300, 900].forEach(ms => setTimeout(() => { if (!userScrolled) goHash(); }, ms));
+      window.addEventListener('load', () => { if (!userScrolled) goHash(); }, { once: true });
+    }
     // Hero video: autoplay (muted) only when the visitor hasn't asked for reduced motion.
     const hv = document.querySelector('[data-hero-video]');
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -818,8 +835,8 @@ class Component extends DCLogic {
       { name: 'Springdale', x: 153, y: 162, labelX: 165, labelY: 172, align: 'left', active: false },
       { name: 'Fayetteville', x: 147, y: 204, labelX: 159, labelY: 206, align: 'left', active: false },
       { name: 'Farmington', x: 120, y: 211, labelX: 112, labelY: 224, align: 'right', active: false },
-      { name: 'Siloam Springs', x: 40, y: 161, labelX: 34, labelY: 145, align: 'leftish', active: false },
-      { name: 'Eureka Springs', x: 260, y: 89, labelX: 266, labelY: 73, align: 'right', active: false }
+      { name: 'Siloam Springs', x: 40, y: 161, labelX: 34, labelY: 135, align: 'leftish', active: false },
+      { name: 'Eureka Springs', x: 260, y: 89, labelX: 266, labelY: 63, align: 'right', active: false }
     ];
     const VB = 300;
     // the <svg> sits at 88% width/height, centered (6% margin each side) inside its square wrapper
