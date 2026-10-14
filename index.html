@@ -433,6 +433,7 @@
           </linearGradient>
         </defs>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+        <!-- ROADS:BEGIN (generated from tools/map_roads.svg by tools/build_pages.py; edit there) -->
         <g fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path d="M126 40 L131 99 L148 125 L153 162 L147 204 L144 270" stroke="rgba(232,183,78,.45)" stroke-width="3"></path>
           <path d="M18 160 L40 161 L95 166 L153 162 L215 158 L285 150" stroke="rgba(232,183,78,.28)" stroke-width="2"></path>
@@ -444,6 +445,7 @@
         <text x="131" y="52" font-size="7" fill="rgba(232,183,78,.6)" font-family="DM Sans, sans-serif">I-49</text>
         <text x="60" y="158" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-412</text>
         <text x="208" y="98" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-62</text>
+        <!-- ROADS:END -->
         <!-- City dots (static SVG so the browser never sees template placeholders in numeric attributes).
              Keep in sync with rawCities in the script. City markers are the RoboRide pin (#rr-pin). Planned = class "rr-planned" (muted). To mark a city live: change it to class "rr-live" (full gold + glow). -->
         <g data-city="Bentonville"><line x1="131" y1="99" x2="121" y2="92" stroke="#e8b74e" stroke-width="0.75" opacity="0.4"></line><circle cx="131" cy="99" r="5" fill="none" stroke="#e8b74e" stroke-width="1" opacity="0.3"></circle><use href="#rr-pin" class="rr-pin rr-planned" x="124.0" y="80.9" width="14" height="18.1"></use></g>
