@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Generates RoboRide's static sub-pages (shared header/footer). Run: python3 tools/build_pages.py
 index.html and privacy.html are hand-maintained and NOT generated here."""
-import os, html
+import os, html, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.nwaroboride.org/"
 FORM = "https://formspree.io/f/mljgwkpr"
-FONTS = "https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=optional"
 NAV = [("index.html#how", "Riders", None), ("businesses.html", "Businesses", "businesses"), ("service-area.html", "Service Area", "service-area"),
        ("safety.html", "Safety", "safety"), ("about.html", "About", "about"), ("index.html#faq", "FAQ", None)]
 
@@ -28,19 +27,21 @@ def page(slug, title, desc, body, extra_head=""):
 <meta property="og:title" content="{title} | RoboRide">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{SITE}{slug}.html">
-<meta property="og:image" content="{SITE}image/og-cybercab.jpg">
+<meta property="og:image" content="{SITE}image/og/og-{slug}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{html.escape(title)}: RoboRide, Northwest Arkansas">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SITE}image/og/og-{slug}.jpg">
+<script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE},{"@type":"ListItem","position":2,"name":title,"item":SITE+slug+".html"}]})}</script>
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0a0806">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="{FONTS}">
-<link href="{FONTS}" rel="stylesheet">
-<noscript><link href="{FONTS}" rel="stylesheet"></noscript>
+<link rel="preload" href="fonts/syne-normal-latin-2.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dmsans-normal-latin-1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css">
 {extra_head}</head>
 <body>
@@ -71,9 +72,11 @@ def page(slug, title, desc, body, extra_head=""):
       <div><h2>Businesses</h2><ul><li><a href="businesses.html">Delivery &amp; business</a></li><li><a href="businesses.html#interest">Register interest</a></li></ul></div>
       <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
     </div>
+    <div class="share-row"><button type="button" class="share-btn" data-share data-title="{html.escape(title)} | RoboRide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share this page</span></button><span class="share-status" role="status" aria-live="polite"></span></div>
     <div class="base"><span>© 2026 RoboRide LLC. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span><span>Northwest Arkansas <span aria-hidden="true">🌲</span></span></div>
   </div>
 </footer>
+<aside aria-label="Page tools"><a href="#main" class="to-top" aria-label="Back to top" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a></aside>
 <script src="site.js" defer></script>
 </body>
 </html>
@@ -236,7 +239,8 @@ page("safety", "Safety & Regulation", "How autonomous vehicles are regulated in 
   <h2>NHTSA sets the <em class="hl">vehicle rules.</em></h2>
   <p>The National Highway Traffic Safety Administration (NHTSA) regulates the safety of vehicles themselves. Manufacturers certify that their vehicles meet the Federal Motor Vehicle Safety Standards (FMVSS). For vehicles that don't fit standards written around human drivers, such as cars without a steering wheel, NHTSA runs exemption programs; in 2025 it opened its automated vehicle exemption program to U.S.-built vehicles. {ext(AVEP, "NHTSA")} · {ext(NHTSA_RPT, "NHTSA report to Congress, July 2025")}</p>
   <p>Under NHTSA's <strong>Standing General Order</strong>, companies operating automated driving systems must report certain crashes. Serious ones (for example a fatality, a hospital-treated injury, a struck pedestrian or cyclist, an air-bag deployment, or a tow-away) must be reported within five days. The current version took effect June 16, 2025. {ext(SGO, "NHTSA Standing General Order")}</p>
-  <p>NHTSA is reviewing how Tesla certified the Cybercab to federal standards; according to news reports, Tesla's sworn answers are due October 30, 2026. {ext(TESLARATI, "Teslarati")}</p>
+  <p>NHTSA is reviewing how Tesla certified the Cybercab to federal standards; according to news reports, Tesla's sworn answers were due October 30, 2026, and Tesla has since received a 30-day extension. {ext(TESLARATI, "Teslarati")} · {ext("https://www.notateslaapp.com/news/4819/tesla-cybercab-to-let-riders-see-rear-and-side-camera-feeds", "Not a Tesla App")}</p>
+  <p>Separately, on October 9, 2026 NHTSA opened a review of a defect petition (DP26010) alleging that Tesla robotaxis, Model Y and Cybercab, exceeded posted speed limits in active school zones. NHTSA will decide whether to open a formal investigation. {ext("https://www.theverge.com/transportation/1010364/tesla-robotaxi-school-zonespeeding-investigation", "The Verge")}</p>
 </div></section>
 
 <section class="section"><div class="wrap prose">
@@ -294,7 +298,7 @@ page("about", "About & Mission", "RoboRide LLC is a Northwest Arkansas company p
 <section class="section alt"><div class="wrap">
   <div class="eyebrow">Founder</div>
   <h2>Who's behind <em class="hl">RoboRide.</em></h2>
-  <div class="card" style="max-width:760px;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start"><div style="flex:0 0 200px"><picture><source type="image/webp" srcset="image/founder-joseph-400.webp 400w, image/founder-joseph-800.webp 800w" sizes="200px"><img src="image/founder-joseph-400.jpg" srcset="image/founder-joseph-400.jpg 400w, image/founder-joseph-800.jpg 800w" sizes="200px" width="400" height="500" loading="lazy" decoding="async" alt="Joseph Bowers, founder of RoboRide LLC" style="width:200px;height:auto;aspect-ratio:4/5;border-radius:14px;display:block;object-fit:cover"></picture></div><div style="flex:1 1 280px"><h3>Joseph Bowers, Founder</h3><p>Joseph Bowers is the founder of RoboRide LLC. Born and raised in Fayetteville, he's an Arkansas native who drives a Tesla with Full Self-Driving and has seen up close what autonomous driving can do. At 23, he started RoboRide to bring safe, driverless transportation to his home region and to help make Northwest Arkansas roads safer for everyone.</p></div></div>
+  <div class="card" style="max-width:760px;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start"><div style="flex:0 0 200px"><picture><source type="image/avif" srcset="image/founder-joseph-400.avif 400w, image/founder-joseph-800.avif 800w" sizes="200px"><source type="image/webp" srcset="image/founder-joseph-400.webp 400w, image/founder-joseph-800.webp 800w" sizes="200px"><img src="image/founder-joseph-400.jpg" srcset="image/founder-joseph-400.jpg 400w, image/founder-joseph-800.jpg 800w" sizes="200px" width="400" height="500" loading="lazy" decoding="async" alt="Joseph Bowers, founder of RoboRide LLC" style="width:200px;height:auto;aspect-ratio:4/5;border-radius:14px;display:block;object-fit:cover"></picture></div><div style="flex:1 1 280px"><h3>Joseph Bowers, Founder</h3><p>Joseph Bowers is the founder of RoboRide LLC. Born and raised in Fayetteville, he's an Arkansas native who drives a Tesla with Full Self-Driving and has seen up close what autonomous driving can do. At 23, he started RoboRide to bring safe, driverless transportation to his home region and to help make Northwest Arkansas roads safer for everyone.</p></div></div>
 </div></section>
 
 <section class="section" id="roadmap"><div class="wrap">
@@ -345,8 +349,8 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
     <div class="card"><div style="background:#f4efe6;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-logo-dark.svg" width="96" height="96" alt="RoboRide logo, dark" loading="lazy"></div><h3>Logo (dark)</h3><p>For light backgrounds. <a href="image/brand/roboride-logo-dark.svg" download>SVG</a> · <a href="image/brand/roboride-logo-dark-1024.png" download>PNG 1024</a></p></div>
     <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-icon.svg" width="96" height="96" alt="RoboRide app icon" loading="lazy" style="border-radius:.6rem"></div><h3>App icon</h3><p>Square, on dark. <a href="image/brand/roboride-icon.svg" download>SVG</a> · <a href="image/brand/roboride-icon-1024.png" download>PNG 1024</a></p></div>
     <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-pin.svg" width="75" height="96" alt="RoboRide service-area pin" loading="lazy"></div><h3>Service-area pin (secondary mark)</h3><p>The RoboRide cab in a gold map pin. Use it for places RoboRide serves or plans to serve, not as a replacement for the main logo. <a href="image/brand/roboride-pin.svg" download>SVG</a> · <a href="image/brand/roboride-pin-512.png" download>PNG 512</a></p></div>
-    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><span class="logo" style="font-size:2rem"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></span></div><h3>Wordmark</h3><p>Set in Syne ExtraBold; "Robo" in white, "Ride" in gold #E8B74E on dark #0A0806, with the logo to the left.</p></div>
-    <div class="card"><picture><source type="image/webp" srcset="image/founder-joseph-400.webp"><img src="image/founder-joseph-400.jpg" alt="Joseph Bowers, founder of RoboRide LLC" width="400" height="500" loading="lazy" decoding="async" style="width:120px;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem"></picture><h3>Founder headshot</h3><p>Joseph Bowers. <a href="image/founder-joseph-800.jpg" download>Download JPG (800×1000)</a></p></div>
+    <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><span class="logo" style="font-size:clamp(1.3rem,6vw,2rem);white-space:nowrap"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></span></div><h3>Wordmark</h3><p>Set in Syne ExtraBold; "Robo" in white, "Ride" in gold #E8B74E on dark #0A0806, with the logo to the left.</p></div>
+    <div class="card"><picture><source type="image/avif" srcset="image/founder-joseph-400.avif"><source type="image/webp" srcset="image/founder-joseph-400.webp"><img src="image/founder-joseph-400.jpg" alt="Joseph Bowers, founder of RoboRide LLC" width="400" height="500" loading="lazy" decoding="async" style="width:120px;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem"></picture><h3>Founder headshot</h3><p>Joseph Bowers. <a href="image/founder-joseph-800.jpg" download>Download JPG (800×1000)</a></p></div>
     <div class="card"><img src="image/hero-cybercab-960.jpg" alt="Front view of a Tesla Cybercab with doors raised" width="960" height="540" style="width:100%;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem" loading="lazy"><h3>Cybercab photo</h3><p>"Front of the Tesla Cybercab" by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>; credit required. <a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener">Original</a></p></div>
   </div>
   <p class="tiny" style="margin-top:1.25rem">Brand colors: gold #E8B74E · deep gold #C98F2B · background #0A0806 · text #E8E4DC. Tesla and Cybercab are trademarks of Tesla, Inc.</p>

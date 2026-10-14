@@ -9,3 +9,7 @@
   RoboRide LLC is not affiliated with Tesla, Inc.
 
 The earlier hero video (`robotaxi-hero.mp4`) was removed because RoboRide does not have the rights to use it.
+
+## Fonts
+
+Syne and DM Sans are self-hosted in `fonts/` (latin subset, from Google Fonts). Both are licensed under the SIL Open Font License 1.1: https://openfontlicense.org

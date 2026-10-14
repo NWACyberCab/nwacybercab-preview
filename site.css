@@ -1,3 +1,10 @@
+@font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;src:url(fonts/dmsans-italic-latin-0.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/dmsans-normal-latin-1.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dmsans-normal-latin-1.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dmsans-normal-latin-1.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Syne';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/syne-normal-latin-2.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Syne';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/syne-normal-latin-2.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Syne';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/syne-normal-latin-2.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 /* Shared styles for RoboRide sub-pages (index.html keeps its own inline styles). */
 :root{--bg:#0a0806;--bg2:#121009;--card:#15120c;--line:rgba(255,255,255,.08);--text:#e8e4dc;--muted:#a89c88;--dim:#8a806f;--gold:#e8b74e;--gold2:#c98f2b;--gold-lt:#f2cd7e}
 *{box-sizing:border-box}
@@ -110,3 +117,42 @@ details.q[open] summary{color:var(--gold)} details.q p{color:var(--muted);margin
 .rr-planned{opacity:.62;transition:opacity .2s}.rr-live{opacity:1;filter:drop-shadow(0 0 4px rgba(232,183,78,.9))}
 .map .pin:hover .rr-planned,.map .pin:focus-visible .rr-planned,.map .pin[aria-pressed="true"] .rr-planned{opacity:1}
 @media (prefers-reduced-motion:reduce){.nav,.nav.open{transition:none}}
+
+/* ---- quality pass ---- */
+:root{--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem}
+a,button,.btn,.card,input,select,textarea{transition:color .2s,background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,183,78,.22)}
+  .btn:active{transform:translateY(0)}
+  .card:hover{border-color:rgba(232,183,78,.35)}
+  html{scroll-behavior:smooth}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+/* inline form validation */
+.field-error{display:block;color:#f2b48a;font-size:.8rem;margin-top:.35rem;min-height:0}
+input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:#e88a4e!important;box-shadow:0 0 0 1px #e88a4e}
+input.valid{border-color:rgba(74,222,128,.45)!important}
+.form-status.ok{display:flex;gap:.6rem;align-items:flex-start;background:rgba(74,222,128,.08);border:.5px solid rgba(74,222,128,.35);border-radius:.75rem;padding:.9rem 1rem;color:#c8f5d8}
+.form-status.err{background:rgba(232,138,78,.08);border:.5px solid rgba(232,138,78,.35);border-radius:.75rem;padding:.9rem 1rem}
+/* share + back to top */
+.share-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:2rem 0 0}
+.share-btn{display:inline-flex;align-items:center;gap:.5rem;background:none;border:.5px solid rgba(255,255,255,.18);color:var(--text);border-radius:2rem;padding:.5rem 1rem;font:inherit;font-size:.85rem;cursor:pointer}
+.share-btn:hover{border-color:var(--gold);color:var(--gold)}
+.share-status{font-size:.8rem;color:var(--muted)}
+.to-top{position:fixed;right:1rem;bottom:1rem;z-index:90;width:2.9rem;height:2.9rem;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#15120c;border:.5px solid rgba(232,183,78,.45);color:var(--gold);box-shadow:0 6px 18px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);pointer-events:none}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top[hidden]{display:none}
+@media (min-width:1101px){.to-top{display:none}}
+/* print */
+@media print{
+  html,body{background:#fff!important;color:#000!important}
+  .site-header,.menu-btn,.nav,.nav-backdrop,.to-top,.share-row,.skip-link,form,.actions,.map,.city-list,.page-hero::before{display:none!important}
+  main,section,.section,.section.alt,.card,.page-hero{background:none!important;border-color:#bbb!important;box-shadow:none!important;padding-top:0!important;color:#000!important}
+  h1,h2,h3,.hl,em,p,li,.muted,.lead,.eyebrow{color:#000!important}
+  a{color:#000!important;text-decoration:underline}
+  main a[href^="http"]::after{content:" (" attr(href) ")";font-size:.8em;word-break:break-all}
+  .reveal{opacity:1!important;transform:none!important}
+  .card,li{break-inside:avoid}
+  .site-footer{border-top:1px solid #000;color:#000!important}
+}
