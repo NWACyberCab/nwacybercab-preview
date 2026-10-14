@@ -1,3 +1,3 @@
 # RoboRide preview (TEST)
 
-Not the live site. Mirror of NWACyberCab/nwacybercab branch roboride-quality. noindex.
+Not the live site. Mirror of NWACyberCab/nwacybercab main (plus open PRs under review). noindex.

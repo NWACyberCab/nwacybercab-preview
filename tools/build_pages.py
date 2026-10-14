@@ -173,11 +173,14 @@ btns = "".join(f'<li><button type="button" data-city="{n}" aria-pressed="false">
 data_js = ",".join(f'"{n}":{{pop:{p},county:"{c}"}}' for n, _, _, p, c in cities)
 _rd = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_roads.svg")).read()
 _edges = []
-for _nm, _d in re.findall(r'<path data-road="([^"]+)" d="([^"]+)"', _rd):
+_rdn = {}
+for _nm, _al, _d in re.findall(r'<path data-road="([^"]+)"(?: data-name="([^"]+)")? d="([^"]+)"', _rd):
+    if _al: _rdn[_nm] = _al
     _pts = re.findall(r'(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)', _d)
     for (_a, _b2), (_c, _e) in zip(_pts, _pts[1:]):
         _edges.append(f'[{_a},{_b2},{_c},{_e},"{_nm}"]')
 roadjs = "[" + ",".join(_edges) + "]"
+rnjs = json.dumps(_rdn)
 simjs = "{" + ",".join(f'"{n}":{{"x":{x},"y":{y},"lat":{LATLON[n][0]},"lon":{LATLON[n][1]}}}' for n, x, y, *_ in cities) + "}"
 page("service-area", "Service Area", "RoboRide's planned Northwest Arkansas service area: Bentonville, Rogers, Springdale, Fayetteville, Farmington, Siloam Springs and Eureka Springs.", f'''
 <section class="page-hero"><div class="wrap">
@@ -196,6 +199,7 @@ page("service-area", "Service Area", "RoboRide's planned Northwest Arkansas serv
       </svg>
     </div>
     <div>
+      <div class="route-bar" id="route-bar"><div class="rb-ends"><div class="rb-end" id="rb-from"><span>From</span><b>–</b></div><div class="rb-end" id="rb-to"><span>To</span><b>–</b></div></div><p class="rb-prompt" id="route-prompt" aria-live="polite"><b>Step 1:</b> tap a city on the map or below to set <b>From</b>.</p><div class="rb-actions"><button type="button" class="btn-ghost" id="trip-swap" disabled>Swap</button><button type="button" class="btn-ghost" id="trip-clear" disabled>Clear route</button></div></div>
       <ul class="city-list" aria-label="Choose a city">{btns}</ul>
       <div class="panel" id="city-panel" aria-live="polite">
         <span class="badge warn">Planned · not yet served</span>
@@ -203,40 +207,41 @@ page("service-area", "Service Area", "RoboRide's planned Northwest Arkansas serv
         <p class="muted" id="city-blurb" style="margin:0">Select a city on the map or from the list.</p>
         <dl id="city-facts" hidden><dt>Population</dt><dd id="city-pop"></dd><dt>County</dt><dd id="city-county"></dd><dt>RoboRide status</dt><dd>Planned; no service yet</dd></dl>
         <p class="cite" style="margin-top:1rem">Population: U.S. Census Bureau, Vintage 2025 estimates (July 1, 2025): {ext(CENSUS, "dataset")} · {ext(QF, "QuickFacts")}</p>
-        <div class="trip-set" id="trip-set" hidden><button type="button" class="btn-ghost" data-set="start">Set as start</button><button type="button" class="btn-ghost" data-set="end">Set as destination</button></div>
         <div class="trip" id="trip" aria-labelledby="trip-h">
           <h3 id="trip-h">Picture a trip</h3>
-          <p class="muted trip-hint" id="trip-hint">Pick a city, then choose <b>Set as start</b> or <b>Set as destination</b>.</p>
+          <p class="muted trip-hint" id="trip-hint">Tap one city for <b>From</b>, then another for <b>To</b>. The route draws on the map.</p>
           <div class="trip-ends"><div><span>From</span><b id="trip-from">–</b></div><div><span>To</span><b id="trip-to">–</b></div></div>
           <div class="mode" role="group" aria-label="Trip type"><button type="button" data-mode="ride" aria-pressed="true">Ride</button><button type="button" data-mode="delivery" aria-pressed="false">Delivery</button></div>
-          <div class="readout" aria-live="polite"><div><b data-sim-dist>–</b><span>Straight-line miles (approx.)</span></div><div><b data-sim-road>–</b><span>Main highway</span></div></div>
-          <div class="trip-foot"><button type="button" class="btn-ghost" id="trip-clear" disabled>Clear route</button></div>
+          <div class="readout" aria-live="polite"><div><b data-sim-dist>–</b><span>Straight-line miles (approx.)</span></div><div><b data-sim-road>–</b><span>Route (simplified)</span></div></div>
           <p class="tiny" style="margin:0">An illustration, not a booking tool: RoboRide isn't operating yet. Miles are straight-line between city centers; road trips are longer. Prices and trip times haven't been set.</p>
         </div>
         <div class="actions" style="margin-top:1.25rem"><a class="btn" href="index.html#signup">Join the waitlist</a></div>
       </div>
     </div>
   </div>
-  <p class="tiny" style="margin-top:1.5rem">Map positions follow real latitude/longitude; roads are simplified. Launch order and exact coverage zones haven't been decided.</p>
+  <p class="tiny" style="margin-top:1.5rem">Map positions follow real latitude/longitude; roads are simplified, traced from OpenStreetMap (© OpenStreetMap contributors, ODbL). Thin lines are state-highway back roads. Launch order and exact coverage zones haven't been decided.</p>
 </div></section>
 <script>
-(function(){{var D={{{data_js}}},C={simjs},E={roadjs},nf=new Intl.NumberFormat('en-US'),$=function(i){{return document.getElementById(i)}};
+(function(){{var D={{{data_js}}},C={simjs},E={roadjs},RN={rnjs},nf=new Intl.NumberFormat('en-US'),$=function(i){{return document.getElementById(i)}};
 var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,cur=null,A=null,B=null,mode='ride',anim=0;
 var route=document.querySelector('[data-route]'),car=document.querySelector('[data-car]');
 /* road graph built from the shared map_roads.svg */
 var N={{}},key=function(x,y){{return x+','+y}};
-E.forEach(function(e){{var a=key(e[0],e[1]),b=key(e[2],e[3]),w=Math.hypot(e[2]-e[0],e[3]-e[1])*(e[4]!=="Local roads"?1:1.25);
+E.forEach(function(e){{var a=key(e[0],e[1]),b=key(e[2],e[3]),w=Math.hypot(e[2]-e[0],e[3]-e[1])*(/^AR-/.test(e[4])?1.08:1);
 (N[a]=N[a]||[]).push([b,w,e[4]]);(N[b]=N[b]||[]).push([a,w,e[4]]);}});
 function path(s,t){{var d={{}},pv={{}},pn={{}},seen={{}};d[s]=0;for(;;){{var u=null;for(var k in d)if(!seen[k]&&(u===null||d[k]<d[u]))u=k;if(u===null)return null;if(u===t)break;seen[u]=1;
 (N[u]||[]).forEach(function(n){{var v=d[u]+n[1];if(d[n[0]]===undefined||v<d[n[0]]){{d[n[0]]=v;pv[n[0]]=u;pn[n[0]]=n[2];}}}});}}
 var pts=[t],names=[];for(var c=t;c!==s;c=pv[c]){{if(pn[c]&&names.indexOf(pn[c])<0)names.unshift(pn[c]);pts.unshift(pv[c]);}}return {{pts:pts,names:names}};}}
 function mi(a,b){{var R=3958.8,r=Math.PI/180,dA=(b.lat-a.lat)*r,dO=(b.lon-a.lon)*r,h=Math.sin(dA/2)*Math.sin(dA/2)+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dO/2)*Math.sin(dO/2);return 2*R*Math.asin(Math.sqrt(h))}}
 function mark(){{document.querySelectorAll('.map [data-city]').forEach(function(el){{var n=el.getAttribute('data-city');el.classList.toggle('is-start',n===A);el.classList.toggle('is-end',n===B);}});}}
-function draw(){{cancelAnimationFrame(anim);$('trip-from').textContent=A||'–';$('trip-to').textContent=B||'–';$('trip-clear').disabled=!(A||B);mark();
+function nm(r){{return r&&r.names.length?r.names.map(function(n){{return RN[n]?n+' ('+RN[n]+')':n}}).join(' → '):''}}
+function draw(){{cancelAnimationFrame(anim);var r=A&&B?path(key(C[A].x,C[A].y),key(C[B].x,C[B].y)):null,VIA=nm(r);$('trip-from').textContent=A||'–';$('trip-to').textContent=B||'–';$('trip-clear').disabled=!(A||B);$('trip-swap').disabled=!(A&&B);
+$('rb-from').querySelector('b').textContent=A||'–';$('rb-to').querySelector('b').textContent=B||'–';$('rb-from').classList.toggle('is-set',!!A);$('rb-to').classList.toggle('is-set',!!B);$('rb-from').classList.toggle('is-next',!A);$('rb-to').classList.toggle('is-next',!!A&&!B);
+$('route-prompt').innerHTML=!A?'<b>Step 1:</b> tap a city on the map or below to set <b>From</b>.':!B?'<b>Step 2:</b> tap another city to set <b>To</b>.':'Route shown: <b>'+A+'</b> to <b>'+B+'</b>'+(VIA?' via '+VIA:'')+'. Tap any city to start a new trip.';mark();
 var dist=document.querySelector('[data-sim-dist]'),road=document.querySelector('[data-sim-road]');
 if(!A||!B){{route.setAttribute('d','');car.setAttribute('opacity',0);dist.textContent='–';road.textContent='–';$('trip-hint').hidden=false;return}}
-$('trip-hint').hidden=true;var r=path(key(C[A].x,C[A].y),key(C[B].x,C[B].y));
-dist.textContent='≈ '+Math.round(mi(C[A],C[B]))+' mi';road.textContent=r&&r.names.length?r.names.join(' · '):'Secondary roads';
+$('trip-hint').hidden=true;
+dist.textContent='≈ '+Math.round(mi(C[A],C[B]))+' mi';road.textContent=VIA||'Secondary roads';
 route.setAttribute('d',r?'M'+r.pts.map(function(p){{return p.replace(',',' ')}}).join(' L'):'');route.setAttribute('stroke',mode==='ride'?'#f6d58c':'#7fd6ff');
 var L=route.getTotalLength();car.setAttribute('opacity',L?1:0);if(!L)return;
 if(reduce){{var e=route.getPointAtLength(L);car.setAttribute('transform','translate('+e.x+' '+e.y+')');return}}
@@ -245,12 +250,13 @@ car.setAttribute('transform','translate('+pt.x.toFixed(2)+' '+pt.y.toFixed(2)+')
 function pick(n){{var d=D[n];if(!d)return;cur=n;$('city-name').textContent=n;
 $('city-blurb').textContent=n+' is part of RoboRide\u2019s planned Northwest Arkansas service area.';
 $('city-pop').textContent=nf.format(d.pop)+' (July 1, 2025 estimate)';$('city-county').textContent=d.county.charAt(0).toUpperCase()+d.county.slice(1);
-$('city-facts').hidden=false;$('trip-set').hidden=false;
-document.querySelectorAll('[data-set]').forEach(function(btn){{var s=btn.getAttribute('data-set')==='start';btn.textContent=s?'Set '+n+' as start':'Set '+n+' as destination';btn.disabled=(s?B:A)===n||(s?A:B)===n;}});
+$('city-facts').hidden=false;
 document.querySelectorAll('[data-city]').forEach(function(el){{el.setAttribute('aria-pressed',el.getAttribute('data-city')===n?'true':'false');}});}}
-document.querySelectorAll('[data-city]').forEach(function(el){{el.addEventListener('click',function(){{pick(el.getAttribute('data-city'));}});
-el.addEventListener('keydown',function(e){{if(e.key==='Enter'||e.key===' '){{e.preventDefault();pick(el.getAttribute('data-city'));}}}});}});
-document.querySelectorAll('[data-set]').forEach(function(btn){{btn.addEventListener('click',function(){{if(!cur)return;if(btn.getAttribute('data-set')==='start')A=cur;else B=cur;draw();pick(cur);}});}});
+/* a tap sets From, the next tap sets To; a tap after a full route starts a new trip */
+function choose(n){{if(!D[n])return;if(!A||(A&&B)){{A=n;B=null;}}else if(n===A){{A=null;}}else B=n;pick(n);draw();}}
+document.querySelectorAll('[data-city]').forEach(function(el){{el.addEventListener('click',function(e){{e.preventDefault();choose(el.getAttribute('data-city'));}});
+el.addEventListener('keydown',function(e){{if(e.key==='Enter'||e.key===' '){{e.preventDefault();choose(el.getAttribute('data-city'));}}}});}});
+$('trip-swap').addEventListener('click',function(){{if(!(A&&B))return;var t=A;A=B;B=t;draw();}});
 document.querySelectorAll('[data-mode]').forEach(function(btn){{btn.addEventListener('click',function(){{mode=btn.getAttribute('data-mode');document.querySelectorAll('[data-mode]').forEach(function(x){{x.setAttribute('aria-pressed',x===btn?'true':'false')}});draw();}});}});
 $('trip-clear').addEventListener('click',function(){{A=B=null;draw();if(cur)pick(cur);}});
 var h=decodeURIComponent(location.hash.slice(1)).replace(/-/g,' ');Object.keys(D).forEach(function(k){{if(k.toLowerCase()===h.toLowerCase())pick(k);}});draw();}})();
@@ -395,7 +401,7 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
     <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><img src="image/brand/roboride-pin.svg" width="75" height="96" alt="RoboRide service-area pin" loading="lazy"></div><h3>Service-area pin (secondary mark)</h3><p>The RoboRide cab in a gold map pin. Use it for places RoboRide serves or plans to serve, not as a replacement for the main logo. <a href="image/brand/roboride-pin.svg" download>SVG</a> · <a href="image/brand/roboride-pin-512.png" download>PNG 512</a></p></div>
     <div class="card"><div style="background:#0a0806;border:.5px solid var(--line);border-radius:.6rem;padding:1.5rem;text-align:center;margin-bottom:1rem"><span class="logo" style="font-size:clamp(1.3rem,6vw,2rem);white-space:nowrap"><img src="image/brand/roboride-logo-white.svg" width="30" height="30" alt="" style="display:inline-block;vertical-align:-6px;margin-right:.5rem">Robo<span>Ride</span></span></div><h3>Wordmark</h3><p>Set in Syne ExtraBold; "Robo" in white, "Ride" in gold #E8B74E on dark #0A0806, with the logo to the left.</p></div>
     <div class="card"><picture><source type="image/avif" srcset="image/founder-joseph-400.avif"><source type="image/webp" srcset="image/founder-joseph-400.webp"><img src="image/founder-joseph-400.jpg" alt="Joseph Bowers, founder of RoboRide LLC" width="400" height="500" loading="lazy" decoding="async" style="width:120px;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem"></picture><h3>Founder headshot</h3><p>Joseph Bowers. <a href="image/founder-joseph-800.jpg" download>Download JPG (800×1000)</a></p></div>
-    <div class="card"><img src="image/hero-cybercab-960.jpg" alt="Front view of a Tesla Cybercab with doors raised" width="960" height="540" style="width:100%;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem" loading="lazy"><h3>Cybercab photo</h3><p>"Front of the Tesla Cybercab" by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>; credit required. <a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener">Original</a></p></div>
+    <div class="card"><picture><source type="image/avif" srcset="image/hero-cybercab-960.avif"><source type="image/webp" srcset="image/hero-cybercab-960.webp"><img src="image/hero-cybercab-960.jpg" alt="Front view of a Tesla Cybercab with doors raised" width="960" height="540" style="width:100%;height:auto;border-radius:.6rem;display:block;margin-bottom:1rem" loading="lazy" decoding="async"></picture><h3>Cybercab photo</h3><p>"Front of the Tesla Cybercab" by Steve Jurvetson, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>; credit required. <a href="https://commons.wikimedia.org/wiki/File:Front_of_the_Tesla_Cybercab.jpg" target="_blank" rel="noopener">Original</a></p></div>
   </div>
   <p class="tiny" style="margin-top:1.25rem">Brand colors: gold #E8B74E · deep gold #C98F2B · background #0A0806 · text #E8E4DC. Tesla and Cybercab are trademarks of Tesla, Inc.</p>
 </div></section>
