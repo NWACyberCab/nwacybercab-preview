@@ -286,12 +286,12 @@
     <p class="sr-only">Projected total: about {{ fsdMilesRounded }} unsupervised miles.</p>
     <span data-fsd-proj="">Projection, not official Tesla data</span>
     <sc-if value="{{ fsdCapped }}" hint-placeholder-val="{{ false }}">
-      <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run {{ fsdMaxWeeks }} weeks past the last official figure and needs a new baseline.</p>
+      <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run well past the last fleet count and needs a new baseline.</p>
     </sc-if>
     <details data-fsd-details="">
       <summary>How this number is calculated</summary>
-      <p><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> we start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and assume growth of {{ fsdGrowthText }} a week continues: miles = base × (1 + growth)<sup>weeks since base</sup>, where weeks are counted continuously from the elapsed time (days ÷ 7), so the counter rises smoothly instead of jumping each week. That rate is our own calculation, not a figure Tesla stated. It's the average weekly growth between Tesla's two announced totals, 380,000 miles on July 22 and 1,000,000 on Sept 3, 2026, measured over the actual 43 days between them: (1,000,000 ÷ 380,000)<sup>7/43</sup> − 1. (On its Q2 call Tesla described weekly mileage growth of "more than 10% a week.") Real growth may be faster or slower, so treat this as an estimate. It covers Tesla's own driverless fleet (mostly Model Y) in the cities where Tesla operates. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
-      <p data-fsd-src="">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total and "more than 10% a week" remark, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>, <a href="https://www.businessinsider.com/tesla-q2-2026-earnings-robotaxi-paid-miles-fsd-cybercab-progress-2026-7" target="_blank" rel="noopener">Business Insider</a>).</p>
+      <p><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> projection, not official Tesla data. We start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and add the miles the driverless fleet would cover since then: fleet size × miles per car per day, summed second by second. Fleet size is drawn straight between public fleet-tracker counts (256 driverless cars on Sept 3; about 500 on Oct 14: Austin ~400, Dallas 68, Houston 33), then assumed to keep growing by about 6 cars a day (the Sept–Oct average) for 8 weeks and then hold steady. Miles per car per day is our assumption: {{ fsdMpdBase }} at the Sept 3 fleet size, rising as the fleet grows (bigger fleets keep each car busier) up to a cap of {{ fsdMpdCap }}. Right now that's about {{ fsdFleetText }} cars at {{ fsdMpdText }} miles a day each. Tracker counts are cars seen in service, not official, and real utilization may be lower or higher, so treat this as an estimate. It covers Tesla's own driverless fleet (Bay Area safety-driver cars excluded) and resets to Tesla's next official total. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
+      <p data-fsd-src="">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>) · 256-car fleet on Sept 3 (<a href="https://www.theverge.com/transportation/989501/tesla-cybercab-launch-robotaxi-austin-musk" target="_blank" rel="noopener">The Verge</a>) · current fleet counts (<a href="https://teslanewswire.com/robotaxi-tracker" target="_blank" rel="noopener">Tesla News Wire Robotaxi Tracker</a>, <a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a>).</p>
     </details>
   </div>
 
@@ -722,22 +722,65 @@
   &quot;heroTweetUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://x.com/robotaxi/status/2075766457242415386?s=20&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero media&quot;},
   &quot;heroYouTubeId&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;OtjEkdi6p_s&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero media&quot;}
 }">
-// ===== FSD miles counter config (edit these three lines to re-baseline) =====
-// BASE_MILES / BASE_DATE: last official cumulative unsupervised-miles figure Tesla stated, and when.
-// WEEKLY_GROWTH: assumed week-over-week growth (0.10 = 10%). MAX_WEEKS: stop projecting after this many
-// weeks past BASE_DATE (the number compounds fast); the counter then freezes and asks for a new baseline.
+// ===== FSD miles counter config (fleet-based projection; edit only this object to re-anchor) =====
+// Model: miles(t) = latest official miles anchor + integral from that anchor to t of fleet(t) x milesPerCarPerDay(t).
+// RE-ANCHOR CHECKLIST (e.g. after Tesla's Q3 call, Oct 21, 2026):
+//   1. New official cumulative total from Tesla? Append it to MILES_ANCHORS. The newest anchor whose date
+//      has passed becomes the base automatically (it overrides the Sept 3 figure); older entries stay for the record.
+//   2. New fleet count (tracker or Tesla)? Append it to FLEET_ANCHORS (keep dates ascending). Fleet is
+//      linearly interpolated between anchors, then extrapolated from the last one (see FLEET_EXTRAP).
+//   3. Optionally retune MPD (miles per car per day) if Tesla gives utilization data.
+// Dates are ISO with Central offset. All numbers are estimates except the MILES_ANCHORS Tesla stated.
 const FSD_COUNTER = {
-  BASE_MILES: 1000000,                      // Ashok Elluswamy, Tesla Cybercab event, Austin
-  BASE_DATE: '2026-09-03T19:00:00-05:00',   // Sept 3, 2026 (evening event; exact time approximate)
-  WEEKLY_GROWTH: 0.1706,                    // derived: 380k (Jul 22) -> 1M (Sep 3, 2026), 43 days apart: (1e6/380e3)^(7/43) - 1 ≈ 17.06%/wk; not an official Tesla rate
-  MAX_WEEKS: 12                             // freezes Nov 26, 2026 at ~6.6M; re-baseline when Tesla states a new total (Q3 call Oct 21)
+  // Official cumulative unsupervised miles stated by Tesla (newest past entry wins).
+  MILES_ANCHORS: [
+    { date: '2026-09-03T19:00:00-05:00', miles: 1000000, src: 'Ashok Elluswamy, Tesla Cybercab event, Austin (time approximate)' }
+    // { date: '2026-10-21T16:30:00-05:00', miles: 0, src: 'Tesla Q3 2026 call' },   // <- fill in after Oct 21
+  ],
+  // Unsupervised (no one in the car) robotaxi fleet counts. Bay Area safety-driver cars excluded.
+  FLEET_ANCHORS: [
+    { date: '2026-09-03T19:00:00-05:00', cars: 256, src: 'RobotaxiTracker via The Verge, six cities' },
+    { date: '2026-10-10T12:00:00-05:00', cars: 374, src: 'Tracker: Austin 275 + Dallas 67 + Houston 32 (Teslarati / EV, Oct 10-11)' },
+    { date: '2026-10-12T12:00:00-05:00', cars: 435, src: 'Tracker: Austin 335 (Tesla News Wire) + Dallas/Houston ~100' },
+    { date: '2026-10-14T12:00:00-05:00', cars: 501, src: 'Tracker: Austin 400 + Dallas 68 + Houston 33 (teslanewswire.com/robotaxi-tracker)' }
+  ],
+  // After the last fleet anchor: add CARS_PER_DAY (≈ the Sept 3 -> Oct 14 average, 245 cars / 41 days, not the
+  // faster last-week burst) for MAX_DAYS, then hold the fleet flat. FREEZE_DAYS after the last fleet anchor the
+  // counter stops entirely and shows "needs a new baseline".
+  FLEET_EXTRAP: { CARS_PER_DAY: 6, MAX_DAYS: 56, FREEZE_DAYS: 84 },
+  // Miles per car per day: rises linearly with fleet size (bigger fleets = better utilization), capped.
+  // 150 at the 256-car Sept 3 fleet (research mid case), +50 per 244 extra cars (200 at ~500 cars), cap 200.
+  // Sanity: 16-17 h service day x 50-70% utilization x 18-22 mph ≈ 150-250 mi/day; Waymo-like ≈ 100-200.
+  MPD: { BASE: 150, BASE_FLEET: 256, PER_CAR: 50 / 244, CAP: 200 }
 };
 // ===========================================================================
+function fsdFleet(ms) {
+  const A = FSD_COUNTER.FLEET_ANCHORS, X = FSD_COUNTER.FLEET_EXTRAP, DAY = 864e5;
+  const t = (a) => Date.parse(a.date);
+  if (ms <= t(A[0])) return A[0].cars;
+  for (let i = 1; i < A.length; i++) if (ms <= t(A[i])) {
+    const k = (ms - t(A[i - 1])) / (t(A[i]) - t(A[i - 1])); return A[i - 1].cars + k * (A[i].cars - A[i - 1].cars);
+  }
+  const last = A[A.length - 1];
+  return last.cars + X.CARS_PER_DAY * Math.min(X.MAX_DAYS, (ms - t(last)) / DAY);
+}
+function fsdMpd(cars) { const m = FSD_COUNTER.MPD; return Math.min(m.CAP, Math.max(m.BASE, m.BASE + m.PER_CAR * (cars - m.BASE_FLEET))); }
+function fsdRate(ms) { const f = fsdFleet(ms); return f * fsdMpd(f) / 864e5; } // miles per millisecond
+// Precomputed cumulative miles at hourly steps (Simpson's rule), then interpolated: cheap per tick, smooth.
+const FSD_TABLE = (() => {
+  const c = FSD_COUNTER, H = 36e5, now = Date.now();
+  const base = c.MILES_ANCHORS.filter(a => Date.parse(a.date) <= now).pop() || c.MILES_ANCHORS[0];
+  const t0 = Date.parse(base.date), lastFleet = Date.parse(c.FLEET_ANCHORS[c.FLEET_ANCHORS.length - 1].date);
+  const tEnd = lastFleet + c.FLEET_EXTRAP.FREEZE_DAYS * 864e5;
+  const cum = [base.miles];
+  for (let t = t0; t < tEnd; t += H) cum.push(cum[cum.length - 1] + H / 6 * (fsdRate(t) + 4 * fsdRate(t + H / 2) + fsdRate(t + H)));
+  return { t0, tEnd, H, cum, base };
+})();
 function fsdProjection(now) {
-  const c = FSD_COUNTER, WEEK = 7 * 24 * 3600 * 1000;
-  const raw = Math.max(0, (now - Date.parse(c.BASE_DATE)) / WEEK);
-  const weeks = Math.min(raw, c.MAX_WEEKS);
-  return { miles: c.BASE_MILES * Math.pow(1 + c.WEEKLY_GROWTH, weeks), capped: raw > c.MAX_WEEKS };
+  const T = FSD_TABLE, capped = now >= T.tEnd, t = Math.min(Math.max(now, T.t0), T.tEnd);
+  const i = Math.min(Math.floor((t - T.t0) / T.H), T.cum.length - 2), dt = t - (T.t0 + i * T.H);
+  // within the hour: exact-enough linear step using the instantaneous rate
+  return { miles: Math.min(T.cum[i] + fsdRate(T.t0 + i * T.H + dt / 2) * dt, T.cum[i + 1]), capped, fleet: fsdFleet(t), mpd: fsdMpd(fsdFleet(t)) };
 }
 
 class Component extends DCLogic {
@@ -788,21 +831,21 @@ class Component extends DCLogic {
       });
       if (!reducedMotion) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); }
     }
-    // Tick the projected-miles counter smoothly (direct DOM write ~10x/second; no re-render needed).
+    // Tick the projected-miles counter smoothly (~1-2 mi/s; direct DOM write 4x/second, integer miles; no re-render needed).
     const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     // Count up from the base figure when the counter scrolls into view, then tick live.
     // this._fsdText is what renderVals shows, so a re-render never fights the animation.
     const setMiles = (n) => { this._fsdText = fmt.format(Math.floor(n)); const el = document.querySelector('[data-fsd-miles]'); if (el) el.textContent = this._fsdText; };
     const tick = () => setMiles(fsdProjection(Date.now()).miles);
-    const startLive = () => { tick(); this._fsdTimer = setInterval(tick, reduce ? 5000 : 100); };
+    const startLive = () => { tick(); this._fsdTimer = setInterval(tick, reduce ? 5000 : 250); };
     const card = document.querySelector('[data-fsd-miles]');
     if (reduce || !card || !('IntersectionObserver' in window)) startLive();
     else {
-      setMiles(FSD_COUNTER.BASE_MILES);
+      setMiles(FSD_TABLE.base.miles);
       this._fsdIO = new IntersectionObserver((es) => {
         if (!es[0].isIntersecting) return; this._fsdIO.disconnect();
-        const from = FSD_COUNTER.BASE_MILES, t0 = performance.now(), D = 1600;
+        const from = FSD_TABLE.base.miles, t0 = performance.now(), D = 1600;
         const step = (t) => { const k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3);
           setMiles(from + (fsdProjection(Date.now()).miles - from) * e);
           if (k < 1) requestAnimationFrame(step); else startLive(); };
@@ -1030,10 +1073,12 @@ class Component extends DCLogic {
           fsdMilesText: this._fsdText || new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.floor(pr.miles)),
           fsdMilesRounded: nf.format(Math.round(pr.miles / 1000) * 1000),
           fsdCapped: pr.capped,
-          fsdMaxWeeks: FSD_COUNTER.MAX_WEEKS,
-          fsdBaseText: nf.format(FSD_COUNTER.BASE_MILES),
-          fsdBaseDateText: new Date(FSD_COUNTER.BASE_DATE).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' }),
-          fsdGrowthText: (Math.round(FSD_COUNTER.WEEKLY_GROWTH * 1000) / 10).toFixed(1) + '%'
+          fsdBaseText: nf.format(FSD_TABLE.base.miles),
+          fsdBaseDateText: new Date(FSD_TABLE.base.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' }),
+          fsdFleetText: nf.format(Math.round(pr.fleet)),
+          fsdMpdText: nf.format(Math.round(pr.mpd)),
+          fsdMpdBase: nf.format(FSD_COUNTER.MPD.BASE),
+          fsdMpdCap: nf.format(FSD_COUNTER.MPD.CAP)
         };
       })(),
       // TODO (Joseph): no business emails yet. When you have them, add them in the Contact section
