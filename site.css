@@ -72,6 +72,7 @@ em.hl{font-style:normal;color:var(--gold)}
 .site-footer h2{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 1rem}
 .site-footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
 .site-footer a{color:var(--muted);text-decoration:none;font-size:.875rem} .site-footer a:hover{color:var(--gold)}
+.site-footer a.social-x,a.social-x{display:inline-flex;align-items:center;gap:.45rem;min-height:24px}.social-x svg{flex:none}
 .site-footer .base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;padding-top:1.5rem;border-top:.5px solid var(--line);font-size:.78rem;color:var(--muted)}
 /* forms */
 .form{display:grid;gap:1rem;max-width:640px}

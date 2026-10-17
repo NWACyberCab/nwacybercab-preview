@@ -8,6 +8,12 @@ FORM = "https://formspree.io/f/mljgwkpr"
 # Public contact addresses (single source for generated pages; index.html mirrors these by hand).
 EMAIL = {"hello": "hello@nwaroboride.org", "press": "press@nwaroboride.org", "partners": "partners@nwaroboride.org",
          "support": "support@nwaroboride.org", "privacy": "privacy@nwaroboride.org"}
+# Social profiles (single source; index.html and 404.html mirror these by hand). Only X so far; add more here.
+X_HANDLE = "@NWARoboRide"
+X_URL = "https://x.com/NWARoboRide"
+X_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
+def x_link(cls="social-x"):
+    return f'<a class="{cls}" href="{X_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on X, @NWARoboRide">{X_ICON}<span>{X_HANDLE}</span></a>'
 def mail(key):
     return f'<a class="email" href="mailto:{EMAIL[key]}">{EMAIL[key]}</a>'
 NAV = [("index.html#how", "Riders", None), ("businesses.html", "Businesses", "businesses"), ("service-area.html", "Service Area", "service-area"),
@@ -37,6 +43,7 @@ def page(slug, title, desc, body, extra_head=""):
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{html.escape(title)}: RoboRide, Northwest Arkansas">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="{X_HANDLE}">
 <meta name="twitter:image" content="{SITE}image/og/og-{slug}.jpg">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE},{"@type":"ListItem","position":2,"name":title,"item":SITE+slug+".html"}]})}</script>
 <link rel="icon" href="favicon.ico" sizes="48x48">
@@ -75,7 +82,7 @@ def page(slug, title, desc, body, extra_head=""):
       <div><h2>Riders</h2><ul><li><a href="index.html#how">How it will work</a></li><li><a href="service-area.html">Service area</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#signup">Join the waitlist</a></li></ul></div>
       <div><h2>Businesses</h2><ul><li><a href="businesses.html">Delivery &amp; business</a></li><li><a href="businesses.html#interest">Register interest</a></li></ul></div>
       <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-      <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li></ul></div>
+      <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li><li>{x_link()}</li></ul></div>
     </div>
     <div class="share-row"><button type="button" class="share-btn" data-share data-title="{html.escape(title)} | RoboRide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share this page</span></button><span class="share-status" role="status" aria-live="polite"></span></div>
     <div class="base"><span>© 2026 RoboRide LLC. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span><span>Northwest Arkansas <span aria-hidden="true">🌲</span></span></div>
@@ -384,8 +391,8 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
 <section class="page-hero"><div class="wrap">
   <div class="eyebrow">Press kit</div>
   <h1>Writing about<br><em class="hl">RoboRide?</em></h1>
-  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, email {mail("press")}.</p>
-  <div class="actions"><a class="btn" href="mailto:{EMAIL["press"]}">Email press@</a></div>
+  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, email {mail("press")}. For announcements and launch news, media can follow <a href="{X_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on X, @NWARoboRide">{X_HANDLE}</a> on X.</p>
+  <div class="actions"><a class="btn" href="mailto:{EMAIL["press"]}">Email press@</a>{x_link("btn ghost social-x")}</div>
 </div></section>
 
 <section class="section alt"><div class="wrap prose">
