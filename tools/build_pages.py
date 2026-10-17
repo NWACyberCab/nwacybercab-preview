@@ -8,7 +8,7 @@ FORM = "https://formspree.io/f/mljgwkpr"
 # Public contact addresses (single source for generated pages; index.html mirrors these by hand).
 EMAIL = {"hello": "hello@nwaroboride.org", "press": "press@nwaroboride.org", "partners": "partners@nwaroboride.org",
          "support": "support@nwaroboride.org", "privacy": "privacy@nwaroboride.org"}
-# Social profiles (single source; index.html and 404.html mirror these by hand). X and Facebook so far; add more here.
+# Social profiles (single source; index.html and 404.html mirror these by hand). X, Facebook and Instagram so far; add more here.
 X_HANDLE = "@NWARoboRide"
 X_URL = "https://x.com/NWARoboRide"
 X_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
@@ -17,6 +17,11 @@ FB_URL = "https://www.facebook.com/profile.php?id=61595134426111"
 FB_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>'
 def fb_link(cls="social-x social-fb"):
     return f'<a class="{cls}" href="{FB_URL}" target="_blank" rel="me noopener" aria-label="RoboRide LLC on Facebook">{FB_ICON}<span>Facebook</span></a>'
+IG_URL = "https://www.instagram.com/nwaroboride/"
+IG_HANDLE = "@nwaroboride"
+IG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor"/></svg>'
+def ig_link(cls="social-x social-ig"):
+    return f'<a class="{cls}" href="{IG_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on Instagram">{IG_ICON}<span>Instagram</span></a>'
 def x_link(cls="social-x"):
     return f'<a class="{cls}" href="{X_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on X, @NWARoboRide">{X_ICON}<span>{X_HANDLE}</span></a>'
 def mail(key):
@@ -87,7 +92,7 @@ def page(slug, title, desc, body, extra_head=""):
       <div><h2>Riders</h2><ul><li><a href="index.html#how">How it will work</a></li><li><a href="service-area.html">Service area</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#signup">Join the waitlist</a></li></ul></div>
       <div><h2>Businesses</h2><ul><li><a href="businesses.html">Delivery &amp; business</a></li><li><a href="businesses.html#interest">Register interest</a></li></ul></div>
       <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-      <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li><li>{x_link()}</li><li>{fb_link()}</li></ul></div>
+      <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li><li>{x_link()}</li><li>{fb_link()}</li><li>{ig_link()}</li></ul></div>
     </div>
     <div class="share-row"><button type="button" class="share-btn" data-share data-title="{html.escape(title)} | RoboRide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share this page</span></button><span class="share-status" role="status" aria-live="polite"></span></div>
     <div class="base"><span>© 2026 RoboRide LLC. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span><span>Northwest Arkansas <span aria-hidden="true">🌲</span></span></div>
@@ -396,8 +401,8 @@ page("press", "Press Kit", "Press information, boilerplate and media assets for 
 <section class="page-hero"><div class="wrap">
   <div class="eyebrow">Press kit</div>
   <h1>Writing about<br><em class="hl">RoboRide?</em></h1>
-  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, email {mail("press")}. For announcements and launch news, media can follow <a href="{X_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on X, @NWARoboRide">{X_HANDLE}</a> on X and <a href="{FB_URL}" target="_blank" rel="me noopener" aria-label="RoboRide LLC on Facebook">RoboRide LLC on Facebook</a>.</p>
-  <div class="actions"><a class="btn" href="mailto:{EMAIL["press"]}">Email press@</a>{x_link("btn ghost social-x")}{fb_link("btn ghost social-x social-fb")}</div>
+  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, email {mail("press")}. For announcements and launch news, media can follow <a href="{X_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on X, @NWARoboRide">{X_HANDLE}</a> on X, <a href="{FB_URL}" target="_blank" rel="me noopener" aria-label="RoboRide LLC on Facebook">RoboRide LLC on Facebook</a> and <a href="{IG_URL}" target="_blank" rel="me noopener" aria-label="RoboRide on Instagram">RoboRide on Instagram</a>.</p>
+  <div class="actions"><a class="btn" href="mailto:{EMAIL["press"]}">Email press@</a>{x_link("btn ghost social-x")}{fb_link("btn ghost social-x social-fb")}{ig_link("btn ghost social-x social-ig")}</div>
 </div></section>
 
 <section class="section alt"><div class="wrap prose">
