@@ -209,3 +209,4 @@ input.valid{border-color:rgba(74,222,128,.45)!important}
 .rb-end.is-set{border-style:solid;border-color:rgba(232,183,78,.55)}
 .rb-prompt{margin:0;font-size:.9rem;color:var(--text)}
 .rb-actions{display:flex;flex-wrap:wrap;gap:.5rem}.rb-actions button{min-height:44px}
+a.email{overflow-wrap:anywhere;word-break:break-word}

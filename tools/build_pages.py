@@ -5,6 +5,11 @@ import os, html, json, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.nwaroboride.org/"
 FORM = "https://formspree.io/f/mljgwkpr"
+# Public contact addresses (single source for generated pages; index.html mirrors these by hand).
+EMAIL = {"hello": "hello@nwaroboride.org", "press": "press@nwaroboride.org", "partners": "partners@nwaroboride.org",
+         "support": "support@nwaroboride.org", "privacy": "privacy@nwaroboride.org"}
+def mail(key):
+    return f'<a class="email" href="mailto:{EMAIL[key]}">{EMAIL[key]}</a>'
 NAV = [("index.html#how", "Riders", None), ("businesses.html", "Businesses", "businesses"), ("service-area.html", "Service Area", "service-area"),
        ("safety.html", "Safety", "safety"), ("about.html", "About", "about"), ("index.html#faq", "FAQ", None), ("index.html#contact", "Contact", None)]
 
@@ -70,6 +75,7 @@ def page(slug, title, desc, body, extra_head=""):
       <div><h2>Riders</h2><ul><li><a href="index.html#how">How it will work</a></li><li><a href="service-area.html">Service area</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#signup">Join the waitlist</a></li></ul></div>
       <div><h2>Businesses</h2><ul><li><a href="businesses.html">Delivery &amp; business</a></li><li><a href="businesses.html#interest">Register interest</a></li></ul></div>
       <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+      <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li></ul></div>
     </div>
     <div class="share-row"><button type="button" class="share-btn" data-share data-title="{html.escape(title)} | RoboRide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share this page</span></button><span class="share-status" role="status" aria-live="polite"></span></div>
     <div class="base"><span>© 2026 RoboRide LLC. Tesla and Cybercab are trademarks of Tesla, Inc.; RoboRide is an independent company.</span><span>Northwest Arkansas <span aria-hidden="true">🌲</span></span></div>
@@ -124,6 +130,7 @@ page("businesses", "Delivery & Business", "Autonomous goods delivery and employe
   <div class="eyebrow">Register interest</div>
   <h2>Tell us about <em class="hl">your business.</em></h2>
   <p class="lead" style="margin-bottom:2rem">There's no commitment. We'll use this only to contact you about RoboRide business services. See our <a href="privacy.html">Privacy Policy</a>.</p>
+  <p style="margin:-1rem 0 2rem">Prefer email? Write to {mail("partners")}.</p>
   <form class="form" data-formspree action="{FORM}" method="POST" novalidate>
     {HP}
     <input type="hidden" name="type" value="business">
@@ -364,15 +371,21 @@ page("about", "About & Mission", "RoboRide LLC is a Northwest Arkansas company p
     <li class="reveal"><h3>Grow city by city</h3><p>Expand across the planned <a href="service-area.html">service area</a> as operations prove out.</p></li>
   </ol>
 </div></section>
+''' + f'''
+<section class="section alt" id="contact"><div class="wrap">
+  <div class="eyebrow">Contact</div>
+  <h2>Say <em class="hl">hello.</em></h2>
+  <p class="lead">General questions about RoboRide: {mail("hello")}. Media: {mail("press")}. Businesses: {mail("partners")}.</p>
+</div></section>
 ''')
 
 # ---------------- PRESS ----------------
-page("press", "Press Kit", "Press information, boilerplate and media assets for RoboRide LLC.", '''
+page("press", "Press Kit", "Press information, boilerplate and media assets for RoboRide LLC.", f'''
 <section class="page-hero"><div class="wrap">
   <div class="eyebrow">Press kit</div>
   <h1>Writing about<br><em class="hl">RoboRide?</em></h1>
-  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, use the waitlist form and choose "Press".</p>
-  <div class="actions"><a class="btn" href="index.html#signup">Contact us (choose "Press")</a></div>
+  <p class="lead">Here's what you need: a short description, key facts and assets you can use. For interviews or questions, email {mail("press")}.</p>
+  <div class="actions"><a class="btn" href="mailto:{EMAIL["press"]}">Email press@</a></div>
 </div></section>
 
 <section class="section alt"><div class="wrap prose">
@@ -415,8 +428,9 @@ if "<!-- PRIVACY:BEGIN -->" in _pv:
 else:
     _pc = _pv.split("<main>")[1].split("</main>")[0]
     _pc = _pc.replace('<p style="color:#a89c88;margin:0">Effective date', '<p class="muted" style="margin:0">Effective date')
-page("privacy", "Privacy Policy (Draft)", "How RoboRide LLC handles the information you share when you join the waitlist or register business interest.", f'''
+assert "DRAFT" not in _pc and EMAIL["privacy"] in _pc, "privacy.html content must be final and list the privacy@ address"
+page("privacy", "Privacy Policy", "How RoboRide LLC handles the information you share when you join the waitlist or register business interest.", f'''
 <section class="section prose-wrap"><div class="wrap prose">
 <!-- PRIVACY:BEGIN -->{_pc}<!-- PRIVACY:END -->
 </div></section>
-''', extra_head='<meta name="robots" content="noindex">\n')
+''')
