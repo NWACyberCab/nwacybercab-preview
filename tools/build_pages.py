@@ -91,7 +91,7 @@ def page(slug, title, desc, body, extra_head=""):
       </div>
       <div><h2>Riders</h2><ul><li><a href="index.html#how">How it will work</a></li><li><a href="service-area.html">Service area</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#signup">Join the waitlist</a></li></ul></div>
       <div><h2>Businesses</h2><ul><li><a href="businesses.html">Delivery &amp; business</a></li><li><a href="businesses.html#interest">Register interest</a></li></ul></div>
-      <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+      <div><h2>Company</h2><ul><li><a href="about.html">About &amp; mission</a></li><li><a href="about.html#roadmap">Launch roadmap</a></li><li><a href="safety.html">Safety &amp; regulation</a></li><li><a href="https://www.tesla.com/robotaxi/safety" target="_blank" rel="noopener">Tesla Robotaxi safety report</a></li><li><a href="press.html">Press kit</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
       <div><h2>Contact</h2><ul><li>{mail("hello")}</li><li><a href="index.html#contact">All contact options</a></li><li>{x_link()}</li><li>{fb_link()}</li><li>{ig_link()}</li></ul></div>
     </div>
     <div class="share-row"><button type="button" class="share-btn" data-share data-title="{html.escape(title)} | RoboRide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share this page</span></button><span class="share-status" role="status" aria-live="polite"></span></div>
@@ -300,12 +300,22 @@ AVEP = "https://www.nhtsa.gov/sites/nhtsa.gov/files/2025-04/automated-vehicle-ex
 NHTSA_RPT = "https://www.nhtsa.gov/sites/nhtsa.gov/files/2025-07/report-congress-research-rulemaking-automated-driving-systems-july-2025-tag.pdf"
 TESLARATI = "https://www.teslarati.com/tesla-cybercab-dallas/"
 FSD = "https://www.tesla.com/fsd/safety"
+RT_SAFETY = "https://www.tesla.com/robotaxi/safety"
 page("safety", "Safety & Regulation", "How autonomous vehicles are regulated in the U.S. and in Arkansas, and how RoboRide thinks about safety.", f'''
 <section class="page-hero"><div class="wrap">
   <div class="eyebrow">Safety &amp; regulation</div>
   <h1>Safety first,<br><em class="hl">and by the rules.</em></h1>
   <p class="lead">Driverless vehicles are regulated at both the federal and state level. Here's a plain-language overview of the rules that apply in Arkansas, with links to the sources.</p>
   <p class="note" style="margin-top:1.5rem;max-width:760px">This page is general information, not legal advice. It's a summary as of October 2026; laws and rules change, so check the linked sources for the current text.</p>
+</div></section>
+
+<section class="section" style="padding-top:2rem;padding-bottom:2rem"><div class="wrap">
+  <div class="card" id="tesla-safety-report" style="max-width:760px;border-color:rgba(232,183,78,.45)">
+    <div class="eyebrow">Safety data</div>
+    <h2 style="font-size:1.5rem;margin:.25rem 0 .5rem">Tesla's official Robotaxi safety report</h2>
+    <p>Tesla's live page with driverless miles and crash and injury data for its Robotaxi fleet. Published by Tesla, Inc.; RoboRide is independent and links to it as industry information.</p>
+    <p style="margin:1rem 0 0"><a class="btn" href="{RT_SAFETY}" target="_blank" rel="noopener">View Tesla's Robotaxi safety report <span aria-hidden="true">↗</span></a></p>
+  </div>
 </div></section>
 
 <section class="section alt"><div class="wrap prose">
@@ -337,7 +347,7 @@ page("safety", "Safety & Regulation", "How autonomous vehicles are regulated in 
   <div class="grid two" style="margin-top:1.5rem">
     <div class="card reveal"><h3>No shortcuts on approval</h3><p>Driverless service in Arkansas requires an approved autonomous vehicle program, and we won't carry riders or goods without one. Where we are in that process will be shown on our <a href="about.html#roadmap">roadmap</a>.</p></div>
     <div class="card reveal"><h3>Supervised before driverless</h3><p>State rules require a human operator on board for the first six months of an approved program. We see that period as a feature, not a hurdle.</p></div>
-    <div class="card reveal"><h3>The technology</h3><p>The Cybercab runs Tesla's autonomous driving software. Tesla publishes its own safety data for FSD (Supervised); we link to it rather than repeat its claims. {ext(FSD, "Tesla FSD safety data")}</p></div>
+    <div class="card reveal"><h3>The technology</h3><p>The Cybercab runs Tesla's autonomous driving software. Tesla publishes its own safety data for its driverless Robotaxi fleet; we link to it rather than repeat its claims. {ext(RT_SAFETY, "Tesla Robotaxi Vehicle Safety Report")}</p></div>
     <div class="card reveal"><h3>Transparency</h3><p>As service begins, we'll post updates on this site about how RoboRide operates</p></div>
   </div>
 </div></section>
