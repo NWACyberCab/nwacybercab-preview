@@ -281,17 +281,17 @@
 
   <!-- PROJECTED UNSUPERVISED MILES COUNTER (projection; config lives in the script: FSD_COUNTER) -->
   <div id="fsd-counter" data-fsd-card="">
-    <div data-fsd-lbl="">Tesla Robotaxi fleet · projected unsupervised miles</div>
+    <div data-fsd-lbl="">Tesla Robotaxi fleet · estimated unsupervised miles</div>
     <div aria-hidden="true" data-fsd-miles="">{{ fsdMilesText }}</div>
     <p class="sr-only">Projected total: about {{ fsdMilesRounded }} unsupervised miles.</p>
-    <span data-fsd-proj="">Projection, not official Tesla data</span>
+    <span data-fsd-proj="">Estimate from Tesla's official figure; not a live Tesla feed</span>
     <sc-if value="{{ fsdCapped }}" hint-placeholder-val="{{ false }}">
-      <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Projection paused: it has run well past the last fleet count and needs a new baseline.</p>
+      <p style="font-size:.8rem; color:#f2b48a; margin:.8rem 0 0;">Estimate paused: it has run well past Tesla's last official figure and needs a new baseline.</p>
     </sc-if>
     <details data-fsd-details="">
       <summary>How this number is calculated</summary>
-      <p><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> projection, not official Tesla data. We start from Tesla's last stated total ({{ fsdBaseText }} unsupervised miles on {{ fsdBaseDateText }}) and add the miles the driverless fleet would cover since then: fleet size × miles per car per day, summed second by second. Fleet size is drawn straight between public fleet-tracker counts (256 driverless cars on Sept 3; about 500 on Oct 14; 508 on Oct 19: Austin 405, Dallas 70, Houston 33), then assumed to keep growing by about 6 cars a day (the Sept–Oct average) for 8 weeks and then hold steady. Miles per car per day is our assumption: {{ fsdMpdBase }} at the Sept 3 fleet size, rising as the fleet grows (bigger fleets keep each car busier) up to a cap of {{ fsdMpdCap }}. Right now that's about {{ fsdFleetText }} cars at {{ fsdMpdText }} miles a day each. Tracker counts are cars seen in service, not official, and real utilization may be lower or higher, so treat this as an estimate. It covers Tesla's own driverless fleet (Bay Area safety-driver cars excluded) and resets to Tesla's next official total. RoboRide is not yet operating, and none of these are RoboRide miles.</p>
-      <p data-fsd-src="">Sources: 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>) · 256-car fleet on Sept 3 (<a href="https://www.theverge.com/transportation/989501/tesla-cybercab-launch-robotaxi-austin-musk" target="_blank" rel="noopener">The Verge</a>) · current fleet counts (<a href="https://teslanewswire.com/robotaxi-tracker" target="_blank" rel="noopener">Tesla News Wire Robotaxi Tracker</a>, <a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a>, <a href="https://x.com/moondough/status/2112168665277677979" target="_blank" rel="noopener">Robotaxi Tracker summary, Oct 19</a>).</p>
+      <p><strong style="color:#e8e4dc; font-weight:500;">Method:</strong> estimate, not a live Tesla feed. The base is Tesla's official figure from its <a href="https://www.tesla.com/robotaxi/safety" target="_blank" rel="noopener">Robotaxi safety page</a>: {{ fsdBaseText }} miles driven autonomously (no safety monitor in the car) as of the end of {{ fsdBaseDateText }}, Central time. Since then we add miles at the pace Tesla's own live counter on that page uses, about {{ fsdPerDayText }} miles a day (roughly 0.92 miles a second), in whole miles. That pace is Tesla's estimate and may change as the fleet grows, so we refresh the base whenever Tesla updates its page or states a new total; if it isn't refreshed within 8 weeks the counter pauses. Before this figure we modeled fleet size × miles per car per day from public tracker counts; that model is now tuned to Tesla's official totals (1 million on Sept 3 to {{ fsdBaseText }}). The figure covers Tesla's own driverless fleet in Texas and Florida (Bay Area safety-monitor rides excluded). RoboRide is not yet operating, and none of these are RoboRide miles.</p>
+      <p data-fsd-src="">Sources: official miles: <a href="https://www.tesla.com/robotaxi/safety" target="_blank" rel="noopener">Tesla Robotaxi Vehicle Safety Report</a> (3,112,541 miles as of Oct 18, 2026) · 1M miles announced by Ashok Elluswamy at Tesla's Cybercab event, Austin, Sept 3, 2026 (<a href="https://teslant.com/en/news/tesla-robotaxi-1-million-unsupervised-miles-2026-09" target="_blank" rel="noopener">TeslAnt</a>, <a href="https://evwire.com/p/tesla-cybercab-launch-event-full-video" target="_blank" rel="noopener">event video</a>) · 380,000-mile total, Q2 2026 earnings call, July 22, 2026 (<a href="https://www.fool.com/earnings/call-transcripts/2026/08/05/tesla-tsla-q2-2026-earnings-call-transcript/" target="_blank" rel="noopener">transcript</a>) · 256-car fleet on Sept 3 (<a href="https://www.theverge.com/transportation/989501/tesla-cybercab-launch-robotaxi-austin-musk" target="_blank" rel="noopener">The Verge</a>) · current fleet counts (<a href="https://teslanewswire.com/robotaxi-tracker" target="_blank" rel="noopener">Tesla News Wire Robotaxi Tracker</a>, <a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a>, <a href="https://x.com/moondough/status/2112168665277677979" target="_blank" rel="noopener">Robotaxi Tracker summary, Oct 19</a>).</p>
     </details>
   </div>
 
@@ -558,8 +558,9 @@
 <section id="updates" data-screen-label="Updates" style="padding:0 clamp(1.25rem,4vw,3.5rem) 6rem; max-width:900px; margin:0 auto;">
   <div style="font-size:.75rem; color:#e8b74e; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; font-weight:500;">Latest updates</div>
   <h2 style="font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin:0 0 .75rem;">Cybercab &amp; Robotaxi <em style="font-style:normal; color:#e8b74e;">news.</em></h2>
-  <p style="color:#a89c88; font-size:.9rem; margin:0 0 1.5rem;">Industry news from independent reporting, as of October 19, 2026. These are Tesla developments, not RoboRide announcements; RoboRide is not affiliated with Tesla.</p>
+  <p style="color:#a89c88; font-size:.9rem; margin:0 0 1.5rem;">Industry news from independent reporting, as of October 21, 2026. These are Tesla developments, not RoboRide announcements; RoboRide is not affiliated with Tesla.</p>
   <ul style="list-style:none; margin:0; padding:0; border-bottom:0.5px solid rgba(255,255,255,.08);">
+      <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Oct 21, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">Tesla launched an official Robotaxi Vehicle Safety Report page. It lists 3,112,541 miles driven autonomously, with no safety monitor in the car, from Jan 22 to Oct 18 across Austin, Dallas, Houston, Miami, Orlando and Tampa, plus a live counter. Tesla reports zero people injured, zero airbag deployments and zero pedestrians or cyclists hit by Robotaxi under NHTSA crash-reporting criteria over that period. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.tesla.com/robotaxi/safety" target="_blank" rel="noopener">Tesla Robotaxi safety page</a>)</span></span></li>
       <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Coming Oct 21</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">Tesla reports third-quarter 2026 results after the market closes on Oct 21, with a live Q&amp;A webcast at 4:30 p.m. Central. Teslarati notes the call is a natural venue for updated fleet numbers and a Dallas date. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.nasdaq.com/press-release/tesla-third-quarter-2026-production-deliveries-deployments-2026-10-02" target="_blank" rel="noopener">Tesla via Nasdaq</a> · <a href="https://www.teslarati.com/tesla-cybercab-dallas/" target="_blank" rel="noopener">Teslarati</a>)</span></span></li>
       <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Oct 17, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">Tesla extended Austin Robotaxi hours again: rides now run from 6 a.m. to midnight, up from 11 p.m. earlier this month. Tesla’s SI lead has said FSD v15 is meant to unlock round-the-clock service, with a rollout to the Robotaxi fleet targeted for October. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://www.notateslaapp.com/news/4844/tesla-extends-robotaxi-hours-again-now-until-midnight" target="_blank" rel="noopener">Not a Tesla App</a>)</span></span></li>
       <li style="display:grid; grid-template-columns:minmax(0,8.5rem) 1fr; gap:1rem; padding:1.1rem 0; border-top:0.5px solid rgba(255,255,255,.08);"><span style="font-size:.78rem; color:#e8b74e; letter-spacing:.04em; text-transform:uppercase; padding-top:.15rem;">Oct 15, 2026</span><span style="font-size:.92rem; color:#e8e4dc; line-height:1.6;">NHTSA’s latest crash-report data adds two more low-speed Robotaxi crashes from August, in Dallas and Austin, where a remote operator rather than the self-driving system was in control. Both were property damage only, at about 1 mph or less, with no passengers aboard. Tesla now has 36 Robotaxi incident reports on file. <span style="font-size:.78rem; color:#a89c88;">(<a href="https://electrek.co/2026/10/15/tesla-remote-operators-crashing-robotaxis/" target="_blank" rel="noopener">Electrek</a>)</span></span></li>
@@ -741,8 +742,13 @@
 const FSD_COUNTER = {
   // Official cumulative unsupervised miles stated by Tesla (newest past entry wins).
   MILES_ANCHORS: [
-    { date: '2026-09-03T19:00:00-05:00', miles: 1000000, src: 'Ashok Elluswamy, Tesla Cybercab event, Austin (time approximate)' }
-    // { date: '2026-10-21T16:30:00-05:00', miles: 0, src: 'Tesla Q3 2026 call' },   // <- fill in after Oct 21
+    { date: '2026-09-03T19:00:00-05:00', miles: 1000000, src: 'Ashok Elluswamy, Tesla Cybercab event, Austin (time approximate)' },
+    // Tesla Robotaxi Vehicle Safety Report (tesla.com/robotaxi/safety, launched Oct 2026): "Miles Driven Autonomously",
+    // 3,112,541 mi as of 10/18/2026 23:59:59 CT (Jan 22 - Oct 18, no safety monitor in the car; TX + FL; Bay Area excluded).
+    // ratePerSec = the pace Tesla's own live counter on that page adds (0.0009221 mi/ms = 0.9221 mi/s ≈ 79,669 mi/day;
+    // confirmed by reading the page 60 s apart on Oct 21: +56 and +55 mi). After this anchor the counter grows at that rate.
+    { date: '2026-10-18T23:59:59-05:00', miles: 3112541, ratePerSec: 0.9221, src: 'Tesla Robotaxi Vehicle Safety Report, tesla.com/robotaxi/safety' }
+    // Next: replace with Tesla's next official figure (e.g. Q3 call Oct 21, or an update to the safety page).
   ],
   // Unsupervised (no one in the car) robotaxi fleet counts. Bay Area safety-driver cars excluded.
   FLEET_ANCHORS: [
@@ -752,14 +758,19 @@ const FSD_COUNTER = {
     { date: '2026-10-14T12:00:00-05:00', cars: 501, src: 'Tracker: Austin 400 + Dallas 68 + Houston 33 (teslanewswire.com/robotaxi-tracker)' },
     { date: '2026-10-19T08:00:00-05:00', cars: 508, src: 'Robotaxi Tracker via @moondough on X, Oct 19: Austin 405 + Dallas 70 + Houston 33 (TX driverless; FL 29 and Bay Area excluded as before). TxDMV registry 803 (454 MY + 349 CC) is registered, not in service' }
   ],
-  // After the last fleet anchor: add CARS_PER_DAY (≈ the Sept 3 -> Oct 14 average, 245 cars / 41 days, not the
+  // Fleet counts drive the model only BEFORE the newest official anchor (and its MPD fit); after an anchor that has
+  // ratePerSec, the official pace is used instead. After the last fleet anchor: add CARS_PER_DAY (≈ the Sept 3 -> Oct 14 average, 245 cars / 41 days, not the
   // faster last-week burst; kept at 6 on Oct 19 although Oct 14-19 showed only +7 cars, too short/noisy a window to retune) for MAX_DAYS, then hold the fleet flat. FREEZE_DAYS after the last fleet anchor the
-  // counter stops entirely and shows "needs a new baseline".
-  FLEET_EXTRAP: { CARS_PER_DAY: 6, MAX_DAYS: 56, FREEZE_DAYS: 84 },
+  // counter stops entirely and shows "needs a new baseline". ANCHOR_FREEZE_DAYS: when the newest official anchor has a
+  // ratePerSec, the counter instead stops that many days after it (Dec 13, 2026 for the Oct 18 anchor): a flat rate
+  // gets stale as the fleet grows, so it should be re-anchored to Tesla's page before then.
+  FLEET_EXTRAP: { CARS_PER_DAY: 6, MAX_DAYS: 56, FREEZE_DAYS: 84, ANCHOR_FREEZE_DAYS: 56 },
   // Miles per car per day: rises linearly with fleet size (bigger fleets = better utilization), capped.
-  // 150 at the 256-car Sept 3 fleet (research mid case), +50 per 244 extra cars (200 at ~500 cars), cap 200.
-  // Sanity: 16-17 h service day x 50-70% utilization x 18-22 mph ≈ 150-250 mi/day; Waymo-like ≈ 100-200.
-  MPD: { BASE: 150, BASE_FLEET: 256, PER_CAR: 50 / 244, CAP: 200 }
+  // Retuned Oct 21 to Tesla's official numbers: the old 150 -> 200 curve gave 3,664,133 mi at Oct 18 23:59:59 CT vs
+  // Tesla's 3,112,541 (+18%). Sept 3 -> Oct 18 officially added 2,112,541 mi in 45.2 days ≈ 46,700 mi/day over an
+  // average ~344-car tracked fleet ≈ 136 mi/car/day. Now: 121 at 256 cars, +36 per 252 extra cars, cap 157
+  // (= Tesla's 79,669 mi/day / 508 cars on Oct 18-19). This reproduces 2,114,579 mi for that window (+0.1%).
+  MPD: { BASE: 121, BASE_FLEET: 256, PER_CAR: 36 / 252, CAP: 157 }
 };
 // ===========================================================================
 function fsdFleet(ms) {
@@ -773,13 +784,17 @@ function fsdFleet(ms) {
   return last.cars + X.CARS_PER_DAY * Math.min(X.MAX_DAYS, (ms - t(last)) / DAY);
 }
 function fsdMpd(cars) { const m = FSD_COUNTER.MPD; return Math.min(m.CAP, Math.max(m.BASE, m.BASE + m.PER_CAR * (cars - m.BASE_FLEET))); }
-function fsdRate(ms) { const f = fsdFleet(ms); return f * fsdMpd(f) / 864e5; } // miles per millisecond
+function fsdOfficialRate(ms) { // official pace from the newest past anchor that has one (mi/ms), else null
+  const a = FSD_COUNTER.MILES_ANCHORS.filter(x => Date.parse(x.date) <= ms).pop();
+  return a && a.ratePerSec ? a.ratePerSec / 1000 : null;
+}
+function fsdRate(ms) { const o = fsdOfficialRate(ms); if (o !== null) return o; const f = fsdFleet(ms); return f * fsdMpd(f) / 864e5; } // miles per millisecond
 // Precomputed cumulative miles at hourly steps (Simpson's rule), then interpolated: cheap per tick, smooth.
 const FSD_TABLE = (() => {
   const c = FSD_COUNTER, H = 36e5, now = Date.now();
   const base = c.MILES_ANCHORS.filter(a => Date.parse(a.date) <= now).pop() || c.MILES_ANCHORS[0];
   const t0 = Date.parse(base.date), lastFleet = Date.parse(c.FLEET_ANCHORS[c.FLEET_ANCHORS.length - 1].date);
-  const tEnd = lastFleet + c.FLEET_EXTRAP.FREEZE_DAYS * 864e5;
+  const tEnd = base.ratePerSec ? t0 + c.FLEET_EXTRAP.ANCHOR_FREEZE_DAYS * 864e5 : lastFleet + c.FLEET_EXTRAP.FREEZE_DAYS * 864e5;
   const cum = [base.miles];
   for (let t = t0; t < tEnd; t += H) cum.push(cum[cum.length - 1] + H / 6 * (fsdRate(t) + 4 * fsdRate(t + H / 2) + fsdRate(t + H)));
   return { t0, tEnd, H, cum, base };
@@ -788,7 +803,7 @@ function fsdProjection(now) {
   const T = FSD_TABLE, capped = now >= T.tEnd, t = Math.min(Math.max(now, T.t0), T.tEnd);
   const i = Math.min(Math.floor((t - T.t0) / T.H), T.cum.length - 2), dt = t - (T.t0 + i * T.H);
   // within the hour: exact-enough linear step using the instantaneous rate
-  return { miles: Math.min(T.cum[i] + fsdRate(T.t0 + i * T.H + dt / 2) * dt, T.cum[i + 1]), capped, fleet: fsdFleet(t), mpd: fsdMpd(fsdFleet(t)) };
+  return { miles: Math.min(T.cum[i] + fsdRate(T.t0 + i * T.H + dt / 2) * dt, T.cum[i + 1]), capped, fleet: fsdFleet(t), mpd: fsdMpd(fsdFleet(t)), perDay: fsdRate(t) * 864e5 };
 }
 
 class Component extends DCLogic {
@@ -1086,7 +1101,8 @@ class Component extends DCLogic {
           fsdFleetText: nf.format(Math.round(pr.fleet)),
           fsdMpdText: nf.format(Math.round(pr.mpd)),
           fsdMpdBase: nf.format(FSD_COUNTER.MPD.BASE),
-          fsdMpdCap: nf.format(FSD_COUNTER.MPD.CAP)
+          fsdMpdCap: nf.format(FSD_COUNTER.MPD.CAP),
+          fsdPerDayText: nf.format(Math.round(pr.perDay))
         };
       })(),
       steps,
