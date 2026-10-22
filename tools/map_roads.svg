@@ -18,10 +18,10 @@
           <path data-road="US-62" d="M156 112 L200 108 L230 96 L260 89 L285 84" stroke="rgba(232,183,78,.28)" stroke-width="2"></path>
           <path data-road="US-62" d="M147 204 L134 207 L120 211 L105 238 L72 243 L42 229" stroke="rgba(232,183,78,.22)" stroke-width="1.5"></path>
         </g>
-        <text x="131" y="52" font-size="7" fill="rgba(232,183,78,.6)" font-family="DM Sans, sans-serif">I-49</text>
-        <text x="60" y="158" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-412</text>
-        <text x="208" y="98" font-size="7" fill="rgba(232,183,78,.5)" font-family="DM Sans, sans-serif">US-62</text>
-        <g font-size="5.5" fill="rgba(232,183,78,.42)" font-family="DM Sans, sans-serif" pointer-events="none">
+        <text x="131" y="52" font-size="7" fill="rgba(232,183,78,.6)" font-family="Inter, sans-serif">I-49</text>
+        <text x="60" y="158" font-size="7" fill="rgba(232,183,78,.5)" font-family="Inter, sans-serif">US-412</text>
+        <text x="208" y="98" font-size="7" fill="rgba(232,183,78,.5)" font-family="Inter, sans-serif">US-62</text>
+        <g font-size="5.5" fill="rgba(232,183,78,.42)" font-family="Inter, sans-serif" pointer-events="none">
           <text x="74" y="200">AR-16</text>
           <text x="112" y="150" text-anchor="end">AR-112</text>
           <text x="159" y="134">AR-265</text>

@@ -1,0 +1,31 @@
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Back roads (state highways), traced from OpenStreetMap route relations (ODbL) and simplified; drawn under the highways -->
+          <g class="backroads" stroke="rgba(232,183,78,.2)" stroke-width="1" stroke-dasharray="none">
+          <path data-road="AR-16" data-name="Wedington Dr" d="M147 204 L134 199 L109 199 L101 198 L94 190 L85 194 L73 191 L62 185 L50 174 L45 166 L40 161"></path>
+          <path data-road="AR-112" data-name="Garland Ave" d="M134 199 L125 166 L124 156 L125 136 L127 111"></path>
+          <path data-road="AR-265" data-name="Crossover Rd" d="M147 204 L153 205 L155 193 L156 175 L156 162 L156 119 L156 112"></path>
+          <path data-road="AR-45" data-name="Mission Blvd" d="M147 204 L168 190 L190 192 L204 180 L227 179 L227 157"></path>
+          <path data-road="AR-12" data-name="Regional Airport Blvd" d="M131 99 L127 111 L118 111 L116 118 L105 118 L105 123 L95 124 L92 136 L65 138 L60 137 L31 131"></path>
+          <path data-road="AR-12" d="M156 112 L156 105 L189 112 L202 127 L212 127 L214 143 L241 147 L253 134"></path>
+          <path data-road="AR-59" d="M40 161 L52 147 L60 137 L65 125 L62 111 L67 103 L64 82 L66 65 L56 56"></path>
+          <path data-road="AR-59" d="M40 161 L43 167 L42 203 L53 223 L53 233"></path>
+          <path data-road="AR-102" data-name="Centerton Blvd" d="M131 99 L95 103 L91 111 L62 111 L39 104 L29 95"></path>
+          <path data-road="AR-72" d="M131 99 L116 99 L99 79 L87 78 L74 84 L64 82 L46 80 L33 82 L23 88"></path>
+          <path data-road="AR-264" d="M92 136 L115 139 L125 136 L154 139"></path>
+          </g>
+          <path data-road="I-49" d="M126 40 L131 99 L156 112 L154 139 L153 162 L147 204 L144 270" stroke="rgba(232,183,78,.45)" stroke-width="3"></path>
+          <path data-road="US-412" d="M18 160 L40 161 L95 166 L125 166 L153 162 L156 162 L215 158 L227 157 L285 150" stroke="rgba(232,183,78,.28)" stroke-width="2"></path>
+          <path data-road="US-62" d="M156 112 L200 108 L230 96 L260 89 L285 84" stroke="rgba(232,183,78,.28)" stroke-width="2"></path>
+          <path data-road="US-62" d="M147 204 L134 207 L120 211 L105 238 L72 243 L42 229" stroke="rgba(232,183,78,.22)" stroke-width="1.5"></path>
+        </g>
+        <text x="131" y="52" font-size="7" fill="rgba(232,183,78,.6)" font-family="Inter, sans-serif">I-49</text>
+        <text x="60" y="158" font-size="7" fill="rgba(232,183,78,.5)" font-family="Inter, sans-serif">US-412</text>
+        <text x="208" y="98" font-size="7" fill="rgba(232,183,78,.5)" font-family="Inter, sans-serif">US-62</text>
+        <g font-size="5.5" fill="rgba(232,183,78,.42)" font-family="Inter, sans-serif" pointer-events="none">
+          <text x="74" y="200">AR-16</text>
+          <text x="112" y="150" text-anchor="end">AR-112</text>
+          <text x="159" y="134">AR-265</text>
+          <text x="186" y="199">AR-45</text>
+          <text x="66" y="133">AR-12</text>
+          <text x="58" y="96" text-anchor="end">AR-59</text>
+        </g>

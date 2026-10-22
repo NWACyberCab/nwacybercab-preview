@@ -12,7 +12,7 @@ The earlier hero video (`robotaxi-hero.mp4`) was removed because RoboRide does n
 
 ## Fonts
 
-Syne and DM Sans are self-hosted in `fonts/` (latin subset, from Google Fonts). Both are licensed under the SIL Open Font License 1.1: https://openfontlicense.org
+Sora and Inter are self-hosted in `fonts/` (latin subset variable woff2, from Google Fonts via Fontsource). Both are licensed under the SIL Open Font License 1.1 (see `fonts/OFL-Sora.txt`, `fonts/OFL-Inter.txt`): https://openfontlicense.org
 
 ## React
 
