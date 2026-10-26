@@ -171,3 +171,19 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 /* round 4: shorter photo card on desktop; hero chips fit one row on phones */
 @media (min-width:960px){.hero-card img{aspect-ratio:21/8}}
 @media (max-width:599px){.hide-sm{display:none}.chips-row{gap:.4rem}.status,.miles-chip{padding:.3rem .65rem;gap:.35rem;font-size:.75rem;white-space:nowrap}.miles-chip b{font-size:.88rem}}
+
+/* v5: grouped service lists, 2x2 safety tiles on phones, news headlines */
+.svc-group{margin:0 0 .9rem}.svc-group .tiles{margin:0}
+.grp{font:600 .78rem var(--disp);letter-spacing:.08em;text-transform:uppercase;color:var(--goldt);margin:0 0 .45rem .2rem}
+.tiles h4{font:600 1.05rem/1.25 var(--disp);color:var(--head);margin:0 0 .15rem}
+@media (max-width:759px){
+.tiles.grouped{gap:0;background:var(--card);border:1px solid var(--line);border-radius:1.1rem;overflow:hidden}
+.tiles.grouped li{border:0;border-radius:0;background:none;padding:.8rem 1rem}
+.tiles.grouped li+li{border-top:1px solid var(--line)}
+.tiles.four{grid-template-columns:1fr 1fr}
+.tiles.four li{padding:.8rem .85rem}.tiles.four h3{font-size:.98rem}.tiles.four p{font-size:.86rem}
+}
+.news .nh{display:block;font:600 1rem/1.35 var(--disp);color:var(--head);margin:0 0 .15rem}
+@media (min-width:760px){.tiles.grouped{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1200px){.svc-group:first-of-type .tiles.grouped{grid-template-columns:repeat(4,1fr)}}
+.counter-card .fsd-how{margin-top:.4rem}.counter-card .links{margin-top:.15rem}
