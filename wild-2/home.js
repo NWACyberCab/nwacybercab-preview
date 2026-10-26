@@ -195,8 +195,8 @@ function fsdProjection(now) {
       if (same) { out.innerHTML = '<b>Pick two different cities</b> to picture a trip.'; return; }
       var d = mi(a, b);
       out.innerHTML = '<span class="trip-mi"><b>' + d.toFixed(1) + '</b> mi</span><span class="trip-copy">' +
-        (mode === 'ride' ? 'straight-line from ' + from.value + ' to ' + to.value + '. That is your time back: read, rest, or take the call while the Cybercab drives.'
-                         : 'straight-line for a package from ' + from.value + ' to ' + to.value + '. No driver to schedule, just a Cybercab at the curb.') + '</span>';
+        (mode === 'ride' ? 'straight-line, ' + from.value + ' to ' + to.value + '. Time back to read, rest, or take a call.'
+                         : 'straight-line for a package, ' + from.value + ' to ' + to.value + '. No driver to schedule.') + '</span>';
     }
     from.addEventListener('change', draw); to.addEventListener('change', draw);
     var sw = box.querySelector('[data-trip-swap]'); if (sw) sw.addEventListener('click', function () { var t = from.value; from.value = to.value; to.value = t; draw(); });
