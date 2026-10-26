@@ -221,31 +221,64 @@ function fsdProjection(now) {
   }
   window.RR = { reduce: reduce };
 })();
-// App shell: one screen at a time. Any #hash inside a screen opens that screen.
+// App shell: one screen at a time, hash routed (#ride, #services...). Any #id inside a screen opens that screen.
 (function () {
   var panels = [].slice.call(document.querySelectorAll('[data-panel]'));
   var tabs = [].slice.call(document.querySelectorAll('[data-tab]'));
   if (!panels.length) return;
-  function show(hash, push) {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, cur = null;
+  var titles = { ride: 'Ride', services: 'Services', safety: 'Safety', news: 'News', help: 'Help' }, base = document.title;
+  function show(hash, push, focus) {
     var id = (hash || '').replace(/^#/, ''), el = id ? document.getElementById(id) : null;
     if (id === 'main') el = null;
     var p = el ? (el.matches('[data-panel]') ? el : el.closest('[data-panel]')) : null;
     if (!p && el) return false; // target outside screens (footer etc.): normal scroll
     p = p || panels[0];
-    panels.forEach(function (x) { x.classList.toggle('on', x === p); });
+    var back = cur && panels.indexOf(p) < panels.indexOf(cur);
+    if (p !== cur) {
+      panels.forEach(function (x) { x.classList.toggle('on', x === p); x.classList.remove('enter', 'back'); });
+      if (cur && !reduce) { void p.offsetWidth; p.classList.add('enter'); if (back) p.classList.add('back'); }
+      cur = p;
+    }
     tabs.forEach(function (a) { if (a.getAttribute('data-tab') === p.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-    p.querySelectorAll('.reveal').forEach(function (r) { r.classList.add('in'); });
-    if (el && el !== p) { requestAnimationFrame(function () { el.scrollIntoView(); }); } else { scrollTo(0, 0); }
+    document.title = (p.id === 'ride' ? '' : titles[p.id] + ' · ') + base;
+    if (el && el !== p) requestAnimationFrame(function () { el.scrollIntoView(); }); else scrollTo(0, 0);
     if (push) history.pushState(null, '', '#' + (el ? id : p.id));
+    if (focus) { var t = (el && el !== p) ? el : p.querySelector('h1,h2'); if (t) { if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true }); } }
     return true;
   }
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="#"]');
-    if (!a || e.defaultPrevented || a.hasAttribute('data-waitlist-reset')) return;
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || a.hasAttribute('data-waitlist-reset')) return;
     var h = a.getAttribute('href'); if (h.length < 2) return;
-    if (show(h, true)) { e.preventDefault(); var p = document.querySelector('.panel.on'), t = document.getElementById(h.slice(1));
-      var f = (t && t !== p) ? t : p.querySelector('h1,h2'); if (f) { f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); } }
+    if (h === location.hash && document.getElementById(h.slice(1)) === cur) { e.preventDefault(); scrollTo(0, 0); return; }
+    if (show(h, true, true)) e.preventDefault();
   });
-  addEventListener('popstate', function () { show(location.hash, false); });
-  show(location.hash, false);
+  addEventListener('popstate', function () { show(location.hash, false, true); });
+  addEventListener('hashchange', function () { show(location.hash, false, true); });
+  show(location.hash, false, false);
+  // "Where to?" quick trips feed the planner
+  [].forEach.call(document.querySelectorAll('[data-route]'), function (b) {
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () {
+      var r = b.getAttribute('data-route').split('|'), box = b.closest('.where').querySelector('[data-trip]');
+      var f = box.querySelector('[name=from]'), t = box.querySelector('[name=to]');
+      f.value = r[0]; t.value = r[1]; t.dispatchEvent(new Event('change'));
+      [].forEach.call(document.querySelectorAll('[data-route]'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    });
+  });
+  [].forEach.call(document.querySelectorAll('.where select'), function (s) { s.addEventListener('change', function (e) { if (e.isTrusted) [].forEach.call(document.querySelectorAll('[data-route]'), function (x) { x.setAttribute('aria-pressed', 'false'); }); }); });
+})();
+// Theme toggle: dark/light, saved in localStorage (initial value set inline in <head>).
+(function () {
+  var d = document.documentElement;
+  function label() { var t = d.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    [].forEach.call(document.querySelectorAll('[data-theme-toggle]'), function (b) { b.setAttribute('aria-label', t === 'light' ? 'Switch to dark theme' : 'Switch to light theme'); b.title = b.getAttribute('aria-label'); }); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-theme-toggle]'); if (!b) return;
+    var t = d.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    d.setAttribute('data-theme', t); try { localStorage.setItem('rr-theme', t); } catch (x) {}
+    label();
+  });
+  label();
 })();
