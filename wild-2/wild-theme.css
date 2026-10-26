@@ -77,3 +77,8 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 main a.dl{display:inline-flex;align-items:center;gap:.35rem;min-height:40px;margin:.55rem .35rem 0 0;padding:0 .95rem;border:1px solid var(--line2,rgba(255,255,255,.2));border-radius:2rem;font-weight:600;font-size:.88rem;text-decoration:none}
 main a.dl::before{content:"↓";font-weight:700}
 main a.dl:hover{border-color:currentColor}
+/* v7: readable open-question titles in light theme; full-width callout button on phones */
+details.q[open] summary{color:var(--goldt)}
+@media (max-width:560px){.card>p>a.btn{display:flex;width:100%;text-align:center;line-height:1.3;padding-top:.6rem;padding-bottom:.6rem;border-radius:1.1rem}}
+/* v7: fine print stays at a legible 12.5px+ on phones */
+.tiny{font-size:.78rem;line-height:1.5}
