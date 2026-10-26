@@ -168,3 +168,6 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 }
 @media (max-width:599px){.foot-grid{grid-template-columns:1fr 1fr;gap:1.25rem 1rem}.foot-grid nav:last-child{grid-column:1/-1}.foot-grid nav:last-child ul{columns:2;column-gap:1rem}.foot nav a{font-size:.88rem}}
 .logo>span{margin-left:-.55rem}
+/* round 4: shorter photo card on desktop; hero chips fit one row on phones */
+@media (min-width:960px){.hero-card img{aspect-ratio:21/8}}
+@media (max-width:599px){.hide-sm{display:none}.chips-row{gap:.4rem}.status,.miles-chip{padding:.3rem .65rem;gap:.35rem;font-size:.75rem;white-space:nowrap}.miles-chip b{font-size:.88rem}}

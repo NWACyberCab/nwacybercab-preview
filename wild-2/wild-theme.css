@@ -70,3 +70,6 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
  .side-links{list-style:none;margin:0;padding:0;font-size:.88rem}.side-links a{color:var(--muted);text-decoration:none;display:flex;align-items:center;min-height:2.25rem;padding:0 .2rem}.side-links a:hover{color:var(--goldt)}
 }
 .logo>span{margin-left:-.55rem}
+/* footer: theme-aware logo + compact two-column layout on phones */
+.site-footer .logo img{display:block}
+@media (max-width:599px){.site-footer{padding:2rem 0 1.5rem}.site-footer .cols{grid-template-columns:1fr 1fr;gap:1.25rem 1rem;margin-bottom:1.5rem}.site-footer .cols>div:first-child,.site-footer .cols>div:last-child{grid-column:1/-1}.site-footer .cols>div:last-child ul{display:block;columns:2;column-gap:1rem}.site-footer .cols>div:last-child li{margin-bottom:.55rem;break-inside:avoid}.site-footer h2{margin-bottom:.6rem}.site-footer a{font-size:.88rem}.site-footer .cols a:not(.logo){display:inline-flex;align-items:center;min-height:24px}}
