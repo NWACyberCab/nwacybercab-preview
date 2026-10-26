@@ -188,3 +188,20 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 
 /* v6: Help contact as tappable app rows */
 .contact-rows{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr}.contact-rows li{display:flex;flex-direction:column;align-items:flex-start;border-top:1px solid var(--line)}.contact-rows li:first-child{border-top:0}.contact-rows .cr{width:100%;display:flex;align-items:center;gap:.85rem;min-height:56px;padding:.55rem .25rem;color:var(--text);text-decoration:none;border-radius:.7rem}.contact-rows .cr .ic{flex:none;color:var(--goldt)}.cr-t{display:flex;flex-direction:column;min-width:0;flex:1}.cr-t b{font:600 1rem var(--disp);color:var(--head)}.cr-t span{color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.cr-go{color:var(--muted);font-size:1.4rem;line-height:1}.contact-rows .cr:hover .cr-t span,.contact-rows .cr:focus-visible .cr-t span{color:var(--goldt);text-decoration:underline}.cr-x{display:inline-flex;align-items:center;min-height:40px;margin:0 0 .5rem 2.85rem;padding:0 .9rem;border:1px solid var(--line2);border-radius:2rem;color:var(--goldt);font-weight:600;font-size:.88rem;text-decoration:none}.cr-x:hover{border-color:var(--goldt)}@media (min-width:900px){.contact-rows{grid-template-columns:1fr 1fr;column-gap:1.5rem}.contact-rows li:nth-child(2){border-top:0}}
+/* v9 declutter */
+.lede .soon{display:block;margin-top:.35rem;font-size:.9rem;color:var(--dim)}
+.map-d{margin-top:.6rem;border-top:1px solid var(--line);padding-top:.4rem}
+.map-d summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--muted);font-size:.9rem;font-weight:600}
+.map-d summary:hover{color:var(--goldt)}
+.map-d .trip-fine{margin-top:.4rem}
+@media (min-width:1100px){.where .trip{display:block}.where .trip-map{max-width:30rem;margin:.3rem 0}}
+.side .side-cta{margin-top:auto;align-self:flex-start}
+.more-rows{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr}
+.more-rows li{border-top:1px solid var(--line)}
+.more-rows li:first-child{border-top:0}
+.more-rows a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 .25rem;color:var(--text);text-decoration:none}
+.more-rows a span{color:var(--dim)}
+.more-rows a:hover{color:var(--goldt)}
+@media (min-width:900px){.more-rows{grid-template-columns:1fr 1fr;column-gap:1.5rem}.more-rows li:nth-child(2){border-top:0}}
+.foot .foot-grid{display:block}
+.foot .foot-brand p{max-width:44rem}
