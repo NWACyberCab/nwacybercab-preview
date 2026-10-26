@@ -128,8 +128,6 @@ html:not(.js) .cta-strip{display:none}
 .faq-item summary::after{content:"+";position:absolute;right:.2rem;top:.7rem;color:var(--goldt);font:300 1.6rem var(--sans);transition:transform .25s}
 .faq-item[open] summary::after{transform:rotate(45deg)}
 .faq-item p{margin:0 0 1rem;color:var(--muted)}
-.contact-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:1rem}
-.contact-list h3{font-size:1.1rem;margin-bottom:.2rem}.contact-list p{margin:0;overflow-wrap:anywhere}.contact-list a{display:inline-block;padding:.5rem 0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.tabbar,.side,.topbar,form{display:none!important}html.js .panel{display:block!important}}
 [tabindex="-1"]:focus{outline:none}
@@ -187,3 +185,6 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 @media (min-width:760px){.tiles.grouped{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1200px){.svc-group:first-of-type .tiles.grouped{grid-template-columns:repeat(4,1fr)}}
 .counter-card .fsd-how{margin-top:.4rem}.counter-card .links{margin-top:.15rem}
+
+/* v6: Help contact as tappable app rows */
+.contact-rows{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr}.contact-rows li{display:flex;flex-direction:column;align-items:flex-start;border-top:1px solid var(--line)}.contact-rows li:first-child{border-top:0}.contact-rows .cr{width:100%;display:flex;align-items:center;gap:.85rem;min-height:56px;padding:.55rem .25rem;color:var(--text);text-decoration:none;border-radius:.7rem}.contact-rows .cr .ic{flex:none;color:var(--goldt)}.cr-t{display:flex;flex-direction:column;min-width:0;flex:1}.cr-t b{font:600 1rem var(--disp);color:var(--head)}.cr-t span{color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.cr-go{color:var(--muted);font-size:1.4rem;line-height:1}.contact-rows .cr:hover .cr-t span,.contact-rows .cr:focus-visible .cr-t span{color:var(--goldt);text-decoration:underline}.cr-x{display:inline-flex;align-items:center;min-height:40px;margin:0 0 .5rem 2.85rem;padding:0 .9rem;border:1px solid var(--line2);border-radius:2rem;color:var(--goldt);font-weight:600;font-size:.88rem;text-decoration:none}.cr-x:hover{border-color:var(--goldt)}@media (min-width:900px){.contact-rows{grid-template-columns:1fr 1fr;column-gap:1.5rem}.contact-rows li:nth-child(2){border-top:0}}

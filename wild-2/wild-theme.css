@@ -73,3 +73,7 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
 /* footer: theme-aware logo + compact two-column layout on phones */
 .site-footer .logo img{display:block}
 @media (max-width:599px){.site-footer{padding:2rem 0 1.5rem}.site-footer .cols{grid-template-columns:1fr 1fr;gap:1.25rem 1rem;margin-bottom:1.5rem}.site-footer .cols>div:first-child,.site-footer .cols>div:last-child{grid-column:1/-1}.site-footer .cols>div:last-child ul{display:block;columns:2;column-gap:1rem}.site-footer .cols>div:last-child li{margin-bottom:.55rem;break-inside:avoid}.site-footer h2{margin-bottom:.6rem}.site-footer a{font-size:.88rem}.site-footer .cols a:not(.logo){display:inline-flex;align-items:center;min-height:24px}}
+/* v6: press-kit downloads as tappable pills */
+main a.dl{display:inline-flex;align-items:center;gap:.35rem;min-height:40px;margin:.55rem .35rem 0 0;padding:0 .95rem;border:1px solid var(--line2,rgba(255,255,255,.2));border-radius:2rem;font-weight:600;font-size:.88rem;text-decoration:none}
+main a.dl::before{content:"↓";font-weight:700}
+main a.dl:hover{border-color:currentColor}
