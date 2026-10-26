@@ -1,0 +1,19 @@
+/* Wild 3 "Showroom" light theme for inner pages: loaded after site.css. */
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter-tight-latin-wght-normal.woff2) format('woff2')}
+:root{--bg:#fbfaf7;--bg2:#f2efe8;--card:#ffffff;--line:#e4dfd4;--text:#14130f;--muted:#5d5a52;--dim:#6f6b62;--gold:#8a5a00;--gold2:#6f4800;--gold-lt:#8a5a00}
+body{background:#fbfaf7;color:#14130f}
+h1,h2,h3,h4{font-family:'Inter Tight',system-ui,sans-serif;color:#14130f;letter-spacing:-.04em;font-weight:700}
+.site-header{background:rgba(251,250,247,.85)!important;backdrop-filter:blur(16px);border-bottom:1px solid #e4dfd4}
+.site-header .logo img,.site-footer .logo img{filter:invert(1) hue-rotate(180deg)}
+.site-header a,.site-header .logo,.site-footer .logo{color:#14130f}
+.site-footer{background:#f2efe8!important;color:#5d5a52}
+.site-footer h2{color:#14130f}
+input,select,textarea{background:#fff!important;color:#14130f!important;border-color:#d9d4c9!important}
+/* keep maps and photo panels dark for contrast */
+.map,#map,[class*="map"]{color-scheme:dark}
+/* contrast fixes */
+.btn,.nav a.btn,.nav li a.btn{color:#fff!important}
+.note{color:#5a3d00!important;background:#fbf3e1!important;border-color:#e8d3a4!important}
+.lead strong[style]{color:#14130f!important}
+.menu-btn{border-color:#d9d4c9!important}.menu-btn svg{stroke:#14130f}
+.map{background:#14130f!important;border-radius:1rem}

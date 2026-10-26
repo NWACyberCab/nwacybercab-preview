@@ -1,0 +1,8 @@
+/* Wild 2 "RoboRide App" theme for inner pages: loaded after site.css. */
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+:root{--bg:#0e1014;--bg2:#12151b;--card:#171a21;--line:rgba(255,255,255,.08);--muted:#a3a7b0;--dim:#868b94}
+body{background:#0e1014}
+h1,h2,h3,.logo{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.03em}
+.site-header{background:rgba(14,16,20,.9)!important;backdrop-filter:blur(14px)}
+.site-footer{background:#0b0d10!important}
+.card,[class*="card"]{border-radius:1.2rem}

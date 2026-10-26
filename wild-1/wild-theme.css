@@ -1,0 +1,9 @@
+/* Wild 1 "Night Ride" theme for inner pages: loaded after site.css. */
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/fraunces-latin-wght-normal.woff2) format('woff2')}
+:root{--bg:#07070b;--bg2:#0c1022;--card:#11131c;--line:rgba(255,255,255,.1);--muted:#b3a993}
+body{background:radial-gradient(90% 50% at 80% 0%,rgba(40,52,110,.35),rgba(0,0,0,0) 70%),#07070b;background-attachment:fixed}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.025em}
+h1{font-weight:400;font-size:clamp(2.2rem,8vw,5rem);line-height:1}
+h1 em,h2 em,em.hl{font-style:italic;font-weight:400}
+.site-header{background:rgba(7,7,11,.82)!important;backdrop-filter:blur(10px)}
+.site-footer{background:#050507!important}
