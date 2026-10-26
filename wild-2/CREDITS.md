@@ -17,7 +17,3 @@ Sora and Inter are self-hosted in `fonts/` (latin subset variable woff2, from Go
 ## React
 
 `vendor/react.production.min.js` and `vendor/react-dom.production.min.js` (React 18.3.1, © Meta Platforms, Inc.) are self-hosted copies, MIT License (https://github.com/facebook/react/blob/main/LICENSE).
-
-## Space Grotesk
-
-`fonts/space-grotesk-latin-wght-normal.woff2` (Space Grotesk variable, Florian Karsten, via Fontsource) is self-hosted under the SIL Open Font License 1.1 (see `fonts/OFL-SpaceGrotesk.txt`).

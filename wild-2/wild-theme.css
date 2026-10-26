@@ -1,6 +1,5 @@
 /* Wild 2 "RoboRide App" theme for inner pages (loaded after site.css): app shell + dark/light themes. */
-@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
-:root{--disp:'Space Grotesk',system-ui,sans-serif;--side:16rem;--tabh:4.25rem}
+:root{--disp:'Sora',system-ui,sans-serif;--side:16rem;--tabh:4.25rem}
 .site-header{display:none!important}
 body{background:var(--bg);color:var(--text);font-weight:400;padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom))}
 @media (min-width:960px){body{padding-bottom:0}main,.site-footer{margin-left:var(--side)}}
@@ -70,3 +69,4 @@ html[data-theme=light] .lg-w,html:not([data-theme=light]) .lg-d{display:none!imp
  .side-card p{margin:0 0 .8rem;font-size:.88rem;color:var(--text)}
  .side-links{list-style:none;margin:0;padding:0;font-size:.88rem}.side-links a{color:var(--muted);text-decoration:none;display:flex;align-items:center;min-height:2.25rem;padding:0 .2rem}.side-links a:hover{color:var(--goldt)}
 }
+.logo>span{margin-left:-.55rem}
